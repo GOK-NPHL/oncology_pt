@@ -352,7 +352,9 @@ class PersonelForm extends React.Component {
                                             }}
                                             onChange={(event) => this.handlePasswordChange(event.target.value)}
                                             type="email" className="form-control" id="u_password" />
-                                            <small style={{ "color": "red" }} className="form-text">Leave blank to retain previous password.</small>
+                                            {this.state.pageState == 'edit' ?
+                                            <small style={{ "color": "red" }} className="form-text">Leave blank to retain previous password.</small> :
+                                            ''}
                                     </div>
                                 </div>
 
@@ -383,7 +385,7 @@ class PersonelForm extends React.Component {
                                             onChange={(event) => this.handleIsQcActiveChange(event.target.checked)}
                                             type="checkbox"
                                             id="u_qc_access" />
-                                        <label className="ml-3" htmlFor="u_qc_access" >Has QC Access</label>
+                                        <label className="ml-3" htmlFor="u_qc_access" >Has PT Access</label>
 
                                     </div>
 

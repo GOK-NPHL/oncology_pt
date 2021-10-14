@@ -12,7 +12,7 @@
             color:white;">
                 <div>
 
-                    <h2 class="color:white;">Login - <span> RTRI Quality Control</span></h2>
+                    <h2 class="color:white;">Login - <span> oncology Quality Control</span></h2>
                 </div>
                 <form name="loginForm" id="login_form" class="form-vertical" method="POST" action="{{ route('participant-login') }}">
                     @csrf
@@ -61,7 +61,7 @@
                         </a>
                         @endif
                         | <a style="display: inline-block;" class="btn btn-link" href="http://helpdesk.nphl.go.ke/index.php?a=add">
-                            RTRI HELP DESK
+                            oncology HELP DESK
                         </a>
                     </div>
 

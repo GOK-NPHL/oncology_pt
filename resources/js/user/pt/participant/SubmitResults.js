@@ -445,7 +445,7 @@ class SubmitResults extends React.Component {
 
                     <div className="col-sm-12 float-left">
                         <h1>
-                            RTRI PT Submission form
+                            Oncology PT Submission form
                             {
                                 Date.parse(this.state.endDate) > new Date() ?
                                     this.props.shipment.readiness_approval_id == null ?
@@ -539,7 +539,7 @@ class SubmitResults extends React.Component {
                                 <input value={this.state.nameOfTest} onChange={() => this.onNameOfTestHandler(event)} className="form-control" type="text" />
                             </div>
                             <div style={boxLine} className="col-sm-3">
-                                <p><strong>RTRI Kit Lot No. *</strong></p>
+                                <p><strong>oncology Kit Lot No. *</strong></p>
                             </div>
                             <div style={boxLine} className="col-sm-3">
 
@@ -553,7 +553,7 @@ class SubmitResults extends React.Component {
                         {/* kit info */}
                         <div className="row">
                             <div style={boxLineLeft} className="col-sm-3">
-                                <p><strong>RTRI Kit Date Received *</strong></p>
+                                <p><strong>oncology Kit Date Received *</strong></p>
                             </div>
                             <div style={boxLine} className="col-sm-3">
 
@@ -561,7 +561,7 @@ class SubmitResults extends React.Component {
 
                             </div>
                             <div style={boxLine} className="col-sm-3">
-                                <p><strong>RTRI Kit Expiry Date *</strong></p>
+                                <p><strong>oncology Kit Expiry Date *</strong></p>
                             </div>
                             <div style={boxLine} className="col-sm-3">
 
@@ -691,7 +691,7 @@ class SubmitResults extends React.Component {
                                 <label htmlFor="exampleFormControlSelect1">Pick a reason</label>
                                 <select value={this.state.notTestedReason} onChange={() => this.notTestedReasonHandler(event)} className="form-control" id="exampleFormControlSelect1">
                                     <option selected="selected">Issue with sample</option>
-                                    <option>Issue with RTRI kit lot</option>
+                                    <option>Issue with oncology kit lot</option>
                                     <option>Other</option>
                                 </select>
                             </div>

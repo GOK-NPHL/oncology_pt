@@ -1,4 +1,4 @@
-# RTRI PT
+# Oncology PT
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
@@ -21,7 +21,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-The RTRI PT
+The Oncology PT
 .
 
 <!-- GETTING STARTED -->
@@ -38,12 +38,12 @@ This project is powered by the laravel framework.
 
 * clone project
   ```sh
-  git clone https://github.com/GOK-NPHL/rtri_pc.git
+  git clone https://github.com/GOK-NPHL/oncology_pc.git
   ```
 
 * cd
   ```sh
-  cd rtri_pt/
+  cd oncology_pt/
   ```
 
 Edit the the .evn file and update with needed parameters like your ODK username and password, database connection, and set the SESSION_DOMAIN to the relevant server domain.
@@ -79,7 +79,7 @@ Once the containers are up and running, you can check status by running docker c
 Run below to get into the app continer session:
 
 ```
-sudo docker-compose exec  app bash
+sudo docker-compose exec oncologypt_app bash
 ```
 
 you could add -u 0 get into the sudo session in the container.

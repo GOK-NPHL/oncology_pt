@@ -67,7 +67,7 @@
                                     {{ __('Forgot Your Password?') }}
                                 </a> |
                                 <a class="btn btn-link" href="http://helpdesk.nphl.go.ke/index.php?a=add">
-                                    RTRI HELP DESK
+                                    oncology HELP DESK
                                 </a>
                                 @endif
                             </div>
