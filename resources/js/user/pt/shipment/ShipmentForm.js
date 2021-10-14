@@ -522,7 +522,18 @@ class ShipmentForm extends React.Component {
                                     <thead>
                                         <tr>
                                             <th scope="col">Sample *</th>
-                                            <th scope="col">Reference result *</th>
+                                            <th scope="col">
+                                                Reference result *
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">HR HPV 16</th>
+                                                            <th scope="col">HR HPV 18-45</th>
+                                                            <th scope="col">Others HR HPV</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
