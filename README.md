@@ -38,7 +38,7 @@ This project is powered by the laravel framework.
 
 * clone project
   ```sh
-  git clone https://github.com/GOK-NPHL/oncology_pc.git
+  git clone https://github.com/GOK-NPHL/oncology_pt.git
   ```
 
 * cd
