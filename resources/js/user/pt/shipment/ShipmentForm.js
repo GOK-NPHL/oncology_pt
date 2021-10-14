@@ -519,25 +519,23 @@ class ShipmentForm extends React.Component {
 
                             <div className="col-sm-12">
                                 <table className="table unstrip table-bordered table-sm ">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Sample *</th>
-                                            <th scope="col">
-                                                Reference result *
-                                                <table>
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col">HR HPV 16</th>
-                                                            <th scope="col">HR HPV 18-45</th>
-                                                            <th scope="col">Others HR HPV</th>
-                                                        </tr>
-                                                    </thead>
-                                                </table>
-                                            </th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
                                     <tbody>
+                                        <tr>
+                                            <td rowSpan="2">
+                                                <strong>Sample *</strong>
+                                            </td>
+                                            <td colSpan="3">
+                                                <strong>Reference result * </strong>
+                                            </td>
+                                            <td rowSpan="2">
+                                                <strong>Action</strong>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>HR HPV 16</strong></td>
+                                            <td><strong>HR HPV 18-45</strong></td>
+                                            <td><strong>Others HR HPV</strong></td>
+                                        </tr>
 
                                         {this.state.tableRows.map((row) => {
                                             if (row != undefined)
@@ -552,6 +550,8 @@ class ShipmentForm extends React.Component {
                                                     <i data-tip="Add sample" style={{ "color": "blue" }} className="fas fa-plus-circle fa-2x"></i>
                                                 </a>
                                             </td>
+                                            <td colSpan="3"></td>
+                                            <td></td>
                                         </tr>
 
                                     </tbody>

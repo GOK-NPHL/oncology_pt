@@ -56,45 +56,51 @@ class ShipmentSample extends React.Component {
                         onChange={(event) => this.sampleNameChange(this.state.index, event.target.value)} className="form-control"
                         placeholder="please enter sample name" />
                 </td>
-                {/* <td onChange={this.qcInterpretationLongterm.bind(this)}> */}
-                <td style={{ "maxWidth": "150px" }}>
+
+
+                <td >
                     <div className="form-check form-check-inline">
-                        <input className="form-check-input"
-                            checked={this.state.result == 'lt' ? true : false}
-                            type="radio" value="lt" onChange={() => this.sampleReferenceResultChange(this.state.index, 'lt')}
-                            name={this.state.index + "long-term-radio"} id={this.state.index + "result_lt"} />
-                        <label className="form-check-label" htmlFor={this.state.index + "result_lt"} >
-                            LT
-                        </label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="radio"
-                            checked={this.state.result == 'recent' ? true : false}
-                            value="recent" onChange={() => this.sampleReferenceResultChange(this.state.index, 'recent')}
-                            name={this.state.index + "long-term-radio"} id={this.state.index + "result_recent"} />
-                        <label className="form-check-label" htmlFor={this.state.index + "result_recent"} >
-                            recent
-                        </label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="radio"
-                            checked={this.state.result == 'neg' ? true : false}
-                            value="neg" onChange={() => this.sampleReferenceResultChange(this.state.index, 'neg')}
-                            name={this.state.index + "long-term-radio"} id={this.state.index + "result_neg"} />
-                        <label className="form-check-label" htmlFor={this.state.index + "result_neg"} >
-                            neg
-                        </label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="radio"
-                            checked={this.state.result == 'invalid' ? true : false}
-                            value="invalid" onChange={() => this.sampleReferenceResultChange(this.state.index, 'invalid')}
-                            name={this.state.index + "long-term-radio"} id={this.state.index + "result_invalid"} />
-                        <label className="form-check-label" htmlFor={this.state.index + "result_invalid"} >
-                            invalid
-                        </label>
+                        <select className="custom-select"
+                            // checked={this.state.result == 'lt' ? true : false}
+                            onChange={() => this.sampleReferenceResultChange(this.state.index, 'lt')}
+                            name={this.state.index + "long-term-radio"} id={this.state.index + "result_lt"} >
+                            <option hidden>--select--</option>
+                            <option>Positive</option>
+                            <option>Negative</option>
+                        </select>
+
                     </div>
                 </td>
+
+                <td>
+                    <div className="form-check form-check-inline">
+                        <select className="custom-select"
+                            checked={this.state.result == 'recent' ? true : false}
+                            value="recent" onChange={() => this.sampleReferenceResultChange(this.state.index, 'recent')}
+                            name={this.state.index + "long-term-radio"} id={this.state.index + "result_recent"} >
+                            <option hidden>--select--</option>
+                            <option>Positive</option>
+                            <option>Negative</option>
+                        </select>
+
+                    </div>
+                </td>
+
+                <td>
+                    <div className="form-check form-check-inline">
+                        <select className="custom-select"
+                            checked={this.state.result == 'neg' ? true : false}
+                            value="neg" onChange={() => this.sampleReferenceResultChange(this.state.index, 'neg')}
+                            name={this.state.index + "long-term-radio"} id={this.state.index + "result_neg"} >
+                            <option hidden>--select--</option>
+                            <option>Positive</option>
+                            <option>Negative</option>
+                        </select>
+
+                    </div>
+                </td>
+
+
                 <td>
 
                     <ReactTooltip />
