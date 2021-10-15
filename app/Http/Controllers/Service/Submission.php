@@ -124,10 +124,10 @@ class Submission extends Controller
 
 
             $submissionResults = DB::table('pt_submission_results')
-                ->select('sample_id', 'control_line', 'verification_line', 'longterm_line', 'interpretation')
-                ->where('ptsubmission_id', $request->id)
-                ->get();
 
+                ->select('sample_id', 'hpv_16 as 16', 'hpv_18 as 18', 'hpv_other as other')
+                ->where('ptsubmission_id', $request->id);
+            $submissionResults = $submissionResults->get();
             $payload = ['data' => $submission[0], 'test_results' => $submissionResults];
 
             return $payload;
@@ -171,10 +171,9 @@ class Submission extends Controller
             foreach ($submission["samples"] as $key => $val) {
 
                 $ptLtResult = new PtSubmissionResult([
-                    "control_line" => $val["visual"]["c"],
-                    "verification_line" => $val["visual"]["v"],
-                    "interpretation" => $val["interpretation"],
-                    "longterm_line" => $val["visual"]["lt"],
+                    "hpv_16" => $val["16"],
+                    "hpv_18" => $val["18"],
+                    "hpv_other" => $val["other"],
                     "ptsubmission_id" =>  $submission['id'],
                     "sample_id" => $key
                 ]);

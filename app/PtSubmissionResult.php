@@ -12,6 +12,5 @@ class PtSubmissionResult extends Model
         "hpv_16",
         "hpv_18",
         "hpv_other",
-        "interpretation"
     ];
 }
