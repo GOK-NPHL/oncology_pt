@@ -84,15 +84,26 @@ class PTShipmentController extends Controller
             $ptSamples = PtSample::select(
                 "pt_samples.id",
                 "name",
-                "reference_result"
+                'hpv_16 as 16',
+                'hpv_18 as 18',
+                'hpv_other as other'
             )->join('pt_shipements', 'pt_shipements.id', '=', 'pt_samples.ptshipment_id')
                 ->where('pt_shipements.id', $request->id)
                 ->get();
 
+            $samples  = [];
+
+            foreach ($ptSamples as $sample) {
+                $samples[] = [
+                    'name' => $sample['name'], '16' => $sample['16'],
+                    '18' => $sample['18'], 'other' => $sample['other'], 'id' => $sample['id']
+                ];
+            }
+
             $payload = [];
             $payload['shipment'] = $shipment;
             $payload['labs'] = $labIds;
-            $payload['samples'] = $ptSamples;
+            $payload['samples'] = $samples;
 
             return $payload;
         } catch (Exception $ex) {
@@ -138,9 +149,9 @@ class PTShipmentController extends Controller
                 $ptSample = new PtSample();
 
                 $ptSample->name = $sample['name'];
-                $ptSample->hpv_16 = $sample['reference_result']['16'];
-                $ptSample->hpv_18 = $sample['reference_result']['18'];
-                $ptSample->hpv_other = $sample['reference_result']['other'];
+                $ptSample->hpv_16 = $sample['16'];
+                $ptSample->hpv_18 = $sample['18'];
+                $ptSample->hpv_other = $sample['other'];
                 $ptSample->ptshipment()->associate($shipment);
                 $ptSample->save();
             }
@@ -201,7 +212,9 @@ class PTShipmentController extends Controller
                     }
 
                     $ptSample->name = $sample['name'];
-                    $ptSample->reference_result = $sample['reference_result'];
+                    $ptSample->hpv_16 = $sample['16'];
+                    $ptSample->hpv_18 = $sample['18'];
+                    $ptSample->hpv_other = $sample['other'];
                     $ptSample->ptshipment()->associate($shipments);
                     $ptSample->save();
                 } catch (Exception $ex) {

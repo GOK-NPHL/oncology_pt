@@ -63,7 +63,6 @@ class ListShipment extends React.Component {
     }
 
     render() {
-        console.log("rendering")
         const imgStyle = {
             width: "100%"
         };

@@ -193,12 +193,11 @@ class ShipmentForm extends React.Component {
 
     saveShipment() {
         let isSamplesDataFilled = true;
-        console.log(this.state.samples)
         this.state.samples.map((samples) => {
             if (
-                samples['reference_result'] == null ||
+                samples == null ||
                 samples['name'] == null ||
-                samples['reference_result']['16'] == null || samples['reference_result']['18'] == null || samples['reference_result']['other'] == null ||
+                samples['16'] == null || samples['18'] == null || samples['other'] == null ||
                 samples['name'] == ''
             ) {
                 isSamplesDataFilled = false
@@ -292,11 +291,9 @@ class ShipmentForm extends React.Component {
     }
 
     sampleReferenceResultChange(index, refResultId, refResultValue) {
-        console.log(refResultId)
         let samples = this.state.samples;
         let sample = samples[index];
-        sample['reference_result'][refResultId] =  refResultValue ;
-        console.log(sample['reference_result'])
+        sample[refResultId] = refResultValue;
         samples[index] = sample;
         this.setState({
             samples: samples
@@ -317,16 +314,14 @@ class ShipmentForm extends React.Component {
         let tableRows = this.state.tableRows;
 
         let samples = this.state.samples;
-        let newSample = {};
-        let sampleDefaults = { '16': null, '18': null, 'other': null };
-        newSample['name'] = '';
-        newSample['reference_result'] = sampleDefaults;
+        let sampleDefaults = { '16': null, '18': null, 'other': null, 'name': '' };
+        let newSample = sampleDefaults;
 
         tableRows.push(<ShipmentSample
             key={uuidv4()}
             index={index}
             deleteSampleRow={this.deleteSampleRow}
-            result={val ? val.reference_result : sampleDefaults}
+            result={val ? val : sampleDefaults}
             name={val ? val.name : ''}
             sampleReferenceResultChange={this.sampleReferenceResultChange}
             sampleNameChange={this.sampleNameChange}

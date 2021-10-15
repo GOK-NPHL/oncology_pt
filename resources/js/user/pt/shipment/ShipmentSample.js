@@ -49,6 +49,29 @@ class ShipmentSample extends React.Component {
     }
 
     render() {
+
+        let defaultHPV16 = '';
+        let defaultHPV18 = '';
+        let defaultHPVOther = '';
+
+        if (this.state.result['16'] == 'Positive') {
+            defaultHPV16 = 'Positive'
+        } else if (this.state.result['16'] == 'Negative') {
+            defaultHPV16 = 'Negative'
+        }
+
+        if (this.state.result['18'] == 'Positive') {
+            defaultHPV18 = 'Positive'
+        } else if (this.state.result['18'] == 'Negative') {
+            defaultHPV18 = 'Negative'
+        }
+
+        if (this.state.result['other'] == 'Positive') {
+            defaultHPVOther = 'Positive'
+        } else if (this.state.result['other'] == 'Negative') {
+            defaultHPVOther = 'Negative'
+        }
+
         return (
 
             <tr >
@@ -64,7 +87,7 @@ class ShipmentSample extends React.Component {
                     <div className="form-check form-check-inline">
                         <select className="custom-select"
                             // checked={this.state.result == 'lt' ? true : false}
-                            defaultValue="Negative"
+                            value={defaultHPV16}
                             onChange={(event) => this.sampleReferenceResultChange(this.state.index, '16', event.target.value)}
                             name={this.state.index + "long-term-radio"} id={this.state.index + "result_lt"} >
                             <option hidden>--select--</option>
@@ -79,6 +102,7 @@ class ShipmentSample extends React.Component {
                     <div className="form-check form-check-inline">
                         <select className="custom-select"
                             // checked={this.state.result == 'recent' ? true : false}
+                            value={defaultHPV18}
                             onChange={() => this.sampleReferenceResultChange(this.state.index, '18', event.target.value)}
                             name={this.state.index + "long-term-radio"} id={this.state.index + "result_recent"} >
                             <option hidden>--select--</option>
@@ -93,6 +117,7 @@ class ShipmentSample extends React.Component {
                     <div className="form-check form-check-inline">
                         <select className="custom-select"
                             // checked={this.state.result == 'neg' ? true : false}
+                            value={defaultHPVOther}
                             onChange={() => this.sampleReferenceResultChange(this.state.index, 'other', event.target.value)}
                             name={this.state.index + "long-term-radio"} id={this.state.index + "result_neg"} >
                             <option hidden>--select--</option>
