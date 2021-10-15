@@ -61,12 +61,11 @@ class Submission extends Controller
             foreach ($submission["samples"] as $key => $val) {
 
                 $ptLtResult = new PtSubmissionResult([
-                    "control_line" => $val["visual"]["c"],
-                    "verification_line" => $val["visual"]["v"],
-                    "interpretation" => $val["interpretation"],
-                    "longterm_line" => $val["visual"]["lt"],
                     "ptsubmission_id" => $submissionId,
-                    "sample_id" => $key
+                    "sample_id" => $key,
+                    "hpv_16" => $val["16"],
+                    "hpv_18" => $val["18"],
+                    "hpv_other" => $val["other"],
                 ]);
                 $ptLtResult->save();
             }

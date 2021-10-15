@@ -149,17 +149,18 @@ class SubmitResults extends React.Component {
 
     submitForm() {
         //check if results filled
-        // if (this.state.isPtDone) {
-        //     for (const [key, value] of Object.entries(this.state.samples)) {
-        //         if (value['interpretation'] == null) {
-        //             this.setState({
-        //                 message: "Fill in all the fields marked *"
-        //             })
-        //             $('#messageModal').modal('toggle');
-        //             return;
-        //         }
-        //     }
-        // }
+        //{ '16': null, '18': null, 'other': null, 'name': '' }
+        if (this.state.isPtDone) {
+            for (const [key, value] of Object.entries(this.state.samples)) {
+                if (value['16'] == null || value['18'] == null || value['other'] == null) {
+                    this.setState({
+                        message: "Fill in all the fields marked *"
+                    })
+                    $('#messageModal').modal('toggle');
+                    return;
+                }
+            }
+        }
 
         if (
             this.state.ptLotReceivedDate.length == 0 ||
@@ -690,7 +691,7 @@ class SubmitResults extends React.Component {
                                                 <strong>PT Sample ID</strong>
                                             </td>
                                             <td colSpan="3">
-                                                <strong>Visual Results </strong>
+                                                <strong>Visual Results *</strong>
                                             </td>
                                         </tr>
                                         <tr>

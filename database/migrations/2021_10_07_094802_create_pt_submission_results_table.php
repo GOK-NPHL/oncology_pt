@@ -18,10 +18,9 @@ class CreatePtSubmissionResultsTable extends Migration
             $table->timestamps();
             $table->integer('ptsubmission_id');
             $table->integer('sample_id');
-            $table->integer("control_line")->nullable();
-            $table->integer("verification_line")->nullable();
-            $table->integer("longterm_line")->nullable();
-            $table->string("interpretation")->nullable();
+            $table->string("hpv_16");
+            $table->string("hpv_18");
+            $table->string("hpv_other");
         });
     }
 
