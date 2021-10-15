@@ -22,7 +22,6 @@ class ShipmentSample extends React.Component {
     }
 
     componentDidMount() {
-
         this.setState({
             name: this.props.name,
             index: this.props.index,
@@ -30,12 +29,15 @@ class ShipmentSample extends React.Component {
         })
     }
 
-    sampleReferenceResultChange(index, refResult) {
+    sampleReferenceResultChange(index, refResultId, refResultValue) {
+        let referenceResult = this.state.result
 
+
+        referenceResult[refResultId] = refResultValue;
         this.setState({
-            result: refResult
+            result: referenceResult
         })
-        this.props.sampleReferenceResultChange(index, refResult);
+        this.props.sampleReferenceResultChange(index, refResultId, refResultValue);
     }
 
     sampleNameChange(index, name) {
@@ -62,7 +64,8 @@ class ShipmentSample extends React.Component {
                     <div className="form-check form-check-inline">
                         <select className="custom-select"
                             // checked={this.state.result == 'lt' ? true : false}
-                            onChange={() => this.sampleReferenceResultChange(this.state.index, 'lt')}
+                            defaultValue="Negative"
+                            onChange={(event) => this.sampleReferenceResultChange(this.state.index, '16', event.target.value)}
                             name={this.state.index + "long-term-radio"} id={this.state.index + "result_lt"} >
                             <option hidden>--select--</option>
                             <option>Positive</option>
@@ -75,8 +78,8 @@ class ShipmentSample extends React.Component {
                 <td>
                     <div className="form-check form-check-inline">
                         <select className="custom-select"
-                            checked={this.state.result == 'recent' ? true : false}
-                            value="recent" onChange={() => this.sampleReferenceResultChange(this.state.index, 'recent')}
+                            // checked={this.state.result == 'recent' ? true : false}
+                            onChange={() => this.sampleReferenceResultChange(this.state.index, '18', event.target.value)}
                             name={this.state.index + "long-term-radio"} id={this.state.index + "result_recent"} >
                             <option hidden>--select--</option>
                             <option>Positive</option>
@@ -89,8 +92,8 @@ class ShipmentSample extends React.Component {
                 <td>
                     <div className="form-check form-check-inline">
                         <select className="custom-select"
-                            checked={this.state.result == 'neg' ? true : false}
-                            value="neg" onChange={() => this.sampleReferenceResultChange(this.state.index, 'neg')}
+                            // checked={this.state.result == 'neg' ? true : false}
+                            onChange={() => this.sampleReferenceResultChange(this.state.index, 'other', event.target.value)}
                             name={this.state.index + "long-term-radio"} id={this.state.index + "result_neg"} >
                             <option hidden>--select--</option>
                             <option>Positive</option>
