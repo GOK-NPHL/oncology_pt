@@ -146,7 +146,7 @@ class Dashboard extends React.Component {
                     <td>{element.end_date}</td>
                     {
                         element.submission_id == null ? <td >
-                            <span style={{ "background-color": "green", "padding": "3px", "border-radius": "2px", "color": "white" }}>
+                            <span style={{ "backgroundColor": "green", "padding": "3px", "borderRadius": "2px", "color": "white" }}>
                                 {Date.parse(element.end_date) > new Date() ?
                                     element.is_readiness_answered == null ? 'Readiness needs filling' :
                                         element.readiness_approval_id == null ?
