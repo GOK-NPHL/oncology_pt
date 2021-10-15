@@ -44,8 +44,7 @@ class Dashboard extends React.Component {
         (async () => {
             let response = await FetchUserSamples();
             let readiness = await FetchReadnessSurvey();
-            console.log("readiness")
-            console.log(readiness)
+
             this.setState({
                 data: response,
                 readiness: readiness
@@ -64,7 +63,6 @@ class Dashboard extends React.Component {
     }
 
     handleSubmittedPageChange(pageNumber) {
-        console.log(`active page is ${pageNumber}`);
         let pgNumber = pageNumber * 10 + 1;
         this.setState({
             startSubmittedTableData: pgNumber - 11,

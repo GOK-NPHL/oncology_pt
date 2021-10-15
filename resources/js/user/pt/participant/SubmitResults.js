@@ -62,14 +62,14 @@ class SubmitResults extends React.Component {
         this.notTestedReasonHandler = this.notTestedReasonHandler.bind(this);
 
         this.visualResultsHandler = this.visualResultsHandler.bind(this);
-        this.ptInterpretation = this.ptInterpretation.bind(this);
+
 
         this.onTesternameChangeHandler = this.onTesternameChangeHandler.bind(this);
-        this.isChecked = this.isChecked.bind(this);
 
     }
 
     componentDidMount() {
+
         (async () => {
             let edittableSubmission = null;
             let userDemographics = await FetchCurrentParticipantDemographics();
@@ -81,25 +81,18 @@ class SubmitResults extends React.Component {
             if (this.props.selectedElementHasSubmmisions) {
                 if (edittableSubmission['test_results'].length == 0) {
                     this.props.shipment.samples.map((sample) => {
-                        samples[sample.sample_id] = {
-                            "visual": { c: 0, v: 0, lt: 0 },
-                            "interpretation": null
-                        }
+                        samples[sample.sample_id] = { '16': null, '18': null, 'other': null, 'name': '' }
                     });
                 } else {
                     edittableSubmission['test_results'].map((sample) => {
-                        samples[sample.sample_id] = {
-                            "visual": { c: sample.control_line, v: sample.verification_line, lt: sample.longterm_line },
-                            "interpretation": sample.interpretation
-                        }
+                        samples[sample.sample_id] =
+                            { '16': sample['16'], '18': sample['18'], 'other': sample['other'], 'name': sample['name'] }
+
                     });
                 }
             } else {
                 this.props.shipment.samples.map((sample) => {
-                    samples[sample.sample_id] = {
-                        "visual": { c: 0, v: 0, lt: 0 },
-                        "interpretation": null
-                    }
+                    samples[sample.sample_id] = { '16': null, '18': null, 'other': null, 'name': '' }
                 });
             }
 
@@ -156,17 +149,17 @@ class SubmitResults extends React.Component {
 
     submitForm() {
         //check if results filled
-        if (this.state.isPtDone) {
-            for (const [key, value] of Object.entries(this.state.samples)) {
-                if (value['interpretation'] == null) {
-                    this.setState({
-                        message: "Fill in all the fields marked *"
-                    })
-                    $('#messageModal').modal('toggle');
-                    return;
-                }
-            }
-        }
+        // if (this.state.isPtDone) {
+        //     for (const [key, value] of Object.entries(this.state.samples)) {
+        //         if (value['interpretation'] == null) {
+        //             this.setState({
+        //                 message: "Fill in all the fields marked *"
+        //             })
+        //             $('#messageModal').modal('toggle');
+        //             return;
+        //         }
+        //     }
+        // }
 
         if (
             this.state.ptLotReceivedDate.length == 0 ||
@@ -229,27 +222,17 @@ class SubmitResults extends React.Component {
         }
     }
 
-    ptInterpretation(event, sample_id) {
-        console.log("sample_id");
-        console.log(sample_id);
-        let samples = this.state.samples;
-        let interpretValue = event.target.value;
-        let status = event.target.checked ? 1 : 0;
-
-        samples[sample_id]["interpretation"] = interpretValue;
-
-    }
-
     visualResultsHandler(event, sample_id) {
 
         let samples = this.state.samples;
         let visualValue = event.target.value;
-        let status = event.target.checked ? 1 : 0;
 
-        let results = samples[sample_id]["visual"]; //{ c: 0, v: 0, lt: 0 };
-        results[visualValue] = status;
-        samples[sample_id]["visual"] = results;
-
+        let results = samples[sample_id]; //{ '16': null, '18': null, 'other': null, 'name': '' }
+        results[event.target.getAttribute('data-id')] = visualValue;
+        samples[sample_id] = results;
+        this.setState({
+            samples: samples
+        })
     }
 
 
@@ -401,19 +384,9 @@ class SubmitResults extends React.Component {
         });
     }
 
-    isChecked(sample) {
-        try {
-            return this.props.selectedElementHasSubmmisions
-                &&
-                this.state.samples[sample.sample_id]["visual"]['c'] == 1
-                ? true : false
-        } catch (err) {
-            return false;
-        }
-
-    }
 
     render() {
+
         let samplesToDisplay = [];
         if (this.props.selectedElementHasSubmmisions) {
             samplesToDisplay = this.state.samples;
@@ -438,6 +411,7 @@ class SubmitResults extends React.Component {
         }
         let today = new Date().toLocaleDateString();
         let isPtDone = this.state.isPtDone;
+
         return (
 
             <>
@@ -710,126 +684,89 @@ class SubmitResults extends React.Component {
                         <div className="row ml-5 mr-5">
                             <div className="col-sm-12">
                                 <table>
-
-                                    <tr>
-                                        <td rowSpan="2">
-                                            <strong>PT Sample ID</strong>
-                                        </td>
-                                        <td colSpan="3">
-                                            <strong>Visual Results </strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>HR HPV 16</strong></td>
-                                        <td><strong>HR HPV 18-45</strong></td>
-                                        <td><strong>Others HR HPV</strong></td>
-                                    </tr>
-
-                                    {/*  PT - Long Term*/}
-
-                                    {this.props.shipment.samples.map((sample) => {
-
-                                        return <tr key={uuidv4()}>
-                                            <td>{sample.sample_name}</td>
-                                            <td >
-                                                <div className="form-check form-check-inline">
-                                                    <select className="custom-select"
-                                                        value={
-                                                            () => {
-                                                                if (
-                                                                    this.props.selectedElementHasSubmmisions
-                                                                    &&
-                                                                    Object.keys(this.state.samples).length !== 0
-                                                                ) {
-                                                                    if (this.state.samples[sample['16']] == 'Positive') {
-                                                                        return 'Positive'
-                                                                    } else if (this.state.samples[sample['16']] == 'Negative') {
-                                                                        return 'Negative'
-                                                                    }
-                                                                } else {
-                                                                    return ''
-                                                                }
-                                                            }
-
-                                                        }
-                                                        onChange={() => this.visualResultsHandler(event, sample.sample_id)}
-                                                        name={this.state.index + "long-term-radio"} id={this.state.index + "result_neg"} >
-                                                        <option hidden>--select--</option>
-                                                        <option>Positive</option>
-                                                        <option>Negative</option>
-                                                    </select>
-
-                                                </div>
+                                    <tbody>
+                                        <tr>
+                                            <td rowSpan="2">
+                                                <strong>PT Sample ID</strong>
                                             </td>
-                                            <td >
-                                                <div className="form-check form-check-inline">
-                                                    <select className="custom-select"
-                                                        value={
-                                                            () => {
-                                                                if (
-                                                                    this.props.selectedElementHasSubmmisions
-                                                                    &&
-                                                                    Object.keys(this.state.samples).length !== 0
-                                                                ) {
-                                                                    if (this.state.samples[sample['18']] == 'Positive') {
-                                                                        return 'Positive'
-                                                                    } else if (this.state.samples[sample['18']] == 'Negative') {
-                                                                        return 'Negative'
-                                                                    }
-                                                                } else {
-                                                                    return ''
-                                                                }
-                                                            }
-
-                                                        }
-                                                        onChange={() => this.visualResultsHandler(event, sample.sample_id)}
-                                                        name={this.state.index + "long-term-radio"} id={this.state.index + "result_neg"} >
-                                                        <option hidden>--select--</option>
-                                                        <option>Positive</option>
-                                                        <option>Negative</option>
-                                                    </select>
-
-                                                </div>
+                                            <td colSpan="3">
+                                                <strong>Visual Results </strong>
                                             </td>
-                                            <td >
-
-                                                <div className="form-check form-check-inline">
-                                                    <select className="custom-select"
-                                                        value={
-                                                            () => {
-                                                                if (
-                                                                    this.props.selectedElementHasSubmmisions
-                                                                    &&
-                                                                    Object.keys(this.state.samples).length !== 0
-                                                                ) {
-                                                                    if (this.state.samples[sample['other']] == 'Positive') {
-                                                                        return 'Positive'
-                                                                    } else if (this.state.samples[sample['other']] == 'Negative') {
-                                                                        return 'Negative'
-                                                                    }
-                                                                } else {
-                                                                    return ''
-                                                                }
-                                                            }
-
-                                                        }
-                                                        onChange={() => this.visualResultsHandler(event, sample.sample_id)}
-                                                        name={this.state.index + "long-term-radio"} id={this.state.index + "result_neg"} >
-                                                        <option hidden>--select--</option>
-                                                        <option>Positive</option>
-                                                        <option>Negative</option>
-                                                    </select>
-
-                                                </div>
-
-                                            </td>
-
                                         </tr>
-                                    })
-                                    }
+                                        <tr>
+                                            <td><strong>HR HPV 16</strong></td>
+                                            <td><strong>HR HPV 18-45</strong></td>
+                                            <td><strong>Others HR HPV</strong></td>
+                                        </tr>
 
-                                    {/*  End PT - Long Term */}
+                                        {/*  PT - Long Term*/}
 
+                                        {this.props.shipment.samples.map((sample) => {
+
+                                            return <tr key={uuidv4()}>
+                                                <td>{sample.sample_name}</td>
+                                                <td >
+                                                    <div className="form-check form-check-inline">
+                                                        <select className="custom-select"
+                                                            value={
+                                                                sample.sample_id in this.state.samples ?
+                                                                    this.state.samples[sample.sample_id]['16'] : ''
+                                                            }
+
+                                                            onChange={() => {
+                                                                this.visualResultsHandler(event, sample.sample_id)
+                                                            }
+
+                                                            }
+                                                            name={this.state.index + "long-term-radio"} data-id={16} >
+                                                            <option hidden>--select--</option>
+                                                            <option>Positive</option>
+                                                            <option>Negative</option>
+                                                        </select>
+
+                                                    </div>
+                                                </td>
+                                                <td >
+                                                    <div className="form-check form-check-inline">
+                                                        <select className="custom-select"
+                                                            value={
+                                                                sample.sample_id in this.state.samples ?
+                                                                    this.state.samples[sample.sample_id]['18'] : ''
+                                                            }
+                                                            onChange={() => this.visualResultsHandler(event, sample.sample_id)}
+                                                            name={this.state.index + "long-term-radio"} data-id={18} >
+                                                            <option hidden>--select--</option>
+                                                            <option>Positive</option>
+                                                            <option>Negative</option>
+                                                        </select>
+
+                                                    </div>
+                                                </td>
+                                                <td >
+
+                                                    <div className="form-check form-check-inline">
+                                                        <select className="custom-select"
+                                                            value={
+                                                                sample.sample_id in this.state.samples ?
+                                                                    this.state.samples[sample.sample_id]['other'] : ''
+                                                            }
+                                                            onChange={() => this.visualResultsHandler(event, sample.sample_id)}
+                                                            name={this.state.index + "long-term-radio"} data-id={'other'} >
+                                                            <option hidden>--select--</option>
+                                                            <option>Positive</option>
+                                                            <option>Negative</option>
+                                                        </select>
+
+                                                    </div>
+
+                                                </td>
+
+                                            </tr>
+                                        })
+                                        }
+
+                                        {/*  End PT - Long Term */}
+                                    </tbody>
                                 </table>
                             </div>
 
