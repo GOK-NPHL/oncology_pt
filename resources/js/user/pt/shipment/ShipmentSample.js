@@ -82,7 +82,6 @@ class ShipmentSample extends React.Component {
                         placeholder="please enter sample name" />
                 </td>
 
-
                 <td >
                     <div className="form-check form-check-inline">
                         <select className="custom-select"
