@@ -17,7 +17,9 @@ class CreatePtSamplesTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->string('reference_result');
+            $table->string('hpv_16');
+            $table->string('hpv_18');
+            $table->string('hpv_other');
             $table->unsignedBigInteger('ptshipment_id');
         });
     }

@@ -138,7 +138,9 @@ class PTShipmentController extends Controller
                 $ptSample = new PtSample();
 
                 $ptSample->name = $sample['name'];
-                $ptSample->reference_result = $sample['reference_result'];
+                $ptSample->hpv_16 = $sample['reference_result']['16'];
+                $ptSample->hpv_18 = $sample['reference_result']['18'];
+                $ptSample->hpv_other = $sample['reference_result']['other'];
                 $ptSample->ptshipment()->associate($shipment);
                 $ptSample->save();
             }

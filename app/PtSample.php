@@ -13,9 +13,10 @@ class PtSample extends Model
      */
     protected $fillable = [
         'name',
-        'reference_result',
+        'hpv_16',
+        'hpv_18',
+        'hpv_other',
         'ptshipment_id'
-
     ];
 
     public function ptshipment()
