@@ -58,18 +58,24 @@ class ShipmentSample extends React.Component {
             defaultHPV16 = 'Positive'
         } else if (this.state.result['16'] == 'Negative') {
             defaultHPV16 = 'Negative'
+        } else if (this.state.result['16'] == 'Invalid') {
+            defaultHPV16 = 'Invalid'
         }
 
         if (this.state.result['18'] == 'Positive') {
             defaultHPV18 = 'Positive'
         } else if (this.state.result['18'] == 'Negative') {
             defaultHPV18 = 'Negative'
+        }else if (this.state.result['18'] == 'Invalid') {
+            defaultHPV18 = 'Invalid'
         }
 
         if (this.state.result['other'] == 'Positive') {
             defaultHPVOther = 'Positive'
         } else if (this.state.result['other'] == 'Negative') {
             defaultHPVOther = 'Negative'
+        } else if (this.state.result['other'] == 'Invalid') {
+            defaultHPVOther = 'Invalid'
         }
 
         return (
@@ -92,6 +98,7 @@ class ShipmentSample extends React.Component {
                             <option hidden>--select--</option>
                             <option>Positive</option>
                             <option>Negative</option>
+                            <option>Invalid</option>
                         </select>
 
                     </div>
@@ -107,6 +114,7 @@ class ShipmentSample extends React.Component {
                             <option hidden>--select--</option>
                             <option>Positive</option>
                             <option>Negative</option>
+                            <option>Invalid</option>
                         </select>
 
                     </div>
@@ -122,6 +130,7 @@ class ShipmentSample extends React.Component {
                             <option hidden>--select--</option>
                             <option>Positive</option>
                             <option>Negative</option>
+                            <option>Invalid</option>
                         </select>
 
                     </div>

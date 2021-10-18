@@ -100,13 +100,6 @@ and
 php artisan db:seed
 ```
 
-We then set up a cron entry for period download of ODK submission files.
-add below entry to /etc/crontab file.
-
-```
-* * * * *       root    cd /var/www/ && /usr/local/bin/php artisan fetchodkdata > /var/log/cron.log 2>&1
-```
-
 finally, we compile our fron end resources for prodcution:
 
 ```

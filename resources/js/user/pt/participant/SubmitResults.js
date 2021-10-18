@@ -723,6 +723,7 @@ class SubmitResults extends React.Component {
                                                             <option hidden>--select--</option>
                                                             <option>Positive</option>
                                                             <option>Negative</option>
+                                                            <option>Invalid</option>
                                                         </select>
 
                                                     </div>
@@ -739,6 +740,7 @@ class SubmitResults extends React.Component {
                                                             <option hidden>--select--</option>
                                                             <option>Positive</option>
                                                             <option>Negative</option>
+                                                            <option>Invalid</option>
                                                         </select>
 
                                                     </div>
@@ -756,6 +758,7 @@ class SubmitResults extends React.Component {
                                                             <option hidden>--select--</option>
                                                             <option>Positive</option>
                                                             <option>Negative</option>
+                                                            <option>Invalid</option>
                                                         </select>
 
                                                     </div>
