@@ -137,7 +137,7 @@ class ListShipment extends React.Component {
                             );
                             this.updatedSearchItem(currElementsTableEl);
                         }}
-                        className="form-control" placeholder="search personel"></input>
+                        className="form-control" placeholder="search shipment"></input>
                 </div>
 
                 <table className="table table-striped table-sm  table-hover">
