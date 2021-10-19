@@ -79,9 +79,9 @@ class ReadinessQuestions extends React.Component {
                     <textarea
                         readOnly={!this.props.isUser}
                         className="form-control"
-                        onFocusOut={(event) => {
+                        onBlur={(event) => {
                             let key = readiness['question_id'];
-                            this.props.questionAnswerHandler(event)
+                            this.props.questionAnswerHandler(event);
                         }}
                         name={readiness['question_id']}
                         defaultValue={this.props.questionsAnswerMap[readiness['question_id']]}
