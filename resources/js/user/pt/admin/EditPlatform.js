@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { SaveLabPersonel, FetchParticipantList } from '../../../components/utils/Helpers';
 import { v4 as uuidv4 } from 'uuid';
-import PersonelForm from './PersonelForm';
+import PlatformForm from './PlatformForm';
 
 
 class EditPlatform extends React.Component {
@@ -20,7 +20,7 @@ class EditPlatform extends React.Component {
 
         return (
             <React.Fragment>
-                <PersonelForm />
+                <PlatformForm />
             </React.Fragment>
         );
     }

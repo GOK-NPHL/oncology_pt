@@ -29,7 +29,6 @@ class ListPlatform extends React.Component {
             this.setState({
                 data: response
             });
-            console.log(response);
         })();
 
     }
@@ -67,7 +66,6 @@ class ListPlatform extends React.Component {
         if (this.state.data.length > 0) {
 
             this.state.data.map((element, index) => {
-                console.log(element);
                 tableElem.push(<tr key={index}>
                     <th scope="row">{index + 1}</th>
                     <td>{element.name}</td>
@@ -122,7 +120,6 @@ class ListPlatform extends React.Component {
                 <div className="form-group mb-2">
                     <input type="text"
                         onChange={(event) => {
-                            console.log(this.state.allTableElements);
                             let currElementsTableEl = this.state.allTableElements.filter(elemnt =>
                                 elemnt['props']['children'][1]['props']['children'].toString().toLowerCase().trim().includes(event.target.value.trim().toLowerCase()) ||
                                 elemnt['props']['children'][2]['props']['children'].toLowerCase().trim().includes(event.target.value.trim().toLowerCase()) ||

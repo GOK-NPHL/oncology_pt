@@ -33,7 +33,7 @@ class PlatformForm extends React.Component {
             (async () => {
                 let editData = await FetchPlatformById(pathObject.params.platformId);
                 if (editData) {
-                    editData = editData[0];
+                    editData = editData;
                 }
 
                 if (editData.status == 500) {
@@ -43,7 +43,6 @@ class PlatformForm extends React.Component {
                     })
                     $('#addPlatformModal').modal('toggle');
                 } else {
-
                     this.setState({
                         id: editData.id,
                         platformName: editData.name,

@@ -37,11 +37,11 @@ class PlatformController extends Controller
 
         try {
             $platform = Platform::find($request->platform['id']);
-            $platform->institute_name = $request->platform['platform_name'];
-            $platform->is_active = $request->platform['is_active'];
+            $platform->name = $request->platform['platform_name'];
+            $platform->active = $request->platform['is_active'];
             $platform->save();
 
-            return response()->json(['Message' => 'Saved successfully'], 200);
+            return response()->json(['Message' => 'Updated successfully'], 200);
         } catch (Exception $ex) {
             return response()->json(['Message' => 'Could not update platform: ' . $ex->getMessage()], 500);
         }
