@@ -77,22 +77,12 @@ use Illuminate\Support\Facades\Gate;
                                     Configure
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{route('list-admin-user')}}">Oncology PT Managers</a>
+                                    <a class="dropdown-item" href="{{route('list-admin-user')}}">PT System Managers</a>
+                                    <a class="dropdown-item" href="{{route('list-lab')}}">PT Laboratories</a>
+                                    <a class="dropdown-item" href="{{route('list-personel')}}">PT Lab Personel</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="{{route('list-lab')}}">Oncology PT Laboratories</a>
+                                    <a class="dropdown-item" href="{{route('list-platforms')}}">Test Platforms</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="{{route('list-personel')}}">Oncology PT Lab Personel</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="{{route('list-platforms')}}">Platforms</a>
-                                    <!--    <a class="dropdown-item" href="#">Something else here</a> -->
-                                </div>
-                            </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Manage
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{route('list-readiness')}}">Readiness Checklists</a>
                                     <a class="dropdown-item" href="{{route('pt-shipment')}}">PT Shipment</a>
                                 </div>
