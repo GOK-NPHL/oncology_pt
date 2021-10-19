@@ -160,22 +160,25 @@ class Submission extends Controller
             $submissionModel->other_not_tested_reason = $submission["ptNotTestedOtherReason"];
             $submissionModel->pt_shipements_id = $submission["ptShipementId"];
             $submissionModel->platform_id = $submission["platformId"];
-            
+
             $submissionModel->save();
 
             DB::table('pt_submission_results')->where('ptsubmission_id', $submission['id'])->delete();
 
-            foreach ($submission["samples"] as $key => $val) {
+            if ($submission["isPTTested"]) {
+                foreach ($submission["samples"] as $key => $val) {
 
-                $ptLtResult = new PtSubmissionResult([
-                    "hpv_16" => $val["16"],
-                    "hpv_18" => $val["18"],
-                    "hpv_other" => $val["other"],
-                    "ptsubmission_id" =>  $submission['id'],
-                    "sample_id" => $key
-                ]);
-                $ptLtResult->save();
+                    $ptLtResult = new PtSubmissionResult([
+                        "hpv_16" => $val["16"],
+                        "hpv_18" => $val["18"],
+                        "hpv_other" => $val["other"],
+                        "ptsubmission_id" =>  $submission['id'],
+                        "sample_id" => $key
+                    ]);
+                    $ptLtResult->save();
+                }
             }
+
 
             return response()->json(['Message' => 'Updated successfully'], 200);
         } catch (Exception $ex) {

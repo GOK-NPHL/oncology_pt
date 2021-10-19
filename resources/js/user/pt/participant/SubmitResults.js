@@ -114,8 +114,8 @@ class SubmitResults extends React.Component {
                     isPtDone: edittableSubmission['data']['pt_tested'] == 1 ? true : false,
 
                     userDemographics: userDemographics,
-                    otherComments: edittableSubmission['data']['not_test_reason'] ? edittableSubmission['data']['not_test_reason'] : '',
-                    notTestedReason: edittableSubmission['data']['other_not_tested_reason'] ? edittableSubmission['data']['other_not_tested_reason'] : 'Issue with equipment breakdown',
+                    notTestedReason: edittableSubmission['data']['not_test_reason'] ? edittableSubmission['data']['not_test_reason'] : 'Issue with equipment breakdown',
+                    otherComments: edittableSubmission['data']['other_not_tested_reason'] ? edittableSubmission['data']['other_not_tested_reason'] : '',
                     pt_shipements_id: this.props.shipment.pt_shipements_id,
                     submissionId: edittableSubmission['data']['id'],
                     test_instructions: edittableSubmission['data']['test_instructions'],
