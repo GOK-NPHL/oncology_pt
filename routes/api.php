@@ -50,7 +50,7 @@ Route::get('/get_lab_personel/{id}', [ParticipantController::class, 'getLabPerso
 Route::post('/create_lab_personel', [ParticipantController::class, 'createLabPersonel'])->name('create_lab_personel')->middleware('auth:admin');
 Route::post('/edit_lab_personel', [ParticipantController::class, 'editPersonel'])->name('edit_lab_personel')->middleware('auth:admin');
 
-Route::get('/get_platforms', [PlatformController::class, 'getPlatforms'])->name('get_platforms')->middleware('auth:admin');
+Route::get('/get_platforms', [PlatformController::class, 'getPlatforms'])->name('get_platforms');
 Route::get('/get_platform/{id}', [PlatformController::class, 'getLabPlatformById'])->middleware('auth:admin');
 Route::post('/create_platform', [PlatformController::class, 'createPlatform'])->name('create_platform')->middleware('auth:admin');
 Route::post('/edit_platform', [PlatformController::class, 'editPlatform'])->name('edit_platform')->middleware('auth:admin');
