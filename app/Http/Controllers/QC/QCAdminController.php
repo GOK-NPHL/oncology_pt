@@ -72,4 +72,18 @@ class QCAdminController extends Controller
     {
         return view('user.system.admin.list_personel');
     }
+
+    public function addPlatform()
+    {
+        return view('user.system.admin.add_platform');
+    }
+    public function editPlatform()
+    {
+        return view('user.system.admin.edit_platform');
+    }
+
+    public function listPlatform()
+    {
+        return view('user.system.admin.list_platform');
+    }
 }

@@ -306,6 +306,30 @@ export async function FetchLabPersonelById(id) {
     }
 }
 
+export async function FetchPlatformById(id) {
+
+    try {
+        const response = await axios.get(`${settings.serverBaseApi}/get_platform/` + id);
+        const responseData = response.data;
+        return responseData;
+    } catch (err) {
+        // Handle Error Here
+        return err.response
+    }
+}
+
+export async function FetchPlatform() {
+
+    try {
+        const response = await axios.get(`${settings.serverBaseApi}/get_platforms`);
+        const responseData = response.data;
+        return responseData;
+    } catch (err) {
+        // Handle Error Here
+        return err.response
+    }
+}
+
 export async function SaveLabPersonel(personel) {
     try {
         const response = await axios({
@@ -323,6 +347,23 @@ export async function SaveLabPersonel(personel) {
     }
 }
 
+export async function SavePlatform(platform) {
+    try {
+        const response = await axios({
+            method: 'post',
+            url: `${settings.serverBaseApi}/create_platform`,
+            data: {
+                platform: platform,
+            }
+        });
+        return response;
+    } catch (err) {
+        // Handle Error Here
+        console.log(err);
+        return err.response
+    }
+}
+
 export async function UpdateLabPersonel(personel) {
     try {
         const response = await axios({
@@ -330,6 +371,23 @@ export async function UpdateLabPersonel(personel) {
             url: `${settings.serverBaseApi}/edit_lab_personel`,
             data: {
                 personel: personel,
+            }
+        });
+        return response;
+    } catch (err) {
+        // Handle Error Here
+        console.log(err);
+        return err.response
+    }
+}
+
+export async function UpdatePlatform(platform) {
+    try {
+        const response = await axios({
+            method: 'post',
+            url: `${settings.serverBaseApi}/edit_platform`,
+            data: {
+                platform: platform,
             }
         });
         return response;

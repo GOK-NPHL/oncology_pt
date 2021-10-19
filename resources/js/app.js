@@ -17,10 +17,13 @@ require('./user/pt/admin/AddLab');
 require('./user/pt/admin/EditLab');
 require('./user/pt/admin/AddPersonel');
 require('./user/pt/admin/EditPersonel');
+require('./user/pt/admin/AddPlatform');
+require('./user/pt/admin/EditPlatform');
 require('./user/pt/admin/AddUser');
 require('./user/pt/admin/EditUser');
 require('./user/pt/admin/ListLab');
 require('./user/pt/admin/ListPersonel');
+require('./user/pt/admin/ListPlatform');
 require('./user/pt/admin/ListUser');
 
 require('./user/pt/shipment/PtShipment');

@@ -82,7 +82,8 @@ use Illuminate\Support\Facades\Gate;
                                     <a class="dropdown-item" href="{{route('list-lab')}}">Oncology PT Laboratories</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{route('list-personel')}}">Oncology PT Lab Personel</a>
-
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{route('list-platforms')}}">Platforms</a>
                                     <!--    <a class="dropdown-item" href="#">Something else here</a> -->
                                 </div>
                             </li>

@@ -55,6 +55,10 @@ Route::get('add-personel', 'QC\QCAdminController@addPersonel')->name('add-person
 Route::get('list-personel', 'QC\QCAdminController@listPersonel')->name('list-personel');
 Route::get('edit-personel/{personelId}', [QCAdminController::class, 'editPersonel'])->name('edit-personel');
 
+Route::get('add-platform', 'QC\QCAdminController@addPlatform')->name('add-platform');
+Route::get('list-platforms', 'QC\QCAdminController@listPlatform')->name('list-platforms');
+Route::get('edit-platforms/{platformsId}', [QCAdminController::class, 'editPlatform'])->name('edit-platform');
+
 Route::get('add-lab', 'QC\QCAdminController@addLab')->name('add-lab');
 Route::get('edit-lab/{labId}', [QCAdminController::class, 'editLab'])->name('edit-lab');
 Route::get('list-lab', 'QC\QCAdminController@listLab')->name('list-lab');
