@@ -11,15 +11,13 @@ class SubmitResults extends React.Component {
         this.state = {
             message: '',
             ptLotReceivedDate: '',
-            ptReconstituionDate: '',
             kitExpiryDate: '',
             testJustification: 'Periodic testing as per the protocol',
             kitReceivedDate: '',
             kitLotNo: '',
-            nameOfTest: '',
+            nameOfTest: 'HPV',
             ptLotNumber: '',
             testingDate: '',
-            sampleType: 'DTS',
             labId: '',
             userId: '',
             ptNegativeIntepreation: '',
@@ -30,7 +28,7 @@ class SubmitResults extends React.Component {
 
             userDemographics: [],
             otherComments: '',
-            notTestedReason: 'Issue with sample',
+            notTestedReason: 'Issue with equipment breakdown',
             edittableSubmission: {},
             testerName: '',
             pt_shipements_id: '',
@@ -47,12 +45,9 @@ class SubmitResults extends React.Component {
         this.onKitLotHandler = this.onKitLotHandler.bind(this);
         this.onTestingDateHandler = this.onTestingDateHandler.bind(this);
         this.validateTestingAndRecivedDate = this.validateTestingAndRecivedDate.bind(this);
-        this.onReconstitutionDateHandler = this.onReconstitutionDateHandler.bind(this);
-        this.validateTestingAndReconstituionDate = this.validateTestingAndReconstituionDate.bind(this);
         this.validateTestingAndPTLotRecivedDate = this.validateTestingAndPTLotRecivedDate.bind(this);
         this.onPtLotNumberHandler = this.onPtLotNumberHandler.bind(this);
         this.onTestJustificationHandler = this.onTestJustificationHandler.bind(this);
-        this.onSampleTypeHandler = this.onSampleTypeHandler.bind(this);
         this.validateTestingDateAndCurrentDate = this.validateTestingDateAndCurrentDate.bind(this);
 
         this.submitForm = this.submitForm.bind(this);
@@ -100,7 +95,6 @@ class SubmitResults extends React.Component {
 
                 this.setState({
                     ptLotReceivedDate: edittableSubmission['data']['lot_date_received'],
-                    ptReconstituionDate: edittableSubmission['data']['sample_reconstituion_date'],
                     kitExpiryDate: edittableSubmission['data']['kit_expiry_date'],
                     testJustification: edittableSubmission['data']['test_justification'],
                     kitReceivedDate: edittableSubmission['data']['kit_date_received'],
@@ -109,7 +103,6 @@ class SubmitResults extends React.Component {
                     nameOfTest: edittableSubmission['data']['name_of_test'],
                     ptLotNumber: edittableSubmission['data']['pt_lot_no'],
                     testingDate: edittableSubmission['data']['testing_date'],
-                    sampleType: edittableSubmission['data']['sample_type'],
                     labId: edittableSubmission['data']['lab_id'],
                     userId: edittableSubmission['data']['user_id'],
 
@@ -117,7 +110,7 @@ class SubmitResults extends React.Component {
 
                     userDemographics: userDemographics,
                     otherComments: edittableSubmission['data']['not_test_reason'] ? edittableSubmission['data']['not_test_reason'] : '',
-                    notTestedReason: edittableSubmission['data']['other_not_tested_reason'] ? edittableSubmission['data']['other_not_tested_reason'] : 'Issue with sample',
+                    notTestedReason: edittableSubmission['data']['other_not_tested_reason'] ? edittableSubmission['data']['other_not_tested_reason'] : 'Issue with equipment breakdown',
                     pt_shipements_id: this.props.shipment.pt_shipements_id,
                     submissionId: edittableSubmission['data']['id'],
                     test_instructions: edittableSubmission['data']['test_instructions'],
@@ -170,7 +163,6 @@ class SubmitResults extends React.Component {
             this.state.nameOfTest.length == 0 ||
             this.state.testerName.length == 0 ||
             this.state.ptLotNumber.length == 0 ||
-            this.state.ptReconstituionDate.length == 0 ||
             this.state.testingDate.length == 0
             // ||
             // (this.state.ptNegativeIntepreation.length == 0 && this.state.isPtDone) ||
@@ -187,7 +179,6 @@ class SubmitResults extends React.Component {
             submission["kitExpiryDate"] = this.state.kitExpiryDate;
             submission["kitReceivedDate"] = this.state.kitReceivedDate;
             submission["kitLotNo"] = this.state.kitLotNo;
-            submission["ptReconstituionDate"] = this.state.ptReconstituionDate;
             submission["testingDate"] = this.state.testingDate;
             submission["ptLotNumber"] = this.state.ptLotNumber;
             submission["nameOfTest"] = this.state.nameOfTest;
@@ -198,7 +189,6 @@ class SubmitResults extends React.Component {
             submission["ptNotTestedOtherReason"] = !this.state.isPtDone ? this.state.otherComments : "";
             submission["labId"] = this.state.labId;
             submission["userId"] = this.state.userId;
-            submission["sampleType"] = this.state.sampleType;
             submission["ptShipementId"] = this.props.shipment.pt_shipements_id;
             submission["samples"] = this.state.samples;
             submission["id"] = this.state.submissionId;
@@ -259,11 +249,6 @@ class SubmitResults extends React.Component {
         });
     }
 
-    onSampleTypeHandler(event) {
-        this.setState({
-            sampleType: event.target.value
-        });
-    }
     onTestJustificationHandler(event) {
         this.setState({
             testJustification: event.target.value
@@ -296,23 +281,12 @@ class SubmitResults extends React.Component {
         this.validateTestingDateAndCurrentDate(event.target.value);
         this.validateTestingAndRecivedDate(event.target.value, this.state.kitReceivedDate);
         this.validateTestingAndPTLotRecivedDate(event.target.value, this.state.ptLotReceivedDate);
-        this.validateTestingAndReconstituionDate(this.state.ptReconstituionDate, event.target.value)
     }
 
     onNameOfTestHandler(event) {
         this.setState({
             nameOfTest: event.target.value
         });
-    }
-
-    onReconstitutionDateHandler(event) {
-
-        let isValid = this.validateTestingAndReconstituionDate(event.target.value, this.state.testingDate);
-        if (isValid) {
-            this.setState({
-                ptReconstituionDate: event.target.value
-            });
-        }
     }
 
     validateTestingAndRecivedDate(testingDate, receiveData) {
@@ -337,20 +311,6 @@ class SubmitResults extends React.Component {
             this.setState({
                 message: "Testing date cannot be greater than todays date",
                 testingDate: '',
-            })
-            $('#messageModal').modal('show');
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    validateTestingAndReconstituionDate(reconstituionDate, testingDate) {
-        if (testingDate < reconstituionDate && (reconstituionDate && testingDate)) {
-            this.setState({
-                message: "Kit testing Date cannot be greater than reconstitution date",
-                testingDate: '',
-                ptReconstituionDate: ''
             })
             $('#messageModal').modal('show');
             return false;
@@ -511,10 +471,10 @@ class SubmitResults extends React.Component {
                             </div>
                             <div style={boxLine} className="col-sm-3">
 
-                                <input value={this.state.nameOfTest} onChange={() => this.onNameOfTestHandler(event)} className="form-control" type="text" />
+                                <input readOnly value={this.state.nameOfTest} onChange={() => this.onNameOfTestHandler(event)} className="form-control" type="text" />
                             </div>
                             <div style={boxLine} className="col-sm-3">
-                                <p><strong>oncology Kit Lot No. *</strong></p>
+                                <p><strong>Xpert HPV  Lot No. *</strong></p>
                             </div>
                             <div style={boxLine} className="col-sm-3">
 
@@ -528,7 +488,7 @@ class SubmitResults extends React.Component {
                         {/* kit info */}
                         <div className="row">
                             <div style={boxLineLeft} className="col-sm-3">
-                                <p><strong>oncology Kit Date Received *</strong></p>
+                                <p><strong>Xpert HPV Date Received *</strong></p>
                             </div>
                             <div style={boxLine} className="col-sm-3">
 
@@ -536,7 +496,7 @@ class SubmitResults extends React.Component {
 
                             </div>
                             <div style={boxLine} className="col-sm-3">
-                                <p><strong>oncology Kit Expiry Date *</strong></p>
+                                <p><strong>Xpert HPV Expiry Date *</strong></p>
                             </div>
                             <div style={boxLine} className="col-sm-3">
 
@@ -557,7 +517,7 @@ class SubmitResults extends React.Component {
                         {/* PT Lot info */}
                         <div className="row">
                             <div style={boxLine} className="col-sm-3">
-                                <p><strong>PT Lot Number: *</strong></p>
+                                <p><strong>No. of Samples Received.: *</strong></p>
                             </div>
                             <div style={boxLine} className="col-sm-3">
 
@@ -565,7 +525,7 @@ class SubmitResults extends React.Component {
                             </div>
 
                             <div style={boxLineLeft} className="col-sm-3">
-                                <p><strong>PT Lot Date Received *</strong></p>
+                                <p><strong>PT Samples Date Received *</strong></p>
                             </div>
                             <div style={boxLine} className="col-sm-3">
                                 <input value={this.state.ptLotReceivedDate} onChange={() => this.onPtLotReceiceDateHandler(event)} className="form-control" type="date" />
@@ -574,13 +534,7 @@ class SubmitResults extends React.Component {
                         </div>
 
                         <div className="row">
-                            <div style={boxLine} className="col-sm-3">
-                                <p><strong>Date PT Samples Reconstituted:</strong></p>
-                            </div>
-                            <div style={boxLine} className="col-sm-3">
-                                <input value={this.state.ptReconstituionDate} onChange={() => this.onReconstitutionDateHandler(event)} className="form-control" type="date" />
-                            </div>
-
+                            
                             <div style={boxLine} className="col-sm-3">
                                 <p><strong>Tester name: *</strong></p>
                             </div>
@@ -607,18 +561,6 @@ class SubmitResults extends React.Component {
                                     <option selected>Periodic testing as per the protocol</option>
                                     <option>New kit lot/batch</option>
                                     <option>Change in environmental conditions</option>
-                                </select>
-                            </div>
-                            {/* sample type */}
-                            <div style={boxLine} className="col-sm-3">
-                                <p><strong>Sample type:</strong></p>
-                            </div>
-                            <div style={boxLine} className="col-sm-3">
-                                <select
-                                    value={this.state.sampleType} onChange={() => this.onSampleTypeHandler(event)}
-                                    className="custom-select" aria-label="Default select example">
-                                    <option selected>DTS</option>
-                                    <option>Plasma</option>
                                 </select>
                             </div>
 
@@ -665,7 +607,7 @@ class SubmitResults extends React.Component {
                             <div className="form-group" >
                                 <label htmlFor="exampleFormControlSelect1">Pick a reason</label>
                                 <select value={this.state.notTestedReason} onChange={() => this.notTestedReasonHandler(event)} className="form-control" id="exampleFormControlSelect1">
-                                    <option selected="selected">Issue with sample</option>
+                                    <option selected="selected">Issue with equipment breakdown</option>
                                     <option>Issue with oncology kit lot</option>
                                     <option>Other</option>
                                 </select>

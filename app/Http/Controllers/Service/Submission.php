@@ -41,8 +41,6 @@ class Submission extends Controller
                 "pt_lot_no" => $submission["ptLotNumber"],
                 "lab_id" => $submission["labId"],
                 "user_id" => $submission["userId"],
-                "sample_reconstituion_date" => $submission["ptReconstituionDate"],
-                "sample_type" => $submission["sampleType"],
                 "tester_name" => $submission["testerName"],
                 "test_justification" => $submission["testJustification"],
                 "pt_tested" => $submission["isPTTested"],
@@ -102,9 +100,7 @@ class Submission extends Controller
                 'ptsubmissions.kit_expiry_date',
                 'ptsubmissions.pt_lot_no',
                 'ptsubmissions.lot_date_received',
-                'ptsubmissions.sample_reconstituion_date',
                 'ptsubmissions.user_id',
-                'ptsubmissions.sample_type',
                 'ptsubmissions.tester_name',
                 'ptsubmissions.test_justification',
                 'ptsubmissions.pt_tested',
@@ -155,8 +151,6 @@ class Submission extends Controller
             $submissionModel->pt_lot_no = $submission["ptLotNumber"];
             $submissionModel->lab_id = $submission["labId"];
             $submissionModel->user_id = $submission["userId"];
-            $submissionModel->sample_reconstituion_date = $submission["ptReconstituionDate"];
-            $submissionModel->sample_type = $submission["sampleType"];
             $submissionModel->tester_name = $submission["testerName"];
             $submissionModel->test_justification = $submission["testJustification"];
             $submissionModel->pt_tested = $submission["isPTTested"];

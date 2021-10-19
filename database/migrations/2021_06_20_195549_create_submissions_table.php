@@ -26,10 +26,8 @@ class CreateSubmissionsTable extends Migration
 
             $table->string("pt_lot_no");
             $table->date("lot_date_received");
-            $table->date("sample_reconstituion_date");
             $table->integer("lab_id");
             $table->integer("user_id");
-            $table->string("sample_type");
             $table->string("test_justification");
 
             $table->integer("pt_tested");

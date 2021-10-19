@@ -16,14 +16,12 @@ class ptsubmission extends Model
         "pt_shipements_id",
         "name_of_test",
         "pt_lot_no",
-        "sample_reconstituion_date",
         "test_justification",
         "pt_tested",
         "not_test_reason",
         "other_not_tested_reason",
         "lab_id",
         "user_id",
-        "sample_type",
         "tester_name"
     ];
 }
