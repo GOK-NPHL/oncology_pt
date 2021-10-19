@@ -1,5 +1,5 @@
 import React from 'react';
-import { SaveSubmission, UpdateSubmission, FetchSubmission, FetchCurrentParticipantDemographics } from '../../../components/utils/Helpers';
+import { SaveSubmission, UpdateSubmission, FetchSubmission, FetchCurrentParticipantDemographics, FetchPlatform } from '../../../components/utils/Helpers';
 import './Results.css';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -35,6 +35,8 @@ class SubmitResults extends React.Component {
             samples: {},
             submissionId: '',
             test_instructions: '',
+            platformId: '',
+            platforms: [],
             endDate: Date.parse('1970-01-01')
         }
 
@@ -58,14 +60,17 @@ class SubmitResults extends React.Component {
 
         this.visualResultsHandler = this.visualResultsHandler.bind(this);
 
-
         this.onTesternameChangeHandler = this.onTesternameChangeHandler.bind(this);
+
+        this.onTestPlatformHandler = this.onTestPlatformHandler.bind(this);
 
     }
 
     componentDidMount() {
 
         (async () => {
+
+            let platforms = await FetchPlatform();
             let edittableSubmission = null;
             let userDemographics = await FetchCurrentParticipantDemographics();
             if (this.props.selectedElementHasSubmmisions) {
@@ -105,7 +110,7 @@ class SubmitResults extends React.Component {
                     testingDate: edittableSubmission['data']['testing_date'],
                     labId: edittableSubmission['data']['lab_id'],
                     userId: edittableSubmission['data']['user_id'],
-
+                    platformId: edittableSubmission['data']['platform_id'],
                     isPtDone: edittableSubmission['data']['pt_tested'] == 1 ? true : false,
 
                     userDemographics: userDemographics,
@@ -115,7 +120,8 @@ class SubmitResults extends React.Component {
                     submissionId: edittableSubmission['data']['id'],
                     test_instructions: edittableSubmission['data']['test_instructions'],
                     samples: samples,
-                    endDate: this.props.shipment.end_date
+                    endDate: this.props.shipment.end_date,
+                    platforms: platforms
                 });
 
             } else {
@@ -127,7 +133,8 @@ class SubmitResults extends React.Component {
                     edittableSubmission: edittableSubmission,
                     test_instructions: this.props.shipment.test_instructions,
                     samples: samples,
-                    endDate: this.props.shipment.end_date
+                    endDate: this.props.shipment.end_date,
+                    platforms: platforms
                 });
 
             }
@@ -163,7 +170,9 @@ class SubmitResults extends React.Component {
             this.state.nameOfTest.length == 0 ||
             this.state.testerName.length == 0 ||
             this.state.ptLotNumber.length == 0 ||
-            this.state.testingDate.length == 0
+            this.state.testingDate.length == 0 ||
+            this.state.platformId.length == 0
+
             // ||
             // (this.state.ptNegativeIntepreation.length == 0 && this.state.isPtDone) ||
             // (this.state.ptRecentIntepreation.length == 0 && this.state.isPtDone) ||
@@ -192,6 +201,7 @@ class SubmitResults extends React.Component {
             submission["ptShipementId"] = this.props.shipment.pt_shipements_id;
             submission["samples"] = this.state.samples;
             submission["id"] = this.state.submissionId;
+            submission["platformId"] = this.state.platformId;
 
 
             (async () => {
@@ -252,6 +262,12 @@ class SubmitResults extends React.Component {
     onTestJustificationHandler(event) {
         this.setState({
             testJustification: event.target.value
+        });
+    }
+
+    onTestPlatformHandler(event) {
+        this.setState({
+            platformId: event.target.value
         });
     }
 
@@ -534,7 +550,7 @@ class SubmitResults extends React.Component {
                         </div>
 
                         <div className="row">
-                            
+
                             <div style={boxLine} className="col-sm-3">
                                 <p><strong>Tester name: *</strong></p>
                             </div>
@@ -542,15 +558,7 @@ class SubmitResults extends React.Component {
                                 <input value={this.state.testerName} onChange={() => this.onTesternameChangeHandler(event)} className="form-control" type="text" />
                             </div>
 
-                        </div>
-                        {/* end  PT Lot info  */}
-                        <hr />
-                    </div>
 
-
-                    <div className="col-sm-12  pl-4 pr-4">
-                        {/* Test justification */}
-                        <div className="row">
                             <div style={boxLine} className="col-sm-3">
                                 <p><strong>Jutification for PT testing: *</strong></p>
                             </div>
@@ -565,7 +573,35 @@ class SubmitResults extends React.Component {
                             </div>
 
                         </div>
-                        {/* End Test justification */}
+                        {/* end  PT Lot info  */}
+                        <hr />
+                    </div>
+
+
+                    <div className="col-sm-12  pl-4 pr-4">
+                        {/* Test platform */}
+                        <div className="row">
+
+                            <div style={boxLine} className="col-sm-3">
+                                <p><strong>Test Platform: *</strong></p>
+                            </div>
+                            <div style={boxLine} className="col-sm-3">
+                                <select
+                                    value={this.state.platformId} onChange={() => this.onTestPlatformHandler(event)}
+                                    className="custom-select" aria-label="Default select example">
+
+                                    <option hidden>--platform--</option>
+
+                                    {this.state.platforms.map(
+                                        (platform) => {
+                                            return <option key={uuidv4()} value={platform.id}>{platform.name}</option>
+                                        }
+                                    )}
+
+                                </select>
+                            </div>
+                        </div>
+                        {/* End Test platform */}
 
                         <hr />
                     </div>

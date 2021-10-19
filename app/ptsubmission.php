@@ -22,6 +22,7 @@ class ptsubmission extends Model
         "other_not_tested_reason",
         "lab_id",
         "user_id",
-        "tester_name"
+        "tester_name",
+        "platform_id"
     ];
 }

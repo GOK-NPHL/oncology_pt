@@ -46,7 +46,8 @@ class Submission extends Controller
                 "pt_tested" => $submission["isPTTested"],
                 "not_test_reason" => $submission["ptNotTestedReason"],
                 "other_not_tested_reason" => $submission["ptNotTestedOtherReason"],
-                "pt_shipements_id" => $submission["ptShipementId"]
+                "pt_shipements_id" => $submission["ptShipementId"],
+                "platform_id" => $submission["platformId"]
 
             ]);
 
@@ -106,6 +107,7 @@ class Submission extends Controller
                 'ptsubmissions.pt_tested',
                 'ptsubmissions.not_test_reason',
                 'ptsubmissions.other_not_tested_reason',
+                'ptsubmissions.platform_id',
                 'laboratories.email',
                 'ptsubmissions.lab_id',
                 'laboratories.lab_name',
@@ -157,7 +159,8 @@ class Submission extends Controller
             $submissionModel->not_test_reason = $submission["ptNotTestedReason"];
             $submissionModel->other_not_tested_reason = $submission["ptNotTestedOtherReason"];
             $submissionModel->pt_shipements_id = $submission["ptShipementId"];
-
+            $submissionModel->platform_id = $submission["platformId"];
+            
             $submissionModel->save();
 
             DB::table('pt_submission_results')->where('ptsubmission_id', $submission['id'])->delete();
