@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { v4 as uuidv4 } from 'uuid';
 import Pagination from "react-js-pagination";
-import { FetchShipmentResponse } from '../../../components/utils/Helpers';
+import { FetchShipmentResponses } from '../../../components/utils/Helpers';
 import { matchPath } from "react-router";
 
 class ListShipmentResponse extends React.Component {
@@ -34,7 +34,7 @@ class ListShipmentResponse extends React.Component {
         if (pathObject) {
             (async () => {
 
-                let response = await FetchShipmentResponse(pathObject.params.shipmentId);
+                let response = await FetchShipmentResponses(pathObject.params.shipmentId);
 
                 if (response.status == 500) {
                     this.setState({
@@ -102,7 +102,7 @@ class ListShipmentResponse extends React.Component {
                             {
                                 <a
                                     onClick={() => {
-                                        window.location.assign('/get-pt-response-form/' + element.ptsubmission_id)
+                                        window.location.assign('/get-shipment-response-form/' + element.ptsubmission_id)
                                     }}
                                     data-toggle="tooltip" data-placement="top" title="View responses"
                                     className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
@@ -122,8 +122,15 @@ class ListShipmentResponse extends React.Component {
                     currElementsTableEl: tableElem
                 })
             }
+        } else {
+            tableElem.push(<tr key={1}>
+                <th scope="row">{1}</th>
+                <td colSpan={7}>No submissions done</td>
+            </tr>)
 
         }
+
+
 
         let pageContent = <div id='user_table' className='row'>
             <div className="col-sm-12 mb-3 mt-3">
@@ -133,14 +140,13 @@ class ListShipmentResponse extends React.Component {
                     onClick={() => {
                         window.location.assign('/pt-shipment')
                     }}>
-                    back
+                    ← back
                 </button>
             </div>
             <div className='col-sm-12 col-md-12'>
                 <div className="form-group mb-2">
                     <input type="text"
                         onChange={(event) => {
-                            console.log(this.state.allTableElements);
                             let currElementsTableEl = this.state.allTableElements.filter(elemnt =>
                                 elemnt['props']['children'][1]['props']['children'].toString().toLowerCase().trim().includes(event.target.value.trim().toLowerCase()) ||
                                 elemnt['props']['children'][2]['props']['children'].toLowerCase().trim().includes(event.target.value.trim().toLowerCase()) ||

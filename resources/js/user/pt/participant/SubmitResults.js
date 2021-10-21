@@ -69,10 +69,9 @@ class SubmitResults extends React.Component {
     componentDidMount() {
 
         (async () => {
-
             let platforms = await FetchPlatform();
             let edittableSubmission = null;
-            let userDemographics = await FetchCurrentParticipantDemographics();
+            let userDemographics = await FetchCurrentParticipantDemographics(this.props.shipment.user_id);
             if (this.props.selectedElementHasSubmmisions) {
                 edittableSubmission = await FetchSubmission(this.props.shipment.submission_id);
             }
@@ -101,7 +100,7 @@ class SubmitResults extends React.Component {
                 this.setState({
                     ptLotReceivedDate: edittableSubmission['data']['lot_date_received'],
                     kitExpiryDate: edittableSubmission['data']['kit_expiry_date'],
-                    testJustification: edittableSubmission['data']['test_justification'],
+                    testJustification: edittableSubmission['data']['test_justification'] == null ? '' : edittableSubmission['data']['test_justification'],
                     kitReceivedDate: edittableSubmission['data']['kit_date_received'],
                     kitLotNo: edittableSubmission['data']['kit_lot_no'],
                     testerName: edittableSubmission['data']['tester_name'],
@@ -110,7 +109,7 @@ class SubmitResults extends React.Component {
                     testingDate: edittableSubmission['data']['testing_date'],
                     labId: edittableSubmission['data']['lab_id'],
                     userId: edittableSubmission['data']['user_id'],
-                    platformId: edittableSubmission['data']['platform_id'],
+                    platformId: edittableSubmission['data']['platform_id'] == null ? '' : edittableSubmission['data']['platform_id'],
                     isPtDone: edittableSubmission['data']['pt_tested'] == 1 ? true : false,
 
                     userDemographics: userDemographics,
@@ -118,7 +117,7 @@ class SubmitResults extends React.Component {
                     otherComments: edittableSubmission['data']['other_not_tested_reason'] ? edittableSubmission['data']['other_not_tested_reason'] : '',
                     pt_shipements_id: this.props.shipment.pt_shipements_id,
                     submissionId: edittableSubmission['data']['id'],
-                    test_instructions: edittableSubmission['data']['test_instructions'],
+                    test_instructions: edittableSubmission['data']['test_instructions'] == null ? '' : edittableSubmission['data']['test_instructions'],
                     samples: samples,
                     endDate: this.props.shipment.end_date,
                     platforms: platforms
@@ -395,7 +394,7 @@ class SubmitResults extends React.Component {
                 <div className="row">
 
                     <div className="col-sm-12 float-left">
-                        <h1>
+                        <h1 className="float-left">
                             Oncology PT Submission form
                             {
                                 Date.parse(this.state.endDate) > new Date() ?
@@ -407,13 +406,26 @@ class SubmitResults extends React.Component {
                                     ''
                             }
                         </h1>
+
+                        <button style={{ "color": "white" }} type="button"
+                            className="btn btn-success float-right"
+                            onClick={() => {
+                                window.location.assign('/get-shipment-responses/' + this.props.shipment.id)
+                            }}>
+                            ← back
+                        </button>
+
+                        <br />
                         <hr />
                     </div>
                     <div className="col-sm-12 float-left">
-                        {new Date() > Date.parse(this.state.endDate) ?
-                            <h3 style={{ "color": "red" }} className="col-sm-12">Past Due date. Submission diabled</h3>
-                            :
-                            ''}
+
+                        {this.props.isAdmin ? '' :
+                            new Date() > Date.parse(this.state.endDate) ?
+                                <h3 style={{ "color": "red" }} className="col-sm-12">Past Due date. Submission diabled</h3>
+                                :
+                                ''
+                        }
                     </div>
 
                     <div className="col-sm-12 pl-4 pr-4">
@@ -621,11 +633,13 @@ class SubmitResults extends React.Component {
                                 className="form-check-input"
                                 checked={isPtDone ? false : true}
                                 onChange={() => {
-                                    $("#pt-test-results").toggle();
-                                    $("#test-not-done-section").toggle();
-                                    this.setState({
-                                        isPtDone: !this.state.isPtDone
-                                    })
+                                    if (!this.props.isAdmin) {
+                                        $("#pt-test-results").toggle();
+                                        $("#test-not-done-section").toggle();
+                                        this.setState({
+                                            isPtDone: !this.state.isPtDone
+                                        })
+                                    }
                                 }}
                                 type="checkbox"
                                 value="" id="ptTestDone" />
@@ -759,14 +773,18 @@ class SubmitResults extends React.Component {
 
                     </div>
                     <div className="d-flex w-100 justify-content-center">
-
-                        {Date.parse(this.state.endDate) > new Date() && this.props.shipment.readiness_approval_id != null ?
-                            <button type="button " onClick={() => this.submitForm()} className="btn btn-info float-left mx-2">Submit</button>
-                            : ''
+                        {this.props.isAdmin ? '' :
+                            <>
+                                {Date.parse(this.state.endDate) > new Date() && this.props.shipment.readiness_approval_id != null ?
+                                    <button type="button " onClick={() => this.submitForm()} className="btn btn-info float-left mx-2">Submit</button>
+                                    : ''
+                                }
+                                <button type="button" onClick={() => {
+                                    this.props.toggleView('list');
+                                }} className="btn btn-danger float-left mx-2">Exit</button>
+                            </>
                         }
-                        <button type="button" onClick={() => {
-                            this.props.toggleView('list');
-                        }} className="btn btn-danger float-left mx-2">Exit</button>
+
                     </div>
                 </div>
 

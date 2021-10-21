@@ -234,8 +234,20 @@ class PTShipmentController extends Controller
         }
     }
 
+
     public function getUserSamples()
     {
+        return $this->geSamples();
+    }
+
+    public function getUserSampleResponseResult(Request $request)
+    {
+        return $this->geSamples($request->id);
+    }
+
+    private function geSamples($submission_id = null)
+    {
+
         $user = Auth::user();
 
         try {
@@ -251,17 +263,29 @@ class PTShipmentController extends Controller
                 "pt_samples.id as sample_id",
                 "pt_samples.name as sample_name",
                 "ptsubmissions.id as submission_id",
+                "users.id as user_id",
                 DB::raw("1 as is_readiness_answered"),
                 DB::raw("null as readiness_id"),
                 DB::raw("1 as readiness_approval_id")
 
-            )
-                ->leftJoin('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id')
-                ->join('laboratory_pt_shipement', 'laboratory_pt_shipement.pt_shipement_id', '=', 'pt_shipements.id')
+            );
+
+            if ($submission_id == null) {
+                $shipments = $shipments->leftJoin('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id');
+            } else {
+                $shipments = $shipments->join('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id');
+            }
+
+            $shipments = $shipments->join('laboratory_pt_shipement', 'laboratory_pt_shipement.pt_shipement_id', '=', 'pt_shipements.id')
                 ->join('pt_samples', 'pt_samples.ptshipment_id', '=', 'pt_shipements.id')
                 ->join('laboratories', 'laboratory_pt_shipement.laboratory_id', '=', 'laboratories.id')
-                ->join('users', 'users.laboratory_id', '=', 'laboratories.id')
-                ->where('users.id', $user->id);
+                ->join('users', 'users.laboratory_id', '=', 'laboratories.id');
+
+            if ($submission_id == null) {
+                $shipments = $shipments->where('users.id', $user->id);
+            } else {
+                $shipments = $shipments->where('ptsubmissions.id', $submission_id);
+            }
 
             $shipments2 = PtShipement::select( //when using readiness
                 "pt_shipements.id",
@@ -276,20 +300,31 @@ class PTShipmentController extends Controller
                 "ptsubmissions.id as submission_id",
                 "readiness_answers.id as is_readiness_answered", //check if readiness for this shipment id filled
                 "pt_shipements.readiness_id as readiness_id",
-                "readiness_approvals.id as readiness_approval_id"
+                "readiness_approvals.id as readiness_approval_id",
+                "users.id as user_id",
+            );
 
-            )
-                ->leftJoin('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id')
-                ->join('laboratory_readiness', 'laboratory_readiness.readiness_id', '=', 'pt_shipements.readiness_id')
+            if ($submission_id == null) {
+                $shipments2 = $shipments2->leftJoin('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id');
+            } else {
+                $shipments2 = $shipments2->join('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id');
+            }
+
+            $shipments2 = $shipments2->join('laboratory_readiness', 'laboratory_readiness.readiness_id', '=', 'pt_shipements.readiness_id')
                 ->leftJoin('readiness_answers',  'laboratory_readiness.readiness_id', '=',  'readiness_answers.readiness_id')
                 ->leftJoin('readiness_approvals', 'readiness_answers.laboratory_id', '=',  'readiness_approvals.lab_id')
                 ->join('pt_samples', 'pt_samples.ptshipment_id', '=', 'pt_shipements.id')
                 ->join('laboratories', 'laboratory_readiness.laboratory_id', '=', 'laboratories.id')
-                ->join('users', 'users.laboratory_id', '=', 'laboratories.id')
+                ->join('users', 'users.laboratory_id', '=', 'laboratories.id');
 
-                ->where('users.id', $user->id)
+            if ($submission_id == null) {
+                $shipments2 = $shipments2->where('users.id', $user->id);
+            } else {
+                $shipments2 = $shipments2->where('ptsubmissions.id', $submission_id);
+            }
+
+            $shipments2 = $shipments2
                 ->union($shipments)
-                // ->orderBy('pt_shipements.end_date')
                 ->get();
 
             $payload = [];
@@ -297,9 +332,6 @@ class PTShipmentController extends Controller
 
             foreach ($shipments2 as $lab) {
 
-                if ($lab->round_name == "round 20") {
-                    // Log::info($lab);
-                }
                 if (array_key_exists($lab->id, $payload)) {
                     if (!array_key_exists($lab->sample_id, $sampleIds)) {
                         $payload[$lab->id]['samples'][] = ['sample_name' => $lab->sample_name, 'sample_id' => $lab->sample_id];
@@ -324,6 +356,8 @@ class PTShipmentController extends Controller
                         $payload[$lab->id]['is_readiness_answered'] = $lab->is_readiness_answered;
                         $payload[$lab->id]['readiness_id'] = $lab->readiness_id;
                         $payload[$lab->id]['readiness_approval_id'] = $lab->readiness_approval_id;
+                        $payload[$lab->id]['user_id'] = $lab->user_id;
+                        
                     }
                 }
             }
@@ -335,7 +369,7 @@ class PTShipmentController extends Controller
         }
     }
 
-    public function getShipmentResponse(Request $request)
+    public function getShipmentResponsesById(Request $request)
     {
         $user = Auth::user();
         try {

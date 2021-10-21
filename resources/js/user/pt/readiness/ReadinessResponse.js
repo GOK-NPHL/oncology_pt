@@ -153,7 +153,7 @@ class ReadinessResponse extends React.Component {
                     onClick={() => {
                         window.location.assign('/list-readiness')
                     }}>
-                    back
+                    ← back
                 </button>
             </div>
             <div className='col-sm-12 col-md-12'>

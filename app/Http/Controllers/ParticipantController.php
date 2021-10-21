@@ -118,7 +118,6 @@ class ParticipantController extends Controller
         } catch (Exception $ex) {
             return response()->json(['Message' => 'Could not update lab personel: ' . $ex->getMessage()], 500);
         }
-
     }
 
     public function getLabPersonel(Request $request)
@@ -172,7 +171,22 @@ class ParticipantController extends Controller
     public function getParticipantDemographics(Request $request)
     {
         try {
-            $user = Auth::user();
+
+            $userId = null;
+            try {
+                if ($request->id) {
+                    Log::info("one");
+                    $userId = $request->id;
+                } else {
+                    Log::info("tow");
+                    $user = Auth::user();
+                    $userId = $user->id;
+                }
+            } catch (Exception $ex) {
+            }
+
+            Log::info($userId);
+
             $usersDemo = User::select(
                 'users.id as user_id',
                 'users.name',
@@ -185,11 +199,11 @@ class ParticipantController extends Controller
                 'laboratories.email',
 
             )->join('laboratories', 'laboratories.id', '=', 'users.laboratory_id')
-                ->where('users.id', '=', $user->id)
+                ->where('users.id', '=', $userId)
                 ->get();
             return $usersDemo;
         } catch (Exception $ex) {
-            return response()->json(['Message' => 'Could fetch users: ' . $ex->getMessage()], 500);
+            return response()->json(['Message' => 'Could not fetch users: ' . $ex->getMessage()], 500);
         }
     }
 

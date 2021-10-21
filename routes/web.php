@@ -76,4 +76,4 @@ Route::get('get-admin-readiness-form/{readinessId}/{labId}', [QCParticipantContr
 Route::get('get-readiness-response/{readinessId}', [PTAdminController::class, 'getReadinessResponse'])->name('get-readiness-response');
 
 Route::get('get-shipment-responses/{shipmentId}', [PTAdminController::class, 'getShipmentResponse'])->name('get-shipment-response');
-
+Route::get('get-shipment-response-form/{resultSubmissionId}', [PTAdminController::class, 'getShipmentResponseForm']);

@@ -29,10 +29,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-Route::post('/save_submission', [Submission::class, 'createSubmission']);
-Route::get('/get_submissions', [Submission::class, 'getSubmissions']);
+Route::post('/save_submission', [Submission::class, 'createSubmission'])->middleware('auth');
+Route::get('/get_submissions', [Submission::class, 'getSubmissions'])->middleware('auth');
 Route::get('/get_submission_by_id/{id}', [Submission::class, 'getSubmissionById']);
-Route::post('/update_submission', [Submission::class, 'updateSubmission']);
+Route::post('/update_submission', [Submission::class, 'updateSubmission'])->middleware('auth');
 
 
 Route::get('/get_admin_users', [QCAdminUsersController::class, 'getAdminUsers']);
@@ -71,7 +71,7 @@ Route::get('/get_shipment_by_id/{id}', [PTShipmentController::class, 'getShipmen
 Route::get('/get_user_samples', [PTShipmentController::class, 'getUserSamples'])->middleware('auth');
 Route::get('/get_counties', [CommonsController::class, 'getCounties']);
 
-Route::get('/get_participant_demographics', [ParticipantController::class, 'getParticipantDemographics']);
+Route::get('/get_participant_demographics/{id}', [ParticipantController::class, 'getParticipantDemographics']);
 Route::post('/own_bio_update', [ParticipantController::class, 'editOwnPersonalBio'])->name('own_bio_update')->middleware('auth');
 
 Route::get('/get_readiness_survey', [ReadinessController::class, 'getReadinessSurvey'])->middleware('auth');
@@ -82,5 +82,6 @@ Route::get('/get_readiness_response/{id}', [ReadinessController::class, 'getRead
 
 Route::post('/save_survey_answers', [ReadinessController::class, 'saveSurveyAnswers']);
 
-Route::get('/get_shipment_response/{id}', [PTShipmentController::class, 'getShipmentResponse'])->middleware('auth:admin');
+Route::get('/get_shipment_responses/{id}', [PTShipmentController::class, 'getShipmentResponsesById'])->middleware('auth:admin');
 
+Route::get('/get_sample_response_result/{id}', [PTShipmentController::class, 'getUserSampleResponseResult'])->middleware('auth:admin');

@@ -28,6 +28,7 @@ require('./user/pt/admin/ListUser');
 
 require('./user/pt/shipment/PtShipment');
 require('./user/pt/shipment/ListShipmentResponse');
+require('./user/pt/shipment/ShipmentResponseForm');
 require('./user/pt/readiness/AddReadiness');
 require('./user/pt/readiness/EditReadiness');
 require('./user/pt/readiness/ListReadiness');

@@ -52,4 +52,9 @@ class PTAdminController extends Controller
     {
         return view('user.pt.shipment.pt_responses_list');
     }
+
+    public function getShipmentResponseForm()
+    {
+        return view('user.pt.shipment.pt_response_form');
+    }
 }

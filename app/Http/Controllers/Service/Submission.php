@@ -23,7 +23,7 @@ class Submission extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:sanctum');
+        // $this->middleware('auth:sanctum');
     }
 
     public function createSubmission(Request $request)
@@ -116,7 +116,7 @@ class Submission extends Controller
 
             )->join('laboratories', 'laboratories.id', '=', 'ptsubmissions.lab_id')
                 ->join('pt_shipements', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id')
-                ->where('ptsubmissions.lab_id', '=', $user->laboratory_id)
+                // ->where('ptsubmissions.lab_id', '=', $user->laboratory_id)
                 ->where('ptsubmissions.id', '=', $request->id)
                 ->get();
 
