@@ -81,3 +81,6 @@ Route::get('/get_readiness_survey_by_id_and_labid/{id}/{labId}', [ReadinessContr
 Route::get('/get_readiness_response/{id}', [ReadinessController::class, 'getReadinessResponse'])->middleware('auth:admin');
 
 Route::post('/save_survey_answers', [ReadinessController::class, 'saveSurveyAnswers']);
+
+Route::get('/get_shipment_response/{id}', [PTShipmentController::class, 'getShipmentResponse'])->middleware('auth:admin');
+

@@ -98,15 +98,14 @@ class ListShipment extends React.Component {
                                 className="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
                                 <i className="fas fa-user-edit"></i>
                             </a>
-                            {/* <a
+                            <a
                                 onClick={() => {
-                                    this.setState({
-                                        selectedElement: element
-                                    });
-                                    $('#deleteConfirmModal').modal('toggle');
-                                }} className="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm">
-                                <i className="fas fa-user-times"></i>
-                            </a> */}
+                                    window.location.assign('get-shipment-responses/' + element.id)
+                                }}
+                                data-toggle="tooltip" data-placement="top" title="View shipment responses"
+                                className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                <i className="fas fa-file-import"></i>
+                            </a>
 
                         </td>
                     }

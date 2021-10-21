@@ -334,4 +334,37 @@ class PTShipmentController extends Controller
             return response()->json(['Message' => 'Could fetch samples: ' . $ex->getMessage()], 500);
         }
     }
+
+    public function getShipmentResponse(Request $request)
+    {
+        $user = Auth::user();
+        try {
+
+            $shipmentsResponses = DB::table("pt_shipements")->distinct()
+                ->join('ptsubmissions', 'ptsubmissions.pt_shipements_id', '=', 'pt_shipements.id')
+                ->join('laboratories', 'ptsubmissions.lab_id', '=', 'laboratories.id')
+                ->join('users', 'ptsubmissions.user_id', '=', 'users.id')
+                ->where('pt_shipements.id', $request->id)
+                ->get([
+                    "pt_shipements.id",
+                    "pt_shipements.start_date",
+                    "pt_shipements.code",
+                    "pt_shipements.end_date",
+                    "pt_shipements.round_name as name",
+                    "laboratories.id as lab_id",
+                    "users.name as fname",
+                    "users.second_name as sname",
+                    "laboratories.phone_number",
+                    "laboratories.lab_name",
+                    "laboratories.email",
+                    "ptsubmissions.id as ptsubmission_id",
+                    "ptsubmissions.created_at",
+                    "ptsubmissions.updated_at",
+                ]);
+
+            return $shipmentsResponses;
+        } catch (Exception $ex) {
+            return response()->json(['Message' => 'Could fetch ptsubmissions list: ' . $ex->getMessage()], 500);
+        }
+    }
 }

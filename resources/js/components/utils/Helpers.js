@@ -562,11 +562,22 @@ export async function ApproveReadinessAnswer(readinessId, labId) {
 
 }
 
-
 export async function FetchReadinessResponses(id) {
 
     try {
         const response = await axios.get(`${settings.serverBaseApi}/get_readiness_response/` + id);
+        const responseData = response.data;
+        return responseData;
+    } catch (err) {
+        // Handle Error Here
+        return err.response
+    }
+}
+
+export async function FetchShipmentResponse(id) {
+
+    try {
+        const response = await axios.get(`${settings.serverBaseApi}/get_shipment_response/` + id);
         const responseData = response.data;
         return responseData;
     } catch (err) {

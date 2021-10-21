@@ -47,4 +47,9 @@ class PTAdminController extends Controller
     {
         return view('user.pt.readiness.readiness_responses');
     }
+
+    public function getShipmentResponse()
+    {
+        return view('user.pt.shipment.pt_responses_list');
+    }
 }

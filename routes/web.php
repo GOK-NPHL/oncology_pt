@@ -74,3 +74,6 @@ Route::get('add-readiness', [PTAdminController::class, 'addReadiness'])->name('a
 Route::get('get-readiness-form/{readinessId}', [QCParticipantController::class, 'getReadinessForm'])->name('get-readiness-form');
 Route::get('get-admin-readiness-form/{readinessId}/{labId}', [QCParticipantController::class, 'getReadinessForm'])->name('get-admin-readiness-form');
 Route::get('get-readiness-response/{readinessId}', [PTAdminController::class, 'getReadinessResponse'])->name('get-readiness-response');
+
+Route::get('get-shipment-responses/{shipmentId}', [PTAdminController::class, 'getShipmentResponse'])->name('get-shipment-response');
+
