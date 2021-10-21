@@ -406,14 +406,15 @@ class SubmitResults extends React.Component {
                                     ''
                             }
                         </h1>
-
-                        <button style={{ "color": "white" }} type="button"
-                            className="btn btn-success float-right"
-                            onClick={() => {
-                                window.location.assign('/get-shipment-responses/' + this.props.shipment.id)
-                            }}>
-                            ← back
-                        </button>
+                        {this.props.isAdmin ?
+                            <button style={{ "color": "white" }} type="button"
+                                className="btn btn-success float-right"
+                                onClick={() => {
+                                    window.location.assign('/get-shipment-responses/' + this.props.shipment.id)
+                                }}>
+                                ← back
+                            </button> : ''
+                        }
 
                         <br />
                         <hr />
