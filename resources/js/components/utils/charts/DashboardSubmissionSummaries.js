@@ -25,7 +25,7 @@ class DashboardSubmissionSummaries extends React.Component {
                 xAxis: {
                     categories: [],
                     title: {
-                        text: null
+                        text: 'Round'
                     }
                 },
                 yAxis: {
