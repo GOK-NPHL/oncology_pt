@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { v4 as uuidv4 } from 'uuid';
+import DashboardSubmissionSummaries from '../../../components/utils/charts/DashboardSubmissionSummaries';
 import { FetchSubmissions } from '../../../components/utils/Helpers';
 
 
@@ -9,9 +10,7 @@ class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            submissions: [],
-            isSubmitResult: false,
-            dtObject: null
+            submissionsSummary: []
         }
     }
 
@@ -19,16 +18,19 @@ class Dashboard extends React.Component {
 
         (async () => {
             let response = await FetchSubmissions();
+            
+            this.setState({
+                submissionsSummary: response
+            })
         })();
 
     }
 
-
     render() {
-
+        
         return (
             <React.Fragment>
-                alert(dahsboard);
+                <DashboardSubmissionSummaries data={this.state.submissionsSummary} />
             </React.Fragment>
         );
     }

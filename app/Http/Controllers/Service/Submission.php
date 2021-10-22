@@ -92,7 +92,7 @@ class Submission extends Controller
                 DB::raw('count(*) as total_participant')
 
             )->join('laboratory_pt_shipement', 'laboratory_pt_shipement.pt_shipement_id', '=', 'pt_shipements.id')
-                ->groupBy('round_name', 'end_date');
+                ->groupBy('round_name', 'end_date')->orderBy('pt_shipements.created_at', 'asc');
 
             $shipmentsByReadinessRound = PtShipement::select( //when using labs
 
@@ -101,7 +101,7 @@ class Submission extends Controller
                 DB::raw('count(*) as total_participant')
 
             )->join('laboratory_readiness', 'laboratory_readiness.readiness_id', '=', 'pt_shipements.readiness_id')
-                ->groupBy('round_name', 'end_date');
+                ->groupBy('round_name', 'end_date')->orderBy('pt_shipements.created_at', 'asc');
 
 
             $totalShipments = $shipmentsByLabRound
@@ -131,8 +131,7 @@ class Submission extends Controller
 
             )->join('laboratory_pt_shipement', 'laboratory_pt_shipement.pt_shipement_id', '=', 'pt_shipements.id')
                 ->join('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id')
-                ->groupBy('round_name', 'end_date');
-
+                ->groupBy('round_name', 'end_date')->orderBy('pt_shipements.created_at', 'asc');
 
             $submissionsByReadinessRound = PtShipement::select( //when using labs
 
@@ -142,7 +141,8 @@ class Submission extends Controller
 
             )->join('laboratory_readiness', 'laboratory_readiness.readiness_id', '=', 'pt_shipements.readiness_id')
                 ->join('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id')
-                ->groupBy('round_name', 'end_date');
+                ->groupBy('round_name', 'end_date')
+                ->orderBy('pt_shipements.created_at', 'asc');
 
             $totalSubmissions = $submissionsByLabRound
                 ->union($submissionsByReadinessRound)
