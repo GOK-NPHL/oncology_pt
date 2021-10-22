@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Service;
 
 use App\Http\Controllers\Controller;
+use App\PtShipement;
 use App\PtSubmissionResult;
 use App\ptsubmission as SubmissionModel;
 use Exception;
@@ -78,11 +79,89 @@ class Submission extends Controller
 
     public function getSubmissions()
     {
-
+        //shipped vs how many feedback
         try {
-            return SubmissionModel::all();
+
+            $payload = []; // round_name= total_shipment, total_responses, end_date
+
+            //shipement count
+            $shipmentsByLabRound = PtShipement::select( //when using labs
+
+                "pt_shipements.round_name",
+                "pt_shipements.end_date",
+                DB::raw('count(*) as total_participant')
+
+            )->join('laboratory_pt_shipement', 'laboratory_pt_shipement.pt_shipement_id', '=', 'pt_shipements.id')
+                ->groupBy('round_name', 'end_date');
+
+            $shipmentsByReadinessRound = PtShipement::select( //when using labs
+
+                "pt_shipements.round_name",
+                "pt_shipements.end_date",
+                DB::raw('count(*) as total_participant')
+
+            )->join('laboratory_readiness', 'laboratory_readiness.readiness_id', '=', 'pt_shipements.readiness_id')
+                ->groupBy('round_name', 'end_date');
+
+
+            $totalShipments = $shipmentsByLabRound
+                ->union($shipmentsByReadinessRound)
+                ->get();
+
+
+            foreach ($totalShipments as $data) {
+
+                if (array_key_exists($data->round_name, $payload)) {
+
+                    $payload[$data->round_name]['total_shipment'] = $payload[$data->round_name]['total_shipment'] + $data->total_participant;
+                    $payload[$data->round_name]['end_date'] = $data->end_date;
+                } else {
+                    $payload[$data->round_name] = ['total_shipment' => 0, 'total_responses' => 0, 'end_date' => null];
+                    $payload[$data->round_name]['end_date'] = $data->end_date;
+                    $payload[$data->round_name]['total_shipment'] = $data->total_participant;
+                }
+            }
+
+            //submissions count
+            $submissionsByLabRound = PtShipement::select( //when using labs
+
+                "pt_shipements.round_name",
+                "pt_shipements.end_date",
+                DB::raw('count(*) as total_participant')
+
+            )->join('laboratory_pt_shipement', 'laboratory_pt_shipement.pt_shipement_id', '=', 'pt_shipements.id')
+                ->join('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id')
+                ->groupBy('round_name', 'end_date');
+
+
+            $submissionsByReadinessRound = PtShipement::select( //when using labs
+
+                "pt_shipements.round_name",
+                "pt_shipements.end_date",
+                DB::raw('count(*) as total_participant')
+
+            )->join('laboratory_readiness', 'laboratory_readiness.readiness_id', '=', 'pt_shipements.readiness_id')
+                ->join('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id')
+                ->groupBy('round_name', 'end_date');
+
+            $totalSubmissions = $submissionsByLabRound
+                ->union($submissionsByReadinessRound)
+                ->get();
+
+            foreach ($totalSubmissions as $data) {
+
+                if (array_key_exists($data->round_name, $payload)) {
+                    $payload[$data->round_name]['end_date'] = $data->end_date;
+                    $payload[$data->round_name]['total_responses'] = $payload[$data->round_name]['total_responses'] + $data->total_participant;
+                } else {
+                    $payload[$data->round_name] = ['total_shipment' => 0, 'total_responses' => 0, 'end_date' => null];
+                    $payload[$data->round_name]['end_date'] = $data->end_date;
+                    $payload[$data->round_name]['total_responses'] = $data->total_participant;
+                }
+            }
+            return  $payload;
         } catch (Exception $ex) {
-            return response()->json(['Message' => 'Error getting org units: ' . $ex->getMessage()], 500);
+            return response()->json(['Message' => 'Error shipmment summaries: ' . $ex->getMessage()], 500);
         }
     }
 
