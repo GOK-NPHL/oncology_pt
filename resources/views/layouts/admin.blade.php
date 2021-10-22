@@ -93,8 +93,7 @@ use Illuminate\Support\Facades\Gate;
                                     Reports
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">PT Indicator Reports</a>
-
+                                    <a class="dropdown-item" href="{{route('pt-shipment-report-list')}}">PT Response Reports</a>
                                 </div>
                             </li>
 

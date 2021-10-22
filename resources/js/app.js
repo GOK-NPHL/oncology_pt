@@ -37,6 +37,9 @@ require('./user/pt/participant/Dashboard');
 require('./user/pt/participant/Readiness');
 require('./user/pt/participant/Demographics');
 
+require('./user/pt/reports/ListShipmentReport');
+require('./user/pt/reports/ListShipmentResponseReport');
+
 require('./user/general/Dashboard');
 //Intrface code
 require('./components/system/auth/axios_login');

@@ -77,3 +77,6 @@ Route::get('get-readiness-response/{readinessId}', [PTAdminController::class, 'g
 
 Route::get('get-shipment-responses/{shipmentId}', [PTAdminController::class, 'getShipmentResponse'])->name('get-shipment-response');
 Route::get('get-shipment-response-form/{resultSubmissionId}', [PTAdminController::class, 'getShipmentResponseForm']);
+
+Route::get('pt-shipment-report-list', [PTAdminController::class, 'getShipmentReportList'])->name('pt-shipment-report-list');
+Route::get('get-shipment-report-responses/{shipmentId}', [PTAdminController::class, 'getShipmentReportResponse'])->name('get-shipment-report-response');
