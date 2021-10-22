@@ -86,21 +86,26 @@ class ListShipment extends React.Component {
                     {
 
                         <td>
+                            {
+                                this.props.page != 'report' ?
+                                    <a href="#"
+                                        onClick={
+                                            () => {
+                                                console.log(element);
+                                                this.props.toggleView('edit', element.id);
+                                            }
+                                        }
+                                        style={{ 'marginRight': '5px' }}
+                                        className="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
+                                        <i className="fas fa-user-edit"></i>
+                                    </a> : ''
+                            }
 
-                            <a href="#"
-                                onClick={
-                                    () => {
-                                        console.log(element);
-                                        this.props.toggleView('edit', element.id);
-                                    }
-                                }
-                                style={{ 'marginRight': '5px' }}
-                                className="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
-                                <i className="fas fa-user-edit"></i>
-                            </a>
                             <a
                                 onClick={() => {
-                                    window.location.assign('get-shipment-responses/' + element.id)
+                                    this.props.page != 'report' ?
+                                        window.location.assign('get-shipment-responses/' + element.id) :
+                                        window.location.assign('get-shipment-report-responses/' + element.id)
                                 }}
                                 data-toggle="tooltip" data-placement="top" title="View shipment responses"
                                 className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">

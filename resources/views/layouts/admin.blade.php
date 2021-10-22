@@ -147,7 +147,7 @@ use Illuminate\Support\Facades\Gate;
             <strong>Copyright &copy; 2014- <script>
                     document.write(new Date().getFullYear());
                 </script> <a href="https://nphl.go.ke/">NPHL KNEQAS -QC/PT</a>.</strong>
-            All rights reserved. | <a href="http://helpdesk.nphl.go.ke/">Recency QC/PT HELP DESK</a>
+            All rights reserved. | <a href="http://helpdesk.nphl.go.ke/">KNEQAS Oncology HELP DESK</a>
             <div class="float-right d-none d-sm-inline-block">
                 <b>Version</b> 1.0.0
             </div>

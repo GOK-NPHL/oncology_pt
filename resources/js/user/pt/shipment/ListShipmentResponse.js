@@ -27,9 +27,17 @@ class ListShipmentResponse extends React.Component {
     componentDidMount() {
 
         let pathname = window.location.pathname;
+
         let pathObject = matchPath(pathname, {
             path: `/get-shipment-responses/:shipmentId`,
         });
+
+        if (this.props.page == 'report') {
+            pathObject = matchPath(pathname, {
+                path: `/get-shipment-report-responses/:shipmentId`,
+            });
+
+        }
 
         if (pathObject) {
             (async () => {
@@ -100,14 +108,24 @@ class ListShipmentResponse extends React.Component {
                         <td>
 
                             {
-                                <a
-                                    onClick={() => {
-                                        window.location.assign('/get-shipment-response-form/' + element.ptsubmission_id)
-                                    }}
-                                    data-toggle="tooltip" data-placement="top" title="View responses"
-                                    className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                    <i className="fas fa-eye"></i>
-                                </a>
+                                this.props.page == 'report' ?
+                                    <a
+                                        onClick={() => {
+                                            window.location.assign('/get-shipment-response-performance/' + element.ptsubmission_id)
+                                        }}
+                                        data-toggle="tooltip" data-placement="top" title="View responses"
+                                        className="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
+                                        <i className="fas fa-file-pdf"></i> Performance
+                                    </a>
+                                    :
+                                    <a
+                                        onClick={() => {
+                                            window.location.assign('/get-shipment-response-form/' + element.ptsubmission_id)
+                                        }}
+                                        data-toggle="tooltip" data-placement="top" title="View responses"
+                                        className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                        <i className="fas fa-eye"></i>
+                                    </a>
                             }
 
                         </td>
@@ -138,7 +156,9 @@ class ListShipmentResponse extends React.Component {
                 <button style={{ "color": "white" }} type="button"
                     className="btn btn-success float-right"
                     onClick={() => {
-                        window.location.assign('/pt-shipment')
+                        this.props.page == 'report' ?
+                            window.location.assign('/pt-shipment-report-list') :
+                            window.location.assign('/pt-shipment')
                     }}>
                     ← back
                 </button>

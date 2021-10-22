@@ -24,7 +24,7 @@ class ListShipmentReport extends React.Component {
 
         return (
             <React.Fragment>
-                <ListShipment />
+                <ListShipment page={'report'} />
             </React.Fragment>
         );
     }
