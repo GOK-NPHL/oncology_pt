@@ -39,6 +39,8 @@ require('./user/pt/participant/Demographics');
 
 require('./user/pt/reports/ListShipmentReport');
 require('./user/pt/reports/ListShipmentResponseReport');
+require('./user/pt/reports/PTPerformanceReport');
+
 
 require('./user/general/Dashboard');
 //Intrface code
@@ -49,6 +51,8 @@ require("react-datepicker");
 require("react-js-pagination");
 require('bootstrap-select');
 require('react-tooltip');
+require('highcharts');
+require('highcharts-react-official');
 require('../../node_modules/@fortawesome/fontawesome-free/js/fontawesome.js');
 
 require('../../node_modules/jquery.easing/jquery.easing.min.js');

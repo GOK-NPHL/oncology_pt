@@ -113,7 +113,7 @@ class ListShipmentResponse extends React.Component {
                                         onClick={() => {
                                             window.location.assign('/get-shipment-response-performance/' + element.ptsubmission_id)
                                         }}
-                                        data-toggle="tooltip" data-placement="top" title="View responses"
+                                        data-toggle="tooltip" data-placement="top" title="View performance report"
                                         className="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
                                         <i className="fas fa-file-pdf"></i> Performance
                                     </a>

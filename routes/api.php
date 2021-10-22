@@ -85,3 +85,5 @@ Route::post('/save_survey_answers', [ReadinessController::class, 'saveSurveyAnsw
 Route::get('/get_shipment_responses/{id}', [PTShipmentController::class, 'getShipmentResponsesById'])->middleware('auth:admin');
 
 Route::get('/get_sample_response_result/{id}', [PTShipmentController::class, 'getUserSampleResponseResult'])->middleware('auth:admin');
+
+Route::get('/get_shipment_response_report/{id}', [PTShipmentController::class, 'getShipmentSesponseReport'])->middleware('auth:admin');

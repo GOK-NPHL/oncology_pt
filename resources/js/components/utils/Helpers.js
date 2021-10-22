@@ -106,7 +106,7 @@ export async function FetchReadnessSurveyByIdAndLab(readinessId, labId) {
 export async function FetchCurrentParticipantDemographics(id) {
 
     try {
-        const response = await axios.get(`${settings.serverBaseApi}/get_participant_demographics/`+id);
+        const response = await axios.get(`${settings.serverBaseApi}/get_participant_demographics/` + id);
         const responseData = response.data;
         return responseData;
     } catch (err) {
@@ -591,6 +591,18 @@ export async function FetchShipmentResponses(id) {
 
     try {
         const response = await axios.get(`${settings.serverBaseApi}/get_shipment_responses/` + id);
+        const responseData = response.data;
+        return responseData;
+    } catch (err) {
+        // Handle Error Here
+        return err.response
+    }
+}
+
+export async function FetchShipmentResponsesReport(id) {
+
+    try {
+        const response = await axios.get(`${settings.serverBaseApi}/get_shipment_response_report/` + id);
         const responseData = response.data;
         return responseData;
     } catch (err) {

@@ -87,7 +87,6 @@ class DashboardSubmissionSummaries extends React.Component {
 
 
     componentDidUpdate(prevProps, prevState) {
-        console.log(this.props.data)
         if (prevProps.data != this.props.data) {
             let categories = [];
             let shipments = { name: 'Shipments', data: [] }
@@ -112,8 +111,6 @@ class DashboardSubmissionSummaries extends React.Component {
 
         }
     }
-
-
 
     render() {
         return (
