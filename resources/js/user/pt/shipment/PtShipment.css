@@ -2,6 +2,10 @@
     background-color: white;
 }
 
+.no-table-border tr, .no-table-border td {
+    border: none !important;
+}
+
 .bg-white {
     background-color: white;
 }
