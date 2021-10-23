@@ -54,7 +54,11 @@ class PTPerformanceReport extends React.Component {
         let tdtyle = {
             textAlign: 'left',
         }
-
+        let paragraphStyle = {
+            lineHeight: '15px',
+            textAlign: 'left',
+            marginBottom: '0px'
+        }
         let totalTableLength = 8;
         return (
             <React.Fragment>
@@ -127,6 +131,38 @@ class PTPerformanceReport extends React.Component {
                             <td>Expected</td>
 
                         </tr>
+                        <tr><p></p></tr>
+                        <tr><p></p></tr>
+                        <tr>
+                            <td style={tdtyle} colSpan={totalTableLength}>
+                                Expert comment: Thank you for participating in KNEQAS HPV PT.
+                                Your overall performance: Your EQA performance is ____% ACCEPATBLE/UNACCEPATBE. The
+                                expected performance outcome was 100% whereby, each sample was scored 20 marks.
+
+                            </td>
+                        </tr>
+
+
+                        <tr><p></p></tr>
+                        <tr><p></p></tr>
+                        <tr>
+                            <td style={paragraphStyle} colSpan={totalTableLength}>
+                                <p>Testing scheme information:</p>
+
+                                <ol className="report">
+                                    <li>Molecular EID PT is a qualitative scheme.</li>
+                                    <li>The panel samples come as dry blood spots.</li>
+                                    <li>The PT samples have been fully characterised for the assigned qual HIV status.</li>
+                                    <li>The reference values are used to grade the participants.</li>
+                                    <li>The panel samples have been tested for stability and are stable.</li>
+                                    <li>Homogeneity was done using systematic random sampling and the results were the same as the expected results.</li>
+                                    <li>Participants performance report is confidential and will only be shared with the responsible quality assuarance officers for the participating laboratories and for any purpose of corrective interventions.</li>
+                                    <li>Subcontracted services: PT panel distribution and return of results.</li>
+                                    <li>The schemes final report with summaries of overall performance analysis are indicated below</li>
+                                </ol>
+                            </td>
+                        </tr>
+
                     </tbody>
                 </table>
 
