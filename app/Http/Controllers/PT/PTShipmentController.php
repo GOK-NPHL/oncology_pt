@@ -448,6 +448,7 @@ class PTShipmentController extends Controller
                     "pt_samples.hpv_16 as ref_hpv_16",
                     "pt_samples.hpv_18 as ref_hpv_18",
                     "pt_samples.hpv_other as ref_hpv_other",
+                    "pt_samples.name as sample_name"
                 ]);
 
             return ['metadata' => $shipmentsResponses, "results" => $shipmentsResponsesResult];

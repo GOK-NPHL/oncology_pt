@@ -164,7 +164,7 @@ class PTPerformanceReport extends React.Component {
                             this.state.results.map((data) => {
 
                                 return <tr key={uuidv4()}>
-                                    <td></td>
+                                    <td style={tdtyle}>{data.sample_name}</td>
                                     <td>{data.result_hpv_16}</td> <td>{data.ref_hpv_16}</td>
                                     <td>{data.result_hpv_18}</td> <td>{data.ref_hpv_18}</td>
                                     <td>{data.result_hpv_other}</td> <td>{data.ref_hpv_other}</td>
