@@ -124,6 +124,7 @@ class PTPerformanceReport extends React.Component {
         return (
             <React.Fragment>
                 <ReactToPrint
+                    documentTitle={"Oncology HPV PT Report"}
                     trigger={() => <button style={{ textAlign: 'center', backgroundColor: 'lemonchiffon' }}>Download report</button>}
                     content={() => this.componentRef}
                 />
