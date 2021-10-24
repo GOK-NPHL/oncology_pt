@@ -87,6 +87,34 @@ class PTPerformanceReport extends React.Component {
             console.log(data.result_hpv_16)
         })
 
+        let results = [];
+        let isPassOverallScore = true;
+        let passedScore = 0;
+        let totalSamples = 0;
+        this.state.results.map((data) => {
+            let isPass = false;
+            if (
+                data.result_hpv_16 == data.ref_hpv_16
+                &&
+                data.result_hpv_16 == data.ref_hpv_16
+                &&
+                data.result_hpv_other == data.ref_hpv_other
+            ) {
+                isPass = true;
+                passedScore += 1;
+            } else {
+                isPassOverallScore = false;
+            }
+            results.push(<tr key={uuidv4()}>
+                <td style={tdtyle}>{data.sample_name}</td>
+                <td>{data.result_hpv_16}</td> <td>{data.ref_hpv_16}</td>
+                <td>{data.result_hpv_18}</td> <td>{data.ref_hpv_18}</td>
+                <td>{data.result_hpv_other}</td> <td>{data.ref_hpv_other}</td>
+                <td>{isPass ? 'ACCEPTABLE' : 'UNACCEPATBE'}</td>
+            </tr>);
+            totalSamples += 1;
+        })
+
         return (
             <React.Fragment>
 
@@ -140,46 +168,41 @@ class PTPerformanceReport extends React.Component {
                         <tr><p></p></tr>
                         <tr><p></p></tr>
                         <tr>
-                            <td style={tdtyle} rowSpan={2}>SAMPLE </td>
-                            <td colSpan={2}>HR HPV 16 </td>
-                            <td colSpan={2}>HR HPV 18-45 </td>
-                            <td colSpan={2}>Others HR HPV</td>
-                            <td style={tdtyle} rowSpan={2}>PERFORMANCE</td>
+                            <td colSpan={totalTableLength}>
+                                <table>
+
+                                    <tr>
+                                        <td style={tdtyle} rowSpan={2}>SAMPLE </td>
+                                        <td colSpan={2}>HR HPV 16 </td>
+                                        <td colSpan={2}>HR HPV 18-45 </td>
+                                        <td colSpan={2}>Others HR HPV</td>
+                                        <td rowSpan={2}>PERFORMANCE</td>
+                                    </tr>
+
+                                    <tr>
+
+                                        <td>Results</td>
+                                        <td>Expected</td>
+
+                                        <td>Results</td>
+                                        <td>Expected</td>
+
+                                        <td>Results</td>
+                                        <td>Expected</td>
+
+                                    </tr>
+                                    {results}
+                                </table>
+                            </td>
                         </tr>
-
-                        <tr>
-
-                            <td>Results</td>
-                            <td>Expected</td>
-
-                            <td>Results</td>
-                            <td>Expected</td>
-
-                            <td>Results</td>
-                            <td>Expected</td>
-
-                        </tr>
-
-                        {
-                            this.state.results.map((data) => {
-
-                                return <tr key={uuidv4()}>
-                                    <td style={tdtyle}>{data.sample_name}</td>
-                                    <td>{data.result_hpv_16}</td> <td>{data.ref_hpv_16}</td>
-                                    <td>{data.result_hpv_18}</td> <td>{data.ref_hpv_18}</td>
-                                    <td>{data.result_hpv_other}</td> <td>{data.ref_hpv_other}</td>
-                                    <td></td>
-                                </tr>
-                            })
-                        }
 
 
                         <tr><p></p></tr>
                         <tr><p></p></tr>
                         <tr>
                             <td style={tdtyle} colSpan={totalTableLength}>
-                                Expert comment: Thank you for participating in KNEQAS HPV PT.
-                                Your overall performance: Your EQA performance is ____% ACCEPATBLE/UNACCEPATBE. The
+                                <strong>Expert comment:</strong> Thank you for participating in KNEQAS HPV PT.
+                                Your overall performance: Your EQA performance is <strong>{(passedScore / totalSamples) * 100}&#37; {isPassOverallScore ? 'ACCEPATBLE' : 'UNACCEPATBE'}</strong>. The
                                 expected performance outcome was 100% whereby, each sample was scored 20 marks.
 
                             </td>
@@ -190,7 +213,7 @@ class PTPerformanceReport extends React.Component {
                         <tr><p></p></tr>
                         <tr>
                             <td style={paragraphStyle} colSpan={totalTableLength}>
-                                <p>Testing scheme information:</p>
+                                <p><strong>Testing scheme information:</strong></p>
 
                                 <ol className="report">
                                     <li>Molecular EID PT is a qualitative scheme.</li>
