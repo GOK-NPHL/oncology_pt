@@ -123,7 +123,10 @@ class PTPerformanceReport extends React.Component {
 
         return (
             <React.Fragment>
-
+                <ReactToPrint
+                    trigger={() => <button style={{ textAlign: 'center', backgroundColor: 'lemonchiffon'}}>Download report</button>}
+                    content={() => this.componentRef}
+                />
                 <table className="unstrip table table-sm no-table-border"
                     ref={el => (this.componentRef = el)}>
                     <tbody >
@@ -227,7 +230,7 @@ class PTPerformanceReport extends React.Component {
                         <tr style={paragraphStyle} >
                             <td colSpan={4} style={{ "textAlign": "left", "marginBottom": "0px" }} >
                                 <strong>Documentation of Report Review:</strong>
-                                We the undersigned, have read and reviewed the above Xpert MTB/RIF performance evaluation report. If the final score is less than 100% we have downloaded the root cause analysis and corrective actions forms from ePT, completed, and attached them to this report. Performance report and any attachments must be filed and retained as documentation.
+                                We the undersigned, have read and reviewed the above ONCOLOGY HPV performance evaluation report. If the final score is less than 100% we have downloaded the root cause analysis and corrective actions forms from ePT, completed, and attached them to this report. Performance report and any attachments must be filed and retained as documentation.
                             </td>
                         </tr>
 
@@ -274,11 +277,6 @@ class PTPerformanceReport extends React.Component {
                         </tr>
                     </tbody>
                 </table>
-
-                <ReactToPrint
-                    trigger={() => <button style={{ textAlign: 'center', marginLeft: '50%', backgroundColor: 'lemonchiffon', width: '62px' }}>Download</button>}
-                    content={() => this.componentRef}
-                />
 
                 < div className="modal fade" id="readinessReponseReportModal" tabIndex="-1" role="dialog" aria-labelledby="readinessReponseReportModalTitle" aria-hidden="true" >
                     <div className="modal-dialog modal-dialog-centered" role="document">
