@@ -432,7 +432,7 @@ class PTShipmentController extends Controller
                     "ptsubmissions.testing_date",
                     "ptsubmissions.kit_expiry_date",
                     "ptsubmissions.kit_date_received",
-                    "ptsubmissions.kit_lot_no",
+                    "ptsubmissions.pt_lot_no",
                     "platforms.name as platform_name"
                 ]);
 

@@ -54,7 +54,7 @@ class PTPerformanceReport extends React.Component {
                         labCode: response['metadata'][0].code,
                         shipmentDate: response['metadata'][0].shipment_date,
                         specimenReceiptDate: response['metadata'][0].kit_date_received,
-                        kitLotNumber: response['metadata'][0].kit_lot_no,
+                        kitLotNumber: response['metadata'][0].pt_lot_no,
                         labName: response['metadata'][0].lab_name,
                         resultSubmissionDate: response['metadata'][0].update_submission_date,
                         testingDate: response['metadata'][0].testing_date,
@@ -151,14 +151,14 @@ class PTPerformanceReport extends React.Component {
                                 <div><strong>Lab Code:</strong> {this.state.labCode}</div>
                                 <div><strong>Shipment Date:</strong>  {this.state.shipmentDate}</div>
                                 <div><strong>Specimen Receipt Date:</strong>  {this.state.specimenReceiptDate}</div>
-                                <div><strong>Kit Lot Number:</strong>  {this.state.kitLotNumber}</div>
+                                <div><strong>Xpert HPV Lot No:</strong>  {this.state.kitLotNumber}</div>
 
                             </td>
                             <td  >
                                 <div><strong>Lab Name:</strong>  {this.state.labName}</div>
                                 <div><strong>Result Submission Date:</strong>  {this.state.resultSubmissionDate}</div>
                                 <div><strong>Testing Date:</strong>  {this.state.testingDate}</div>
-                                <div><strong>Kit Expiration Date:</strong>  {this.state.kitExpirationDate}</div>
+                                <div><strong>Xpert HPV Expiry Date :</strong>  {this.state.kitExpirationDate}</div>
 
                             </td>
                             <td style={{ 'textAlign': 'right' }}>
