@@ -163,6 +163,44 @@ class PTPerformanceReport extends React.Component {
                             </td>
                         </tr>
 
+                        <tr>
+                            <td colSpan={totalTableLength}>
+                                <hr />
+                            </td>
+                        </tr>
+                        <tr><p></p></tr>
+                        <tr><p></p></tr>
+                        <tr>
+                            <td style={paragraphStyle} colSpan={totalTableLength}>
+                                <p>Kenya External Public Health Laboratory(KNEQAS)</p>
+                                <p>ONCOLOGY HPV Proficiency Testing</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style={paragraphStyle} colSpan={totalTableLength}>
+                                <p>KNEQAS QA: Charity Maina</p>
+                                <p>ONCOLOGY SCOPE Coordinator: Francis Tawuo</p>
+                            </td>
+                        </tr>
+
+                        <tr><p></p></tr>
+                        <tr><p></p></tr>
+                        <tr >
+                            <td colSpan={4} style={paragraphStyle} >
+                                Final Report Authorized By:
+                            </td>
+                            <td colSpan={2} style={paragraphStyle} >
+                                Date:
+                            </td>
+                        </tr>
+                        <tr >
+                            <td colSpan={4} style={paragraphStyle} >
+                                Final Results Released By:
+                            </td>
+                            <td colSpan={2} style={paragraphStyle} >
+                                Date:
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
 
