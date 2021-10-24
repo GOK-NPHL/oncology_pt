@@ -407,29 +407,47 @@ class PTShipmentController extends Controller
         $user = Auth::user();
         try {
 
-            // $shipmentsResponses = DB::table("pt_shipements")->distinct()
-            //     ->join('ptsubmissions', 'ptsubmissions.pt_shipements_id', '=', 'pt_shipements.id')
-            //     ->join('laboratories', 'ptsubmissions.lab_id', '=', 'laboratories.id')
-            //     ->join('users', 'ptsubmissions.user_id', '=', 'users.id')
-            //     ->where('pt_shipements.id', $request->id)
-            //     ->get([
-            //         "pt_shipements.id",
-            //         "pt_shipements.start_date",
-            //         "pt_shipements.code",
-            //         "pt_shipements.end_date",
-            //         "pt_shipements.round_name as name",
-            //         "laboratories.id as lab_id",
-            //         "users.name as fname",
-            //         "users.second_name as sname",
-            //         "laboratories.phone_number",
-            //         "laboratories.lab_name",
-            //         "laboratories.email",
-            //         "ptsubmissions.id as ptsubmission_id",
-            //         "ptsubmissions.created_at",
-            //         "ptsubmissions.updated_at",
-            //     ]);
+            $shipmentsResponses = DB::table("pt_shipements")->distinct()
+                ->join('ptsubmissions', 'ptsubmissions.pt_shipements_id', '=', 'pt_shipements.id')
+                ->join('pt_submission_results', 'pt_submission_results.ptsubmission_id', '=', 'ptsubmissions.id')
+                ->join('laboratories', 'ptsubmissions.lab_id', '=', 'laboratories.id')
+                ->join('platforms', 'ptsubmissions.platform_id', '=', 'platforms.id')
+                ->join('users', 'ptsubmissions.user_id', '=', 'users.id')
+                ->where('ptsubmissions.id', $request->id)
+                ->get([
+                    "pt_shipements.id",
+                    "pt_shipements.start_date",
+                    "pt_shipements.code",
+                    "pt_shipements.end_date",
+                    "pt_shipements.round_name as name",
+                    "laboratories.id as lab_id",
+                    "users.name as fname",
+                    "users.second_name as sname",
+                    "laboratories.phone_number",
+                    "laboratories.lab_name",
+                    "laboratories.email",
+                    "ptsubmissions.id as ptsubmission_id",
+                    "ptsubmissions.created_at",
+                    "ptsubmissions.updated_at",
+                    "ptsubmissions.testing_date",
+                    "ptsubmissions.kit_expiry_date",
+                ]);
 
-            // return $shipmentsResponses;
+            $shipmentsResponsesResult = DB::table("pt_shipements")->distinct()
+                ->join('ptsubmissions', 'ptsubmissions.pt_shipements_id', '=', 'pt_shipements.id')
+                ->join('pt_submission_results', 'pt_submission_results.ptsubmission_id', '=', 'ptsubmissions.id')
+                ->join('pt_samples', 'pt_samples.ptshipment_id', '=', 'pt_shipements.id')
+                ->where('ptsubmissions.id', $request->id)
+                ->get([
+                    "pt_submission_results.hpv_16 as result_hpv_16",
+                    "pt_submission_results.hpv_18 as result_hpv_18",
+                    "pt_submission_results.hpv_other as result_hpv_other",
+                    "pt_samples.hpv_16 as ref_hpv_16",
+                    "pt_samples.hpv_18 as ref_hpv_18",
+                    "pt_samples.hpv_other as ref_hpv_other",
+                ]);
+
+            return ['metadata' => $shipmentsResponses, "resulsts" => $shipmentsResponsesResult];
         } catch (Exception $ex) {
             return response()->json(['Message' => 'Could fetch report data: ' . $ex->getMessage()], 500);
         }
