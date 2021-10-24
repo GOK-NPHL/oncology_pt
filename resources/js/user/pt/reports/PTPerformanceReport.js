@@ -198,7 +198,7 @@ class PTPerformanceReport extends React.Component {
                             <td style={paragraphStyle} colSpan={totalTableLength}>
                                 <strong>Expert comment:</strong> Thank you for participating in KNEQAS HPV PT.
                                 Your overall performance: Your EQA performance is <strong>{Math.round((passedScore / totalSamples) * 100)}&#37; {isPassOverallScore ? 'ACCEPATBLE' : 'UNACCEPATBE'}</strong>. The
-                                expected performance outcome was 100% whereby, each sample was scored 20 marks.
+                                expected performance outcome was 100% whereby, each sample has an equal score.
 
                             </td>
                         </tr>
