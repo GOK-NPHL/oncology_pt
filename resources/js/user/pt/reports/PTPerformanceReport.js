@@ -12,8 +12,18 @@ class PTPerformanceReport extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            labCode: '',
+            shipmentDate: '',
+            specimenReceiptDate: '',
+            kitLotNumber: '',
+            labName: '',
+            resultSubmissionDate: '',
+            testingDate: '',
+            kitExpiration: '',
+            phoneNo: '',
+            platform: ''
         }
+
 
     }
 
@@ -34,11 +44,21 @@ class PTPerformanceReport extends React.Component {
                     this.setState({
                         message: response.data.Message,
                     })
-                    $('#readinessReponseModal').modal('toggle');
+                    $('#readinessReponseReportModal').modal('toggle');
                 } else {
 
                     this.setState({
-                        data: response
+                        data: response,
+                        labCode: response['metadata'][0].code,
+                        shipmentDate: response['metadata'][0].shipment_date,
+                        specimenReceiptDate: response['metadata'][0].kit_date_received,
+                        kitLotNumber: response['metadata'][0].kit_lot_no,
+                        labName: response['metadata'][0].lab_name,
+                        resultSubmissionDate: response['metadata'][0].update_submission_date,
+                        testingDate: response['metadata'][0].testing_date,
+                        kitExpiration: response['metadata'][0].kit_expiry_date,
+                        phoneNo: response['metadata'][0].phone_number,
+                        platform: response['metadata'][0].platform_name
                     });
 
                 }
@@ -90,22 +110,22 @@ class PTPerformanceReport extends React.Component {
                         <tr style={{ "marginTop": "5px" }}>
 
                             <td colSpan={3} style={tdtyle}>
-                                <div>Lab Code: 266</div>
-                                <div>Shipment Date 24-May-2021</div>
-                                <div>Specimen Receipt Date 31-May-2021</div>
-                                <div>Kit Lot Number</div>
+                                <div><strong>Lab Code:</strong> {this.state.labCode}</div>
+                                <div><strong>Shipment Date:</strong>  {this.state.shipmentDate}</div>
+                                <div><strong>Specimen Receipt Date:</strong>  {this.state.specimenReceiptDate}</div>
+                                <div><strong>Kit Lot Number:</strong>  {this.state.kitLotNumber}</div>
 
                             </td>
                             <td colSpan={2} >
-                                <div>Lab Name: KEMRI P3</div>
-                                <div>Result Submission Date 04-Jun-2021</div>
-                                <div>Testing Date 08-Jun-2021</div>
-                                <div>Kit Expiration Date</div>
+                                <div><strong>Lab Name:</strong>  {this.state.labName}</div>
+                                <div><strong>Result Submission Date:</strong>  {this.state.resultSubmissionDate}</div>
+                                <div><strong>Testing Date:</strong>  {this.state.testingDate}</div>
+                                <div><strong>Kit Expiration Date:</strong>  {this.state.kitExpirationDate}</div>
 
                             </td>
                             <td colSpan={3} style={{ 'textAlign': 'right' }}>
-                                <div>Phone No: +254722539294</div>
-                                <div>Platform: Roche CAP/CTM</div>
+                                <div><strong>Phone No:</strong>  {this.state.phoneNo}</div>
+                                <div><strong>Platform:</strong>  {this.state.platform}</div>
                             </td>
 
                         </tr>
@@ -208,6 +228,27 @@ class PTPerformanceReport extends React.Component {
                     trigger={() => <button style={{ textAlign: 'center', marginLeft: '50%', backgroundColor: 'lemonchiffon', width: '62px' }}>Download</button>}
                     content={() => this.componentRef}
                 />
+
+                < div className="modal fade" id="readinessReponseReportModal" tabIndex="-1" role="dialog" aria-labelledby="readinessReponseReportModalTitle" aria-hidden="true" >
+                    <div className="modal-dialog modal-dialog-centered" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="readinessReponseReportModalTitle">Notice!</h5>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div className="modal-body">
+                                {
+                                    this.state.message ? this.state.message : ''
+                                }
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div >
             </React.Fragment>
         );
     }

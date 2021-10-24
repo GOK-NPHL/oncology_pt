@@ -416,7 +416,7 @@ class PTShipmentController extends Controller
                 ->where('ptsubmissions.id', $request->id)
                 ->get([
                     "pt_shipements.id",
-                    "pt_shipements.start_date",
+                    "pt_shipements.start_date as shipment_date",
                     "pt_shipements.code",
                     "pt_shipements.end_date",
                     "pt_shipements.round_name as name",
@@ -427,10 +427,13 @@ class PTShipmentController extends Controller
                     "laboratories.lab_name",
                     "laboratories.email",
                     "ptsubmissions.id as ptsubmission_id",
-                    "ptsubmissions.created_at",
-                    "ptsubmissions.updated_at",
+                    "ptsubmissions.created_at as _first_submission_date",
+                    "ptsubmissions.updated_at  as update_submission_date",
                     "ptsubmissions.testing_date",
                     "ptsubmissions.kit_expiry_date",
+                    "ptsubmissions.kit_date_received",
+                    "ptsubmissions.kit_lot_no",
+                    "platforms.name as platform_name"
                 ]);
 
             $shipmentsResponsesResult = DB::table("pt_shipements")->distinct()
