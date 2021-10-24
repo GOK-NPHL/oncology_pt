@@ -3,7 +3,11 @@
 }
 
 .no-table-border tr, .no-table-border td {
-    border: none !important;
+    border: none;
+}
+
+.tbBorder {
+    border: 1px solid #999 !important
 }
 
 .bg-white {

@@ -81,6 +81,12 @@ class PTPerformanceReport extends React.Component {
             textAlign: 'left',
             marginBottom: '0px'
         }
+        let borderLeft = {
+            borderLeft: '1px solid #999'
+        }
+        let borderRight = {
+            borderRight: '1px solid #999'
+        }
         let totalTableLength = 8;
 
         this.state.results.map((data) => {
@@ -105,11 +111,11 @@ class PTPerformanceReport extends React.Component {
             } else {
                 isPassOverallScore = false;
             }
-            results.push(<tr key={uuidv4()}>
+            results.push(<tr className='tbBorder' key={uuidv4()}>
                 <td style={tdtyle}>{data.sample_name}</td>
-                <td>{data.result_hpv_16}</td> <td>{data.ref_hpv_16}</td>
-                <td>{data.result_hpv_18}</td> <td>{data.ref_hpv_18}</td>
-                <td>{data.result_hpv_other}</td> <td>{data.ref_hpv_other}</td>
+                <td style={borderLeft}>{data.result_hpv_16}</td> <td>{data.ref_hpv_16}</td>
+                <td style={borderLeft}>{data.result_hpv_18}</td> <td>{data.ref_hpv_18}</td>
+                <td style={borderLeft}>{data.result_hpv_other}</td> <td style={borderRight} >{data.ref_hpv_other}</td>
                 <td>{isPass ? 'ACCEPTABLE' : 'UNACCEPATBE'}</td>
             </tr>);
             totalSamples += 1;
@@ -126,16 +132,16 @@ class PTPerformanceReport extends React.Component {
                                 <img style={imgStyle} src={this.props.chart1}></img>
                             </td>
                         </tr>
-                        <tr>
+                        <tr style={{ "fontWeight": "bold" }} >
                             <td colSpan={totalTableLength}>MINISTRY OF HEALTH</td>
                         </tr>
-                        <tr>
+                        <tr style={{ "fontWeight": "bold" }} >
                             <td colSpan={totalTableLength}>NATIONAL PUBLIC HEALTH LABORATORIES</td>
                         </tr>
-                        <tr>
+                        <tr style={{ "fontWeight": "bold" }} >
                             <td colSpan={totalTableLength}>KENYA EXTERNAL QUALITY ASSESSMENT SCHEME (KNEQAS)</td>
                         </tr>
-                        <tr>
+                        <tr style={{ "fontWeight": "bold" }} >
                             <td colSpan={totalTableLength}>NATIONAL ONCOLOGY/BIOCHEMISTRY REFERENCE LABORATORY</td>
                         </tr>
                         <tr>
@@ -169,27 +175,22 @@ class PTPerformanceReport extends React.Component {
                         <tr><p></p></tr>
                         <tr>
                             <td colSpan={totalTableLength}>
-                                <table>
+                                <table className='tbBorder'>
 
-                                    <tr>
-                                        <td style={tdtyle} rowSpan={2}>SAMPLE </td>
+                                    <tr style={{ "fontWeight": "bold" }} className='tbBorder'>
+                                        <td style={tdtyle} >SAMPLE </td>
                                         <td colSpan={2}>HR HPV 16 </td>
                                         <td colSpan={2}>HR HPV 18-45 </td>
                                         <td colSpan={2}>Others HR HPV</td>
-                                        <td rowSpan={2}>PERFORMANCE</td>
+                                        <td >PERFORMANCE</td>
                                     </tr>
 
-                                    <tr>
-
-                                        <td>Results</td>
-                                        <td>Expected</td>
-
-                                        <td>Results</td>
-                                        <td>Expected</td>
-
-                                        <td>Results</td>
-                                        <td>Expected</td>
-
+                                    <tr style={{ "fontWeight": "bold" }} className='tbBorder'>
+                                        <td></td>
+                                        <td style={borderLeft}>Results</td>  <td>Expected</td>
+                                        <td style={borderLeft}>Results</td>  <td>Expected</td>
+                                        <td style={borderLeft}>Results</td> <td style={borderRight}>Expected</td>
+                                        <td></td>
                                     </tr>
                                     {results}
                                 </table>
@@ -216,9 +217,9 @@ class PTPerformanceReport extends React.Component {
                                 <p><strong>Testing scheme information:</strong></p>
 
                                 <ol className="report">
-                                    <li>Molecular EID PT is a qualitative scheme.</li>
-                                    <li>The panel samples come as dry blood spots.</li>
-                                    <li>The PT samples have been fully characterised for the assigned qual HIV status.</li>
+                                    <li>ONCOLOGY HPV PT is a qualitative scheme.</li>
+                                    <li>The panel samples come as dried samples.</li>
+                                    <li>The PT samples have been fully characterised for the assigned qualitative HPV status.</li>
                                     <li>The reference values are used to grade the participants.</li>
                                     <li>The panel samples have been tested for stability and are stable.</li>
                                     <li>Homogeneity was done using systematic random sampling and the results were the same as the expected results.</li>
@@ -235,23 +236,40 @@ class PTPerformanceReport extends React.Component {
                             </td>
                         </tr>
                         <tr><p></p></tr>
-                        <tr><p></p></tr>
+
+                        <tr >
+                            <td colSpan={4} style={{ "textAlign": "left", "marginBottom": "0px" }} >
+                                <strong>Documentation of Report Review:</strong>
+                                We the undersigned, have read and reviewed the above Xpert MTB/RIF performance evaluation report. If the final score is less than 100% we have downloaded the root cause analysis and corrective actions forms from ePT, completed, and attached them to this report. Performance report and any attachments must be filed and retained as documentation.
+                            </td>
+                        </tr>
+
                         <tr>
+                            <td colSpan={totalTableLength}>
+                                <hr />
+                            </td>
+                        </tr>
+                        <tr><p></p></tr>
+
+                        <tr style={{ "fontWeight": "bold" }} >
                             <td style={paragraphStyle} colSpan={totalTableLength}>
                                 <p>Kenya External Public Health Laboratory(KNEQAS)</p>
                                 <p>ONCOLOGY HPV Proficiency Testing</p>
                             </td>
                         </tr>
-                        <tr>
+                        <tr style={{ "fontWeight": "bold" }} >
                             <td style={paragraphStyle} colSpan={totalTableLength}>
                                 <p>KNEQAS QA: Charity Maina</p>
                                 <p>ONCOLOGY SCOPE Coordinator: Francis Tawuo</p>
                             </td>
                         </tr>
-
                         <tr><p></p></tr>
-                        <tr><p></p></tr>
-                        <tr >
+                        <tr>
+                            <td colSpan={totalTableLength}>
+                                <hr />
+                            </td>
+                        </tr>
+                        <tr style={{ "fontWeight": "bold" }} >
                             <td colSpan={4} style={paragraphStyle} >
                                 Final Report Authorized By:
                             </td>
@@ -259,7 +277,7 @@ class PTPerformanceReport extends React.Component {
                                 Date:
                             </td>
                         </tr>
-                        <tr >
+                        <tr style={{ "fontWeight": "bold" }} >
                             <td colSpan={4} style={paragraphStyle} >
                                 Final Results Released By:
                             </td>
