@@ -226,13 +226,23 @@ class SubmitResults extends React.Component {
 
         let samples = this.state.samples;
         let visualValue = event.target.value;
+        if (sample_id in samples) {
+            let results = samples[sample_id]; //{ '16': null, '18': null, 'other': null, 'name': '' }
+            results[event.target.getAttribute('data-id')] = visualValue;
+            samples[sample_id] = results;
+            this.setState({
+                samples: samples
+            })
+        } else {
+            samples[sample_id] = { '16': null, '18': null, 'other': null, 'name': '' }
+            let results = samples[sample_id]; //{ '16': null, '18': null, 'other': null, 'name': '' }
+            results[event.target.getAttribute('data-id')] = visualValue;
+            samples[sample_id] = results;
+            this.setState({
+                samples: samples
+            })
+        }
 
-        let results = samples[sample_id]; //{ '16': null, '18': null, 'other': null, 'name': '' }
-        results[event.target.getAttribute('data-id')] = visualValue;
-        samples[sample_id] = results;
-        this.setState({
-            samples: samples
-        })
     }
 
 
