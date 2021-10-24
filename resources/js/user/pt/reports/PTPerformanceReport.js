@@ -71,13 +71,13 @@ class PTPerformanceReport extends React.Component {
 
     render() {
         const imgStyle = {
-            // width: "70%"
+            width: "80px"
         };
         let tdtyle = {
             textAlign: 'left',
         }
         let paragraphStyle = {
-            lineHeight: '15px',
+            lineHeight: '17px',
             textAlign: 'left',
             marginBottom: '0px'
         }
@@ -124,7 +124,7 @@ class PTPerformanceReport extends React.Component {
         return (
             <React.Fragment>
 
-                <table style={{ "paddingLeft": "5px", "paddingRight": "5px" }} className="unstrip table table-sm no-table-border"
+                <table className="unstrip table table-sm no-table-border"
                     ref={el => (this.componentRef = el)}>
                     <tbody >
                         <tr >
@@ -133,45 +133,37 @@ class PTPerformanceReport extends React.Component {
                             </td>
                         </tr>
                         <tr style={{ "fontWeight": "bold" }} >
-                            <td colSpan={totalTableLength}>MINISTRY OF HEALTH</td>
+                            <td style={{ "lineHeight": "8px" }} colSpan={totalTableLength}>
+                                <p>MINISTRY OF HEALTH</p>
+                                <p>NATIONAL PUBLIC HEALTH LABORATORIES</p>
+                                <p>KENYA EXTERNAL QUALITY ASSESSMENT SCHEME (KNEQAS)</p>
+                                <p>NATIONAL ONCOLOGY/BIOCHEMISTRY REFERENCE LABORATORY</p>
+                                <p style={{ "fontWeight": "normal" }}>P.O Box 20750 - 00202 NAIROBI Email: nphlpt@nphl.go.ke Help Desk: helpdesk.nphl.go.ke</p>
+                            </td>
                         </tr>
-                        <tr style={{ "fontWeight": "bold" }} >
-                            <td colSpan={totalTableLength}>NATIONAL PUBLIC HEALTH LABORATORIES</td>
-                        </tr>
-                        <tr style={{ "fontWeight": "bold" }} >
-                            <td colSpan={totalTableLength}>KENYA EXTERNAL QUALITY ASSESSMENT SCHEME (KNEQAS)</td>
-                        </tr>
-                        <tr style={{ "fontWeight": "bold" }} >
-                            <td colSpan={totalTableLength}>NATIONAL ONCOLOGY/BIOCHEMISTRY REFERENCE LABORATORY</td>
-                        </tr>
-                        <tr>
-                            <td colSpan={totalTableLength}>P.O Box 20750 - 00202 NAIROBI Email: nphlpt@nphl.go.ke Help Desk: helpdesk.nphl.go.ke</td>
-                        </tr>
-                        <tr><p></p></tr>
                         <tr><p></p></tr>
                         <tr style={{ "marginTop": "5px" }}>
 
-                            <td colSpan={3} style={tdtyle}>
+                            <td style={tdtyle}>
                                 <div><strong>Lab Code:</strong> {this.state.labCode}</div>
                                 <div><strong>Shipment Date:</strong>  {this.state.shipmentDate}</div>
                                 <div><strong>Specimen Receipt Date:</strong>  {this.state.specimenReceiptDate}</div>
                                 <div><strong>Kit Lot Number:</strong>  {this.state.kitLotNumber}</div>
 
                             </td>
-                            <td colSpan={2} >
+                            <td  >
                                 <div><strong>Lab Name:</strong>  {this.state.labName}</div>
                                 <div><strong>Result Submission Date:</strong>  {this.state.resultSubmissionDate}</div>
                                 <div><strong>Testing Date:</strong>  {this.state.testingDate}</div>
                                 <div><strong>Kit Expiration Date:</strong>  {this.state.kitExpirationDate}</div>
 
                             </td>
-                            <td colSpan={3} style={{ 'textAlign': 'right' }}>
+                            <td style={{ 'textAlign': 'right' }}>
                                 <div><strong>Phone No:</strong>  {this.state.phoneNo}</div>
                                 <div><strong>Platform:</strong>  {this.state.platform}</div>
                             </td>
 
                         </tr>
-                        <tr><p></p></tr>
                         <tr><p></p></tr>
                         <tr>
                             <td colSpan={totalTableLength}>
@@ -197,11 +189,9 @@ class PTPerformanceReport extends React.Component {
                             </td>
                         </tr>
 
-
-                        <tr><p></p></tr>
                         <tr><p></p></tr>
                         <tr>
-                            <td style={tdtyle} colSpan={totalTableLength}>
+                            <td style={paragraphStyle} colSpan={totalTableLength}>
                                 <strong>Expert comment:</strong> Thank you for participating in KNEQAS HPV PT.
                                 Your overall performance: Your EQA performance is <strong>{(passedScore / totalSamples) * 100}&#37; {isPassOverallScore ? 'ACCEPATBLE' : 'UNACCEPATBE'}</strong>. The
                                 expected performance outcome was 100% whereby, each sample was scored 20 marks.
@@ -209,8 +199,6 @@ class PTPerformanceReport extends React.Component {
                             </td>
                         </tr>
 
-
-                        <tr><p></p></tr>
                         <tr><p></p></tr>
                         <tr>
                             <td style={paragraphStyle} colSpan={totalTableLength}>
@@ -235,9 +223,8 @@ class PTPerformanceReport extends React.Component {
                                 <hr />
                             </td>
                         </tr>
-                        <tr><p></p></tr>
 
-                        <tr >
+                        <tr style={paragraphStyle} >
                             <td colSpan={4} style={{ "textAlign": "left", "marginBottom": "0px" }} >
                                 <strong>Documentation of Report Review:</strong>
                                 We the undersigned, have read and reviewed the above Xpert MTB/RIF performance evaluation report. If the final score is less than 100% we have downloaded the root cause analysis and corrective actions forms from ePT, completed, and attached them to this report. Performance report and any attachments must be filed and retained as documentation.
@@ -270,18 +257,18 @@ class PTPerformanceReport extends React.Component {
                             </td>
                         </tr>
                         <tr style={{ "fontWeight": "bold" }} >
-                            <td colSpan={4} style={paragraphStyle} >
+                            <td style={paragraphStyle} >
                                 Final Report Authorized By:
                             </td>
-                            <td colSpan={2} style={paragraphStyle} >
+                            <td style={paragraphStyle} >
                                 Date:
                             </td>
                         </tr>
                         <tr style={{ "fontWeight": "bold" }} >
-                            <td colSpan={4} style={paragraphStyle} >
+                            <td style={paragraphStyle} >
                                 Final Results Released By:
                             </td>
-                            <td colSpan={2} style={paragraphStyle} >
+                            <td style={paragraphStyle} >
                                 Date:
                             </td>
                         </tr>
