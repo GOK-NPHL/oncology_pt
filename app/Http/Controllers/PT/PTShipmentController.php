@@ -450,7 +450,7 @@ class PTShipmentController extends Controller
                     "pt_samples.hpv_other as ref_hpv_other",
                 ]);
 
-            return ['metadata' => $shipmentsResponses, "resulsts" => $shipmentsResponsesResult];
+            return ['metadata' => $shipmentsResponses, "results" => $shipmentsResponsesResult];
         } catch (Exception $ex) {
             return response()->json(['Message' => 'Could fetch report data: ' . $ex->getMessage()], 500);
         }

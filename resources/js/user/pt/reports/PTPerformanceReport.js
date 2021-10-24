@@ -21,7 +21,8 @@ class PTPerformanceReport extends React.Component {
             testingDate: '',
             kitExpiration: '',
             phoneNo: '',
-            platform: ''
+            platform: '',
+            results: []
         }
 
 
@@ -49,6 +50,7 @@ class PTPerformanceReport extends React.Component {
 
                     this.setState({
                         data: response,
+                        results: response['results'],
                         labCode: response['metadata'][0].code,
                         shipmentDate: response['metadata'][0].shipment_date,
                         specimenReceiptDate: response['metadata'][0].kit_date_received,
@@ -80,10 +82,16 @@ class PTPerformanceReport extends React.Component {
             marginBottom: '0px'
         }
         let totalTableLength = 8;
+
+        this.state.results.map((data) => {
+            console.log(data.result_hpv_16)
+        })
+
         return (
             <React.Fragment>
 
-                <table className="unstrip table table-sm no-table-border" ref={el => (this.componentRef = el)}>
+                <table style={{ "paddingLeft": "5px", "paddingRight": "5px" }} className="unstrip table table-sm no-table-border"
+                    ref={el => (this.componentRef = el)}>
                     <tbody >
                         <tr >
                             <td colSpan={totalTableLength}>
@@ -151,6 +159,21 @@ class PTPerformanceReport extends React.Component {
                             <td>Expected</td>
 
                         </tr>
+
+                        {
+                            this.state.results.map((data) => {
+
+                                return <tr key={uuidv4()}>
+                                    <td></td>
+                                    <td>{data.result_hpv_16}</td> <td>{data.ref_hpv_16}</td>
+                                    <td>{data.result_hpv_18}</td> <td>{data.ref_hpv_18}</td>
+                                    <td>{data.result_hpv_other}</td> <td>{data.ref_hpv_other}</td>
+                                    <td></td>
+                                </tr>
+                            })
+                        }
+
+
                         <tr><p></p></tr>
                         <tr><p></p></tr>
                         <tr>
