@@ -113,9 +113,9 @@ class PTPerformanceReport extends React.Component {
             }
             results.push(<tr className='tbBorder' key={uuidv4()}>
                 <td style={tdtyle}>{data.sample_name}</td>
-                <td style={borderLeft}>{data.result_hpv_16}</td> <td>{data.ref_hpv_16}</td>
-                <td style={borderLeft}>{data.result_hpv_18}</td> <td>{data.ref_hpv_18}</td>
-                <td style={borderLeft}>{data.result_hpv_other}</td> <td style={borderRight} >{data.ref_hpv_other}</td>
+                <td style={borderLeft}>{data.result_hpv_16 ? data.result_hpv_16 : 'No Result'}</td> <td>{data.ref_hpv_16}</td>
+                <td style={borderLeft}>{data.result_hpv_18 ? data.result_hpv_18 : 'No Result'}</td> <td>{data.ref_hpv_18}</td>
+                <td style={borderLeft}>{data.result_hpv_other ? data.result_hpv_other : 'No Result'}</td> <td style={borderRight} >{data.ref_hpv_other}</td>
                 <td>{isPass ? 'ACCEPTABLE' : 'UNACCEPATBE'}</td>
             </tr>);
             totalSamples += 1;
@@ -124,7 +124,7 @@ class PTPerformanceReport extends React.Component {
         return (
             <React.Fragment>
                 <ReactToPrint
-                    trigger={() => <button style={{ textAlign: 'center', backgroundColor: 'lemonchiffon'}}>Download report</button>}
+                    trigger={() => <button style={{ textAlign: 'center', backgroundColor: 'lemonchiffon' }}>Download report</button>}
                     content={() => this.componentRef}
                 />
                 <table className="unstrip table table-sm no-table-border"

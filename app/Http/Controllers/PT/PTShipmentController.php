@@ -438,8 +438,8 @@ class PTShipmentController extends Controller
 
             $shipmentsResponsesResult = DB::table("pt_shipements")->distinct()
                 ->join('ptsubmissions', 'ptsubmissions.pt_shipements_id', '=', 'pt_shipements.id')
-                ->join('pt_submission_results', 'pt_submission_results.ptsubmission_id', '=', 'ptsubmissions.id')
                 ->join('pt_samples', 'pt_samples.ptshipment_id', '=', 'pt_shipements.id')
+                ->leftJoin('pt_submission_results', 'pt_submission_results.sample_id', '=', 'pt_samples.id')
                 ->where('ptsubmissions.id', $request->id)
                 ->get([
                     "pt_submission_results.hpv_16 as result_hpv_16",
