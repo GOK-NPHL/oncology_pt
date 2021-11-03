@@ -298,10 +298,10 @@ class PTShipmentController extends Controller
                 "pt_samples.id as sample_id",
                 "pt_samples.name as sample_name",
                 "ptsubmissions.id as submission_id",
+                "users.id as user_id",
                 "readiness_answers.id as is_readiness_answered", //check if readiness for this shipment id filled
                 "pt_shipements.readiness_id as readiness_id",
                 "readiness_approvals.id as readiness_approval_id",
-                "users.id as user_id",
             );
 
             if ($submission_id == null) {
