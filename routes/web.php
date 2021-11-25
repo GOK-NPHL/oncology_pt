@@ -37,6 +37,7 @@ Route::get('registration', [CustomAuthController::class, 'registration'])->name(
 Route::post('custom-registration', [CustomAuthController::class, 'customRegistration'])->name('register.custom');
 Route::get('logout', [CustomAuthController::class, 'signOut'])->name('logout');
 Route::get('participant-pt-demographics', [QCParticipantController::class, 'participantDemographicsPage'])->name('participant-pt-demographics')->middleware('auth');
+Route::get('participant-pt-reports', [QCParticipantController::class, 'participantPTReportPage'])->name('participant-pt-reports')->middleware('auth');
 
 Route::get('participant-home', [QCParticipantController::class, 'participantHome'])->name('participant-home')->middleware('auth');
 Route::get('participant-pt-home', [QCParticipantController::class, 'participantPTHome'])->name('participant-pt-home')->middleware('auth');;
@@ -80,4 +81,7 @@ Route::get('get-shipment-response-form/{resultSubmissionId}', [PTAdminController
 
 Route::get('pt-shipment-report-list', [PTAdminController::class, 'getShipmentReportList'])->name('pt-shipment-report-list');
 Route::get('get-shipment-report-responses/{shipmentId}', [PTAdminController::class, 'getShipmentReportResponse'])->name('get-shipment-report-response');
+
 Route::get('get-shipment-response-performance/{resultSubmissionId}', [PTAdminController::class, 'getShipmentResponsePerformance']);
+
+Route::get('get-participant-shipment-response-performance/{resultSubmissionId}', [QCParticipantController::class, 'getParticipantShipmentResponsePerformance']);

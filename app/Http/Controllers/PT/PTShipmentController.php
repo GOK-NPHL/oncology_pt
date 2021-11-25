@@ -21,6 +21,8 @@ class PTShipmentController extends Controller
     {
 
         try {
+            Log::info("The user id");
+            Log::info($request->userId);
 
             $readinessesWithLabId = PtShipement::select(
                 "pt_shipements.id",
@@ -30,14 +32,21 @@ class PTShipmentController extends Controller
                 "pt_shipements.pass_mark",
                 DB::raw('count(*) as participant_count')
             )->join('laboratory_readiness', 'laboratory_readiness.readiness_id', '=', 'pt_shipements.readiness_id')
-                ->groupBy(
-                    "pt_shipements.id",
-                    'pt_shipements.round_name',
-                    'pt_shipements.readiness_id',
-                    "pt_shipements.updated_at",
-                    "pt_shipements.pass_mark",
-                    "pt_shipements.code",
-                );
+                ->join('laboratories', 'laboratories.id', '=', 'laboratory_readiness.laboratory_id');
+
+            $readinessesWithLabId = $readinessesWithLabId
+                ->join('users', 'users.id', '=', 'users.laboratory_id')
+                ->where('users.id', $request->userId);
+
+
+            $readinessesWithLabId = $readinessesWithLabId->groupBy(
+                "pt_shipements.id",
+                'pt_shipements.round_name',
+                'pt_shipements.readiness_id',
+                "pt_shipements.updated_at",
+                "pt_shipements.pass_mark",
+                "pt_shipements.code",
+            );
 
             $readinessesWithNullLabId = PtShipement::select(
                 "pt_shipements.id",
@@ -47,8 +56,13 @@ class PTShipmentController extends Controller
                 "pt_shipements.pass_mark",
                 DB::raw('count(*) as participant_count')
             )->join('laboratory_pt_shipement', 'laboratory_pt_shipement.pt_shipement_id', '=', 'pt_shipements.id')
-                ->groupBy('laboratory_pt_shipement.pt_shipement_id');
+                ->join('laboratories', 'laboratories.id', '=', 'laboratory_pt_shipement.laboratory_id');
 
+            $readinessesWithNullLabId = $readinessesWithNullLabId
+                ->join('users', 'users.id', '=', 'users.laboratory_id')
+                ->where('users.id', $request->userId);
+
+            $readinessesWithNullLabId = $readinessesWithNullLabId->groupBy('laboratory_pt_shipement.pt_shipement_id');
 
             $finalQuery = $readinessesWithLabId->union($readinessesWithNullLabId)->orderBy('last_update', 'desc')->get();
 
@@ -412,44 +426,58 @@ class PTShipmentController extends Controller
                 ->join('pt_submission_results', 'pt_submission_results.ptsubmission_id', '=', 'ptsubmissions.id')
                 ->join('laboratories', 'ptsubmissions.lab_id', '=', 'laboratories.id')
                 ->join('platforms', 'ptsubmissions.platform_id', '=', 'platforms.id')
-                ->join('users', 'ptsubmissions.user_id', '=', 'users.id')
-                ->where('ptsubmissions.id', $request->id)
-                ->get([
-                    "pt_shipements.id",
-                    "pt_shipements.start_date as shipment_date",
-                    "pt_shipements.code",
-                    "pt_shipements.end_date",
-                    "pt_shipements.round_name as name",
-                    "laboratories.id as lab_id",
-                    "users.name as fname",
-                    "users.second_name as sname",
-                    "laboratories.phone_number",
-                    "laboratories.lab_name",
-                    "laboratories.email",
-                    "ptsubmissions.id as ptsubmission_id",
-                    "ptsubmissions.created_at as _first_submission_date",
-                    "ptsubmissions.updated_at  as update_submission_date",
-                    "ptsubmissions.testing_date",
-                    "ptsubmissions.kit_expiry_date",
-                    "ptsubmissions.kit_date_received",
-                    "ptsubmissions.pt_lot_no",
-                    "platforms.name as platform_name"
-                ]);
+                ->join('users', 'ptsubmissions.user_id', '=', 'users.id');
+
+            if ($request->is_part == 1) {
+                $shipmentsResponses->where('ptsubmissions.lab_id', $user->laboratory_id)
+                    ->where('ptsubmissions.pt_shipements_id', $request->id);
+            } else {
+                $shipmentsResponses->where('ptsubmissions.id', $request->id);
+            }
+
+            $shipmentsResponses = $shipmentsResponses->get([
+                "pt_shipements.id",
+                "pt_shipements.start_date as shipment_date",
+                "pt_shipements.code",
+                "pt_shipements.end_date",
+                "pt_shipements.round_name as name",
+                "laboratories.id as lab_id",
+                "users.name as fname",
+                "users.second_name as sname",
+                "laboratories.phone_number",
+                "laboratories.lab_name",
+                "laboratories.email",
+                "ptsubmissions.id as ptsubmission_id",
+                "ptsubmissions.created_at as _first_submission_date",
+                "ptsubmissions.updated_at  as update_submission_date",
+                "ptsubmissions.testing_date",
+                "ptsubmissions.kit_expiry_date",
+                "ptsubmissions.kit_date_received",
+                "ptsubmissions.pt_lot_no",
+                "platforms.name as platform_name"
+            ]);
 
             $shipmentsResponsesResult = DB::table("pt_shipements")->distinct()
                 ->join('ptsubmissions', 'ptsubmissions.pt_shipements_id', '=', 'pt_shipements.id')
                 ->join('pt_samples', 'pt_samples.ptshipment_id', '=', 'pt_shipements.id')
-                ->leftJoin('pt_submission_results', 'pt_submission_results.sample_id', '=', 'pt_samples.id')
-                ->where('ptsubmissions.id', $request->id)
-                ->get([
-                    "pt_submission_results.hpv_16 as result_hpv_16",
-                    "pt_submission_results.hpv_18 as result_hpv_18",
-                    "pt_submission_results.hpv_other as result_hpv_other",
-                    "pt_samples.hpv_16 as ref_hpv_16",
-                    "pt_samples.hpv_18 as ref_hpv_18",
-                    "pt_samples.hpv_other as ref_hpv_other",
-                    "pt_samples.name as sample_name"
-                ]);
+                ->leftJoin('pt_submission_results', 'pt_submission_results.sample_id', '=', 'pt_samples.id');
+
+            if ($request->is_part == 1) {
+                $shipmentsResponsesResult->where('ptsubmissions.lab_id', $user->laboratory_id)
+                    ->where('ptsubmissions.pt_shipements_id', $request->id);
+            } else {
+                $shipmentsResponses->where('ptsubmissions.id', $request->id);
+            }
+
+            $shipmentsResponsesResult = $shipmentsResponsesResult->get([
+                "pt_submission_results.hpv_16 as result_hpv_16",
+                "pt_submission_results.hpv_18 as result_hpv_18",
+                "pt_submission_results.hpv_other as result_hpv_other",
+                "pt_samples.hpv_16 as ref_hpv_16",
+                "pt_samples.hpv_18 as ref_hpv_18",
+                "pt_samples.hpv_other as ref_hpv_other",
+                "pt_samples.name as sample_name"
+            ]);
 
             return ['metadata' => $shipmentsResponses, "results" => $shipmentsResponsesResult];
         } catch (Exception $ex) {

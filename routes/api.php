@@ -63,7 +63,7 @@ Route::post('/create_readiness', [PTReadinessController::class, 'saveReadiness']
 Route::get('/get_readiness_by_id/{id}', [PTReadinessController::class, 'getReadinessById'])->middleware('auth:admin');
 Route::post('/edit_readiness', [PTReadinessController::class, 'editReadiness'])->name('edit_readiness')->middleware('auth:admin');
 
-Route::get('/get_shipments', [PTShipmentController::class, 'getShipments'])->name('get_shipment')->middleware('auth:admin');
+Route::get('/get_shipments/{userId}', [PTShipmentController::class, 'getShipments'])->name('get_shipment');
 Route::post('/create_shipment', [PTShipmentController::class, 'saveShipment'])->name('create_shipment')->middleware('auth:admin');
 Route::post('/update_shipment', [PTShipmentController::class, 'updateShipment'])->name('update_shipment')->middleware('auth:admin');
 Route::get('/get_shipment_by_id/{id}', [PTShipmentController::class, 'getShipmentById'])->middleware('auth:admin');
@@ -86,4 +86,6 @@ Route::get('/get_shipment_responses/{id}', [PTShipmentController::class, 'getShi
 
 Route::get('/get_sample_response_result/{id}', [PTShipmentController::class, 'getUserSampleResponseResult'])->middleware('auth:admin');
 
-Route::get('/get_shipment_response_report/{id}', [PTShipmentController::class, 'getShipmentSesponseReport'])->middleware('auth:admin');
+Route::get('/get_shipment_response_report/{id}/{is_part}', [PTShipmentController::class, 'getShipmentSesponseReport']);
+
+Route::get('/get_user_id', [CommonsController::class, 'getUserId']);

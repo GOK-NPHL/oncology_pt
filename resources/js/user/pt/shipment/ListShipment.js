@@ -29,7 +29,7 @@ class ListShipment extends React.Component {
 
     fetchListing() {
         (async () => {
-            let response = await FetchShipments();
+            let response = await FetchShipments(this.props.userId);
             this.setState({
                 data: response
             });
@@ -38,9 +38,12 @@ class ListShipment extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.currentPage !== this.props.currentPage) {
-            this.fetchListing();
+            this.fetchListing(this.props.userId);
         }
 
+        if (prevProps.userId !== this.props.userId) {
+            this.fetchListing(this.props.userId);
+        }
     }
 
     handlePageChange(pageNumber) {
@@ -101,16 +104,29 @@ class ListShipment extends React.Component {
                                     </a> : ''
                             }
 
-                            <a
-                                onClick={() => {
-                                    this.props.page != 'report' ?
-                                        window.location.assign('get-shipment-responses/' + element.id) :
-                                        window.location.assign('get-shipment-report-responses/' + element.id)
-                                }}
-                                data-toggle="tooltip" data-placement="top" title="View shipment responses"
-                                className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                <i className="fas fa-file-import"></i>
-                            </a>
+                            {
+                                this.props.isParticipant ?
+                                    <a
+                                        onClick={() => {
+                                            window.location.assign('/get-participant-shipment-response-performance/' + element.id)
+                                        }}
+                                        data-toggle="tooltip" data-placement="top" title="View performance report"
+                                        className="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
+                                        <i className="fas fa-file-pdf"></i> Performance
+                                    </a>
+                                    :
+                                    <a
+                                        onClick={() => {
+                                            this.props.page != 'report' ?
+                                                window.location.assign('get-shipment-responses/' + element.id) :
+                                                window.location.assign('get-shipment-report-responses/' + element.id)
+                                        }}
+                                        data-toggle="tooltip" data-placement="top" title="View shipment responses"
+                                        className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                        <i className="fas fa-file-import"></i>
+                                    </a>
+                            }
+
 
                         </td>
                     }

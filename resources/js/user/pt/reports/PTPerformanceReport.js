@@ -31,15 +31,22 @@ class PTPerformanceReport extends React.Component {
     componentDidMount() {
         // alert("pdf docuemnts 1")
         let pathname = window.location.pathname;
-
+        let isPart=0;
         let pathObject = matchPath(pathname, {
             path: `/get-shipment-response-performance/:submissionId`,
         });
 
+        if (!pathObject) {
+            pathObject = matchPath(pathname, {
+                path: `/get-participant-shipment-response-performance/:submissionId`,
+            });
+            isPart = 1;
+        }
+
         if (pathObject) {
             (async () => {
 
-                let response = await FetchShipmentResponsesReport(pathObject.params.submissionId);
+                let response = await FetchShipmentResponsesReport(pathObject.params.submissionId, isPart);
 
                 if (response.status == 500) {
                     this.setState({
