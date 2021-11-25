@@ -527,10 +527,10 @@ export async function UpdateShipment(shipement) {
     }
 }
 
-export async function FetchShipments(userId) {
+export async function FetchShipments(userId, filterEmpty) {
 
     try {
-        const response = await axios.get(`${settings.serverBaseApi}/get_shipments/` +userId);
+        const response = await axios.get(`${settings.serverBaseApi}/get_shipments/` + userId + '/' + filterEmpty);
         const responseData = response.data;
         return responseData;
     } catch (err) {
@@ -602,7 +602,7 @@ export async function FetchShipmentResponses(id) {
 export async function FetchShipmentResponsesReport(id, isPart) {
 
     try {
-        const response = await axios.get(`${settings.serverBaseApi}/get_shipment_response_report/` + id+ '/'+ isPart);
+        const response = await axios.get(`${settings.serverBaseApi}/get_shipment_response_report/` + id + '/' + isPart);
         const responseData = response.data;
         return responseData;
     } catch (err) {

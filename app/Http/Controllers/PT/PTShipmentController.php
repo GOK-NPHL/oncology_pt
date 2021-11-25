@@ -21,8 +21,6 @@ class PTShipmentController extends Controller
     {
 
         try {
-            Log::info("The user id");
-            Log::info($request->userId);
 
             $readinessesWithLabId = PtShipement::select(
                 "pt_shipements.id",
@@ -33,6 +31,11 @@ class PTShipmentController extends Controller
                 DB::raw('count(*) as participant_count')
             )->join('laboratory_readiness', 'laboratory_readiness.readiness_id', '=', 'pt_shipements.readiness_id')
                 ->join('laboratories', 'laboratories.id', '=', 'laboratory_readiness.laboratory_id');
+
+            if ($request->filterEmpty == 1) {
+                $readinessesWithLabId = $readinessesWithLabId
+                    ->join('ptsubmissions', 'ptsubmissions.pt_shipements_id', '=', 'pt_shipements.id');
+            }
 
             $readinessesWithLabId = $readinessesWithLabId
                 ->join('users', 'users.id', '=', 'users.laboratory_id')
@@ -57,6 +60,11 @@ class PTShipmentController extends Controller
                 DB::raw('count(*) as participant_count')
             )->join('laboratory_pt_shipement', 'laboratory_pt_shipement.pt_shipement_id', '=', 'pt_shipements.id')
                 ->join('laboratories', 'laboratories.id', '=', 'laboratory_pt_shipement.laboratory_id');
+
+            if ($request->filterEmpty == 1) {
+                $readinessesWithNullLabId = $readinessesWithNullLabId
+                    ->join('ptsubmissions', 'ptsubmissions.pt_shipements_id', '=', 'pt_shipements.id');
+            }
 
             $readinessesWithNullLabId = $readinessesWithNullLabId
                 ->join('users', 'users.id', '=', 'users.laboratory_id')

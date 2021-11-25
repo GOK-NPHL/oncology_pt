@@ -46,6 +46,7 @@ class Reports extends React.Component {
             <React.Fragment>
                 <ListShipment
                     page='report'
+                    filterEmpty={1}
                     isParticipant={true} userId={this.state.userId} isShowEditShipmentPage={false} toggleView={() => { }} isShowNewShipmentPage={false} /> :
             </React.Fragment>
         );

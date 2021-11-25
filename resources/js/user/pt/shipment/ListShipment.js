@@ -29,7 +29,7 @@ class ListShipment extends React.Component {
 
     fetchListing() {
         (async () => {
-            let response = await FetchShipments(this.props.userId);
+            let response = await FetchShipments(this.props.userId, this.props.filterEmpty);
             this.setState({
                 data: response
             });
