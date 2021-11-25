@@ -188,6 +188,7 @@ class ParticipantController extends Controller
             $usersDemo = User::select(
                 'users.id as user_id',
                 'users.name',
+                'users.email as user_email',
                 'laboratories.id as lab_id',
                 'users.second_name',
                 'users.phone_number as user_phone_number',

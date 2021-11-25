@@ -37,7 +37,7 @@ class Demographics extends React.Component {
                 id: userDemographics[0].user_id,
                 firstName: userDemographics[0].name,
                 secondName: userDemographics[0].second_name,
-                email: userDemographics[0].email,
+                email: userDemographics[0].user_email,
                 phoneNumber: userDemographics[0].user_phone_number,
             })
         })();
