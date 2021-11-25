@@ -44,6 +44,7 @@ class Reports extends React.Component {
 
         return (
             <React.Fragment>
+                <h3>Shipments Reports</h3>
                 <ListShipment
                     page='report'
                     filterEmpty={1}
