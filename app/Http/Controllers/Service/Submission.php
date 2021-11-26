@@ -194,16 +194,22 @@ class Submission extends Controller
                 'pt_shipements.test_instructions',
 
             )->join('laboratories', 'laboratories.id', '=', 'ptsubmissions.lab_id')
+                ->join('users', 'users.laboratory_id', '=', 'laboratories.id')
                 ->join('pt_shipements', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id')
                 // ->where('ptsubmissions.lab_id', '=', $user->laboratory_id)
                 ->where('ptsubmissions.id', '=', $request->id)
+                ->where('users.id', '=', $user->id)
                 ->get();
 
 
             $submissionResults = DB::table('pt_submission_results')
 
-                ->select('sample_id', 'hpv_16 as 16', 'hpv_18 as 18', 'hpv_other as other')
-                ->where('ptsubmission_id', $request->id);
+                ->select('pt_submission_results.sample_id', 'hpv_16 as 16', 'hpv_18 as 18', 'hpv_other as other')
+                ->join('ptsubmissions', 'ptsubmissions.id', '=', 'pt_submission_results.ptsubmission_id')
+                ->join('laboratories', 'laboratories.id', '=', 'ptsubmissions.lab_id')
+                ->join('users', 'users.laboratory_id', '=', 'laboratories.id')
+                ->where('ptsubmission_id', $request->id)
+                ->where('users.id', '=', $user->id);
             $submissionResults = $submissionResults->get();
             $payload = ['data' => $submission[0], 'test_results' => $submissionResults];
 

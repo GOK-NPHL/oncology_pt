@@ -43,10 +43,9 @@ class ListShipmentResponse extends React.Component {
 
 
     render() {
-
         return (
             <React.Fragment>
-                <ShipmentResponses userId={this.props.userId} />
+                <ShipmentResponses page={'report'} userId={this.props.userId} />
             </React.Fragment>
         );
     }

@@ -36,10 +36,12 @@ class PTShipmentController extends Controller
                 $readinessesWithLabId = $readinessesWithLabId
                     ->join('ptsubmissions', 'ptsubmissions.pt_shipements_id', '=', 'pt_shipements.id');
             }
+            if ($request->userId != '156f41ed97') {
+                $readinessesWithLabId = $readinessesWithLabId
+                    ->join('users', 'users.id', '=', 'users.laboratory_id')
+                    ->where('users.id', $request->userId);
+            }
 
-            $readinessesWithLabId = $readinessesWithLabId
-                ->join('users', 'users.id', '=', 'users.laboratory_id')
-                ->where('users.id', $request->userId);
 
 
             $readinessesWithLabId = $readinessesWithLabId->groupBy(
@@ -65,10 +67,11 @@ class PTShipmentController extends Controller
                 $readinessesWithNullLabId = $readinessesWithNullLabId
                     ->join('ptsubmissions', 'ptsubmissions.pt_shipements_id', '=', 'pt_shipements.id');
             }
-
-            $readinessesWithNullLabId = $readinessesWithNullLabId
-                ->join('users', 'users.id', '=', 'users.laboratory_id')
-                ->where('users.id', $request->userId);
+            if ($request->userId != '156f41ed97') {
+                $readinessesWithNullLabId = $readinessesWithNullLabId
+                    ->join('users', 'users.id', '=', 'users.laboratory_id')
+                    ->where('users.id', $request->userId);
+            }
 
             $readinessesWithNullLabId = $readinessesWithNullLabId->groupBy('laboratory_pt_shipement.pt_shipement_id');
 
@@ -309,6 +312,8 @@ class PTShipmentController extends Controller
                 $shipments = $shipments->where('ptsubmissions.id', $submission_id);
             }
 
+
+            //when using readiness
             $shipments2 = PtShipement::select( //when using readiness
                 "pt_shipements.id",
                 "pt_shipements.id as pt_shipements_id",
@@ -346,8 +351,11 @@ class PTShipmentController extends Controller
             }
 
             $shipments2 = $shipments2
-                ->union($shipments)
-                ->get();
+                ->union($shipments);
+
+            Log::info($shipments2->toSql());
+
+            $shipments2 = $shipments2->get();
 
             $payload = [];
             $sampleIds = [];

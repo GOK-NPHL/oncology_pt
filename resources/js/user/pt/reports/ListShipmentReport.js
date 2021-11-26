@@ -24,7 +24,13 @@ class ListShipmentReport extends React.Component {
 
         return (
             <React.Fragment>
-                <ListShipment page={'report'} />
+                {/* <ListShipment page={'report'} /> */}
+                <h3>Shipments List</h3>
+                <ListShipment
+                            page='report'
+                            filterEmpty={0}
+                            isParticipant={false} userId={'156f41ed97'} isShowEditShipmentPage={false}
+                            toggleView={()=>{}} isShowNewShipmentPage={false} />
             </React.Fragment>
         );
     }
