@@ -82,6 +82,12 @@ Run below to get into the app continer session:
 sudo docker-compose exec oncologypt_app bash
 ```
 
+running as root
+
+```
+sudo docker-compose  exec -u 0 oncologypt_app bash
+```
+
 you could add -u 0 get into the sudo session in the container.
 
 Next install required dependencies for the application as below:
