@@ -43,8 +43,6 @@ class PTShipmentController extends Controller
                     ->where('users.id', $request->userId);
             }
 
-
-
             $readinessesWithLabId = $readinessesWithLabId->groupBy(
                 "pt_shipements.id",
                 'pt_shipements.round_name',
@@ -53,6 +51,8 @@ class PTShipmentController extends Controller
                 "pt_shipements.pass_mark",
                 "pt_shipements.code",
             );
+
+
 
             $readinessesWithNullLabId = PtShipement::select(
                 "pt_shipements.id",
@@ -287,6 +287,7 @@ class PTShipmentController extends Controller
                 "pt_shipements.test_instructions",
                 "pt_samples.id as sample_id",
                 "pt_samples.name as sample_name",
+                "users.id as user_id",
                 DB::raw("1 as is_readiness_answered"),
                 DB::raw("null as readiness_id"),
                 DB::raw("1 as readiness_approval_id")
@@ -320,16 +321,14 @@ class PTShipmentController extends Controller
                 "pt_shipements.test_instructions",
                 "pt_samples.id as sample_id",
                 "pt_samples.name as sample_name",
-                "ptsubmissions.id as submission_id",
                 "users.id as user_id",
                 "readiness_answers.id as is_readiness_answered", //check if readiness for this shipment id filled
                 "pt_shipements.readiness_id as readiness_id",
                 "readiness_approvals.id as readiness_approval_id",
+
             );
 
-            if ($submission_id == null) {
-                $shipments2 = $shipments2->leftJoin('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id');
-            } else {
+            if ($submission_id != null) {
                 $shipments2 = $shipments2->join('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id');
             }
 
@@ -346,8 +345,7 @@ class PTShipmentController extends Controller
                 $shipments2 = $shipments2->where('ptsubmissions.id', $submission_id);
             }
 
-            $shipments2 = $shipments;
-            // $shipments2->union($shipments);
+            $shipments2 =  $shipments2->union($shipments);
 
             Log::info($shipments2->toSql());
 
@@ -398,7 +396,7 @@ class PTShipmentController extends Controller
 
                     $payload[$lab->id]['test_instructions'] = $lab->test_instructions;
                     $payload[$lab->id]['id'] = $lab->id;
-                    $payload[$lab->id]['pt_shipements_id'] =$lab->pt_shipements_id;
+                    $payload[$lab->id]['pt_shipements_id'] = $lab->pt_shipements_id;
                     $payload[$lab->id]['start_date'] = $lab->start_date;
                     $payload[$lab->id]['code'] = $lab->code;
                     $payload[$lab->id]['end_date'] = $lab->end_date;
