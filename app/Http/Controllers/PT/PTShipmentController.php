@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Laboratory;
 use App\PtSample;
 use App\PtShipement;
+use App\ptsubmission;
 use App\Readiness;
 use App\ReadinessQuestion;
 use Exception;
@@ -259,7 +260,6 @@ class PTShipmentController extends Controller
         }
     }
 
-
     public function getUserSamples()
     {
         return $this->geSamples();
@@ -287,17 +287,14 @@ class PTShipmentController extends Controller
                 "pt_shipements.test_instructions",
                 "pt_samples.id as sample_id",
                 "pt_samples.name as sample_name",
-                "ptsubmissions.id as submission_id",
-                "users.id as user_id",
                 DB::raw("1 as is_readiness_answered"),
                 DB::raw("null as readiness_id"),
                 DB::raw("1 as readiness_approval_id")
 
             );
 
-            if ($submission_id == null) {
-                $shipments = $shipments->leftJoin('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id');
-            } else {
+            if ($submission_id != null) {
+
                 $shipments = $shipments->join('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id');
             }
 
@@ -311,7 +308,6 @@ class PTShipmentController extends Controller
             } else {
                 $shipments = $shipments->where('ptsubmissions.id', $submission_id);
             }
-
 
             //when using readiness
             $shipments2 = PtShipement::select( //when using readiness
@@ -350,52 +346,72 @@ class PTShipmentController extends Controller
                 $shipments2 = $shipments2->where('ptsubmissions.id', $submission_id);
             }
 
-            $shipments2 = $shipments2
-                ->union($shipments);
+            $shipments2 = $shipments;
+            // $shipments2->union($shipments);
 
             Log::info($shipments2->toSql());
 
             $shipments2 = $shipments2->get();
 
+
             $payload = [];
-            $sampleIds = [];
-
-            foreach ($shipments2 as $lab) {
-
-                if (array_key_exists($lab->id, $payload)) {
-                    if (!array_key_exists($lab->sample_id, $sampleIds)) {
-                        $payload[$lab->id]['samples'][] = ['sample_name' => $lab->sample_name, 'sample_id' => $lab->sample_id];
-                        $sampleIds[$lab->sample_id] = 1;
-                    }
-                } else {
-
-                    if (!array_key_exists($lab->sample_id, $sampleIds)) {
-                        $sampleIds[$lab->sample_id] = 1;
-                        $payload[$lab->id] = [];
-                        $payload[$lab->id]['samples'] = [];
-                        $payload[$lab->id]['samples'][] = ['sample_name' => $lab->sample_name, 'sample_id' => $lab->sample_id];
-
-                        $payload[$lab->id]['test_instructions'] = $lab->test_instructions;
-                        $payload[$lab->id]['id'] = $lab->id;
-                        $payload[$lab->id]['pt_shipements_id'] = $lab->pt_shipements_id;
-                        $payload[$lab->id]['start_date'] = $lab->start_date;
-                        $payload[$lab->id]['code'] = $lab->code;
-                        $payload[$lab->id]['end_date'] = $lab->end_date;
-                        $payload[$lab->id]['round_name'] = $lab->round_name;
-                        $payload[$lab->id]['submission_id'] = $lab->submission_id;
-                        $payload[$lab->id]['is_readiness_answered'] = $lab->is_readiness_answered;
-                        $payload[$lab->id]['readiness_id'] = $lab->readiness_id;
-                        $payload[$lab->id]['readiness_approval_id'] = $lab->readiness_approval_id;
-                        $payload[$lab->id]['user_id'] = $lab->user_id;
-                    }
-                }
-            }
+            $payload =  $this->wrapData($payload, $shipments2);
 
             return $payload;
         } catch (Exception $ex) {
             Log::error($ex);
             return response()->json(['Message' => 'Could fetch samples: ' . $ex->getMessage()], 500);
         }
+    }
+
+    private function wrapData($payload, $shipments2)
+    {
+
+        $sampleIds = [];
+        $user = Auth::user();
+
+        foreach ($shipments2 as $lab) {
+
+            $submissionIdQry = ptsubmission::select( //when using readiness
+                "ptsubmissions.id as submission_id",
+            )->join('laboratories', 'laboratories.id', '=', 'ptsubmissions.lab_id')
+                ->where('ptsubmissions.pt_shipements_id', $lab->pt_shipements_id)
+                ->where('laboratories.id', $user->laboratory_id)->get();
+
+            $submissionId = null;
+            foreach ($submissionIdQry as $subIdRS) {
+                $submissionId = $subIdRS->submission_id;
+            }
+
+            if (array_key_exists($lab->id, $payload)) {
+                if (!array_key_exists($lab->sample_id, $sampleIds)) {
+                    $payload[$lab->id]['samples'][] = ['sample_name' => $lab->sample_name, 'sample_id' => $lab->sample_id];
+                    $sampleIds[$lab->sample_id] = 1;
+                }
+            } else {
+
+                if (!array_key_exists($lab->sample_id, $sampleIds)) {
+                    $sampleIds[$lab->sample_id] = 1;
+                    $payload[$lab->id] = [];
+                    $payload[$lab->id]['samples'] = [];
+                    $payload[$lab->id]['samples'][] = ['sample_name' => $lab->sample_name, 'sample_id' => $lab->sample_id];
+
+                    $payload[$lab->id]['test_instructions'] = $lab->test_instructions;
+                    $payload[$lab->id]['id'] = $lab->id;
+                    $payload[$lab->id]['pt_shipements_id'] =$lab->pt_shipements_id;
+                    $payload[$lab->id]['start_date'] = $lab->start_date;
+                    $payload[$lab->id]['code'] = $lab->code;
+                    $payload[$lab->id]['end_date'] = $lab->end_date;
+                    $payload[$lab->id]['round_name'] = $lab->round_name;
+                    $payload[$lab->id]['submission_id'] = $submissionId;
+                    $payload[$lab->id]['is_readiness_answered'] = $lab->is_readiness_answered;
+                    $payload[$lab->id]['readiness_id'] = $lab->readiness_id;
+                    $payload[$lab->id]['readiness_approval_id'] = $lab->readiness_approval_id;
+                    $payload[$lab->id]['user_id'] = $lab->user_id;
+                }
+            }
+        }
+        return $payload;
     }
 
     public function getShipmentResponsesById(Request $request)

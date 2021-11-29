@@ -81,7 +81,7 @@ class PtShipment extends React.Component {
                     this.state.currentPage == 'list' ?
                         // <ListShipment isShowEditShipmentPage={this.state.isShowEditShipmentPage} toggleView={this.toggleView} isShowNewShipmentPage={this.state.isShowNewShipmentPage} /> 
                         <ListShipment
-                            page='report'
+                            // page='report'
                             filterEmpty={0}
                             isParticipant={false} userId={'156f41ed97'} isShowEditShipmentPage={this.state.isShowEditShipmentPage}
                             toggleView={this.toggleView} isShowNewShipmentPage={this.state.isShowNewShipmentPage} />
