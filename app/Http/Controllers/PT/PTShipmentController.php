@@ -39,7 +39,7 @@ class PTShipmentController extends Controller
             }
             if ($request->userId != '156f41ed97') {
                 $readinessesWithLabId = $readinessesWithLabId
-                    ->join('users', 'users.id', '=', 'users.laboratory_id')
+                    ->join('users', 'laboratories.id', '=', 'users.laboratory_id')
                     ->where('users.id', $request->userId);
             }
 
@@ -70,7 +70,7 @@ class PTShipmentController extends Controller
             }
             if ($request->userId != '156f41ed97') {
                 $readinessesWithNullLabId = $readinessesWithNullLabId
-                    ->join('users', 'users.id', '=', 'users.laboratory_id')
+                    ->join('users', 'laboratories.id', '=', 'users.laboratory_id')
                     ->where('users.id', $request->userId);
             }
 
