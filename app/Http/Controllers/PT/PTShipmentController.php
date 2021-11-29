@@ -467,7 +467,7 @@ class PTShipmentController extends Controller
 
             $shipmentsResponses = $shipmentsResponses->get([
                 "pt_shipements.id",
-                "pt_shipements.start_date as shipment_date",
+                "pt_shipements.created_at as shipment_date",
                 "pt_shipements.code",
                 "pt_shipements.end_date",
                 "pt_shipements.round_name as name",
