@@ -166,7 +166,7 @@ class PTPerformanceReport extends React.Component {
                                 <div><strong>Lab Name:</strong>  {this.state.labName}</div>
                                 <div><strong>Result Submission Date:</strong>  {this.state.resultSubmissionDate}</div>
                                 <div><strong>Testing Date:</strong>  {this.state.testingDate}</div>
-                                <div><strong>Xpert HPV Expiry Date :</strong>  {this.state.kitExpirationDate}</div>
+                                <div><strong>Xpert HPV Expiry Date :</strong>  {this.state.kitExpiration}</div>
 
                             </td>
                             <td style={{ 'textAlign': 'right' }}>
