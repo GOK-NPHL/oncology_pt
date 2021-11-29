@@ -446,7 +446,7 @@ class PTShipmentController extends Controller
     }
 
 
-    public function getShipmentSesponseReport(Request $request)
+    public function getShipmentSesponseReport($id,  $is_part)
     {
         $user = Auth::user();
         try {
@@ -458,11 +458,11 @@ class PTShipmentController extends Controller
                 ->join('platforms', 'ptsubmissions.platform_id', '=', 'platforms.id')
                 ->join('users', 'ptsubmissions.user_id', '=', 'users.id');
 
-            if ($request->is_part == 1) {
-                $shipmentsResponses->where('ptsubmissions.lab_id', $user->laboratory_id)
-                    ->where('ptsubmissions.pt_shipements_id', $request->id);
+            if ($is_part == 1) {
+                $shipmentsResponses = $shipmentsResponses->where('ptsubmissions.lab_id', $user->laboratory_id)
+                    ->where('ptsubmissions.pt_shipements_id', $id);
             } else {
-                $shipmentsResponses->where('ptsubmissions.id', $request->id);
+                $shipmentsResponses = $shipmentsResponses->where('ptsubmissions.id', $id);
             }
 
             $shipmentsResponses = $shipmentsResponses->get([
@@ -490,15 +490,13 @@ class PTShipmentController extends Controller
             $shipmentsResponsesResult = DB::table("pt_shipements")->distinct()
                 ->join('ptsubmissions', 'ptsubmissions.pt_shipements_id', '=', 'pt_shipements.id')
                 ->join('pt_samples', 'pt_samples.ptshipment_id', '=', 'pt_shipements.id')
-                ->leftJoin('pt_submission_results', 'pt_submission_results.sample_id', '=', 'pt_samples.id');
-
-            if ($request->is_part == 1) {
-                $shipmentsResponsesResult->where('ptsubmissions.lab_id', $user->laboratory_id)
-                    ->where('ptsubmissions.pt_shipements_id', $request->id);
+                ->leftJoin('pt_submission_results', 'pt_submission_results.ptsubmission_id', '=', 'ptsubmissions.id');
+            if ($is_part == 1) {
+                $shipmentsResponsesResult = $shipmentsResponsesResult->where('ptsubmissions.lab_id', $user->laboratory_id)
+                    ->where('ptsubmissions.pt_shipements_id', $id);
             } else {
-                $shipmentsResponses->where('ptsubmissions.id', $request->id);
+                $shipmentsResponsesResult = $shipmentsResponsesResult->where('ptsubmissions.id', $id);
             }
-
             $shipmentsResponsesResult = $shipmentsResponsesResult->get([
                 "pt_submission_results.hpv_16 as result_hpv_16",
                 "pt_submission_results.hpv_18 as result_hpv_18",
