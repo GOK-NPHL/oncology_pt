@@ -487,27 +487,59 @@ class PTShipmentController extends Controller
                 "platforms.name as platform_name"
             ]);
 
-            $shipmentsResponsesResult = DB::table("pt_shipements")->distinct()
-                ->join('ptsubmissions', 'ptsubmissions.pt_shipements_id', '=', 'pt_shipements.id')
-                ->join('pt_samples', 'pt_samples.ptshipment_id', '=', 'pt_shipements.id')
-                ->leftJoin('pt_submission_results', 'pt_submission_results.ptsubmission_id', '=', 'ptsubmissions.id');
-            if ($is_part == 1) {
-                $shipmentsResponsesResult = $shipmentsResponsesResult->where('ptsubmissions.lab_id', $user->laboratory_id)
-                    ->where('ptsubmissions.pt_shipements_id', $id);
-            } else {
-                $shipmentsResponsesResult = $shipmentsResponsesResult->where('ptsubmissions.id', $id);
-            }
-            $shipmentsResponsesResult = $shipmentsResponsesResult->get([
-                "pt_submission_results.hpv_16 as result_hpv_16",
-                "pt_submission_results.hpv_18 as result_hpv_18",
-                "pt_submission_results.hpv_other as result_hpv_other",
+
+            //  one
+            $hipmentsRefResult = DB::table("pt_shipements")->distinct()
+                ->join('pt_samples', 'pt_samples.ptshipment_id', '=', 'pt_shipements.id');
+
+            $hipmentsRefResult = $hipmentsRefResult->get([
                 "pt_samples.hpv_16 as ref_hpv_16",
                 "pt_samples.hpv_18 as ref_hpv_18",
                 "pt_samples.hpv_other as ref_hpv_other",
                 "pt_samples.name as sample_name"
             ]);
 
-            return ['metadata' => $shipmentsResponses, "results" => $shipmentsResponsesResult];
+
+            //  two
+            $shipmentsResponsesRlt = DB::table("pt_shipements")->distinct()
+                ->join('ptsubmissions', 'ptsubmissions.pt_shipements_id', '=', 'pt_shipements.id')
+                ->leftJoin('pt_submission_results', 'pt_submission_results.ptsubmission_id', '=', 'ptsubmissions.id')
+                ->join('pt_samples', 'pt_samples.id', '=', 'pt_submission_results.sample_id');
+            if ($is_part == 1) {
+                $shipmentsResponsesRlt = $shipmentsResponsesRlt->where('ptsubmissions.lab_id', $user->laboratory_id)
+                    ->where('ptsubmissions.pt_shipements_id', $id);
+            } else {
+                $shipmentsResponsesRlt = $shipmentsResponsesRlt->where('ptsubmissions.id', $id);
+            }
+
+            $shipmentsResponsesRlt = $shipmentsResponsesRlt->get([
+                "pt_submission_results.hpv_16 as result_hpv_16",
+                "pt_submission_results.hpv_18 as result_hpv_18",
+                "pt_submission_results.hpv_other as result_hpv_other",
+                "pt_samples.name as sample_name"
+            ]);
+
+
+            $dataPayload = [];
+            foreach ($hipmentsRefResult as $refRslt) {
+                foreach ($shipmentsResponsesRlt as $rslt) {
+                    if ($refRslt->sample_name == $rslt->sample_name) {
+                        $data = [];
+                        $data['result_hpv_16'] = $rslt->result_hpv_16;
+                        $data['result_hpv_18'] = $rslt->result_hpv_18;
+                        $data['result_hpv_other'] = $rslt->result_hpv_other;
+                        $data['sample_name'] = $refRslt->sample_name;
+                        $data['ref_hpv_16'] = $refRslt->ref_hpv_16;
+                        $data['ref_hpv_18'] = $refRslt->ref_hpv_18;
+                        $data['ref_hpv_other'] = $refRslt->ref_hpv_other;
+                        $dataPayload[] = $data;
+                    }
+                }
+            }
+
+            return [
+                'metadata' => $shipmentsResponses, "results" => $dataPayload
+            ];
         } catch (Exception $ex) {
             return response()->json(['Message' => 'Could fetch report data: ' . $ex->getMessage()], 500);
         }
