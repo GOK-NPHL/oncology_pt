@@ -175,7 +175,7 @@ class ParticipantController extends Controller
             $userId = null;
             try {
 
-                if ($request->id != 'null') {
+                if ($request->id != 'null' && $request->id != 'undefined') {
                     $userId = $request->id;
                     
                 } else {
