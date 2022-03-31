@@ -69,7 +69,7 @@ class ListPlatform extends React.Component {
                 tableElem.push(<tr key={index}>
                     <th scope="row">{index + 1}</th>
                     <td>{element.name}</td>
-                    <td>{element.active ? 'Active' : 'Inactive'}</td>
+                    <td>{element.active ? <label className='badge badge-success'>Active</label> : <label className='badge badge-secondary'>Inactive</label>}</td>
 
                     {
 
@@ -82,8 +82,8 @@ class ListPlatform extends React.Component {
                                     }
                                 }
                                 style={{ 'marginRight': '5px' }}
-                                className="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
-                                <i className="fas fa-user-edit"></i>
+                                className="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm text-white">
+                                <i className="fas fa-edit"></i> Edit
                             </a>
                             {/* <a
                                 onClick={() => {

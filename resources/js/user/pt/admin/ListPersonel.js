@@ -75,7 +75,7 @@ class ListPersonel extends React.Component {
                     <td>{element.name} {element.second_name}</td>
                     <td>{element.phone_number}</td>
                     <td>{element.email}</td>
-                    <td>{element.is_active ? 'Active' : 'Inactive'}</td>
+                    <td>{element.is_active ? <label className='badge badge-success'>Active</label> : <label className='badge badge-secondary'>Inactive</label>}</td>
 
                     {
 
@@ -88,8 +88,8 @@ class ListPersonel extends React.Component {
                                     }
                                 }
                                 style={{ 'marginRight': '5px' }}
-                                className="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
-                                <i className="fas fa-user-edit"></i>
+                                className="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm text-white">
+                                <i className="fas fa-edit"></i> Edit
                             </a>
                             {/* <a
                                 onClick={() => {

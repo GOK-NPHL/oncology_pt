@@ -84,8 +84,11 @@ class PersonelForm extends React.Component {
                         hasPtAccess: editData.has_pt_access == 1 ? true : false,
                         isActive: editData.is_active,
                         pageState: 'edit',
-
                     });
+
+                    setTimeout(() => {
+                        document.querySelector('#u_facility').value = editData.laboratory_id;
+                    }, 4000);
                 }
             })();
         }
@@ -247,6 +250,10 @@ class PersonelForm extends React.Component {
     componentDidUpdate() {
         try {
             $('#u_facility').selectpicker();
+            if(this.state.facility && this.state.facility != '' && this.state.facility != null){
+                $('#u_facility').val(this.state.facility);
+                $('#u_facility').selectpicker('refresh');
+            }
         } catch (err) {
 
         }
@@ -299,7 +306,7 @@ class PersonelForm extends React.Component {
 
                                     {/* add */}
                                     <div className="col-md-6 mb-3">
-                                        <label htmlFor="u_facility" >Laboratory  *</label>
+                                        <label htmlFor="u_facility" >Laboratory  * {this.state.facility}</label>
 
                                         {labSelect}
                                     </div>

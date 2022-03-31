@@ -90,28 +90,14 @@ class ListShipment extends React.Component {
 
                         <td>
                             {
-                                this.props.page != 'report' ?
-                                    <a href="#"
-                                        onClick={
-                                            () => {
-                                                console.log(element);
-                                                this.props.toggleView('edit', element.id);
-                                            }
-                                        }
-                                        style={{ 'marginRight': '5px' }}
-                                        className="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
-                                        <i className="fas fa-user-edit"></i>
-                                    </a> : ''
-                            }
-
-                            {
                                 this.props.isParticipant ?
                                     <a
                                         onClick={() => {
                                             window.location.assign('/get-participant-shipment-response-performance/' + element.id)
                                         }}
                                         data-toggle="tooltip" data-placement="top" title="View performance report"
-                                        className="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
+                                        style={{ 'marginRight': '5px' }}
+                                        className="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm text-white">
                                         <i className="fas fa-file-pdf"></i> Performance
                                     </a>
                                     :
@@ -121,10 +107,24 @@ class ListShipment extends React.Component {
                                                 window.location.assign('get-shipment-responses/' + element.id) :
                                                 window.location.assign('get-shipment-report-responses/' + element.id)
                                         }}
+                                        style={{ 'marginRight': '5px' }}
                                         data-toggle="tooltip" data-placement="top" title="View shipment responses"
-                                        className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                        <i className="fas fa-file-import"></i>
+                                        className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm text-white">
+                                        <i className="fas fa-file"></i> View
                                     </a>
+                            }
+                            {
+                                this.props.page != 'report' ?
+                                    <a href="#"
+                                        onClick={
+                                            () => {
+                                                console.log(element);
+                                                this.props.toggleView('edit', element.id);
+                                            }
+                                        }
+                                        className="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm text-white">
+                                        <i className="fas fa-edit"></i> Edit
+                                    </a> : ''
                             }
 
 

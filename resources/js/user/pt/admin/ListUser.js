@@ -103,8 +103,8 @@ class ListUser extends React.Component {
                                     }
                                 }
                                 style={{ 'marginRight': '5px' }}
-                                className="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm">
-                                <i className="fas fa-user-edit"></i>
+                                className="d-none d-sm-inline-block btn btn-sm btn-info shadow-sm text-white">
+                                <i className="fas fa-user-edit"></i> Edit
                             </a>
                             {/* <a
                                 onClick={() => {
