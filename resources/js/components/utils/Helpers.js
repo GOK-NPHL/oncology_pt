@@ -622,3 +622,27 @@ export async function FetchuserId(id) {
         return err.response
     }
 }
+
+export async function FetchuserParams(id) {
+
+    try {
+        const response = await axios.get(`${settings.serverBaseApi}/get_user_params/`);
+        const responseData = response.data;
+        return responseData;
+    } catch (err) {
+        // Handle Error Here
+        return err.response
+    }
+}
+
+export async function FetchAdminParams(id) {
+
+    try {
+        const response = await axios.get(`${settings.serverBaseApi}/get_admin_params/`);
+        const responseData = response.data;
+        return responseData;
+    } catch (err) {
+        // Handle Error Here
+        return err.response
+    }
+}

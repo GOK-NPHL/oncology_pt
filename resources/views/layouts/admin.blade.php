@@ -45,7 +45,7 @@ use Illuminate\Support\Facades\Gate;
 
         .nav-link:hover,
         .bg-light>a:hover {
-            color: #1900ff !important;
+            color: aqua !important; //#1900ff !important;
             ;
         }
 
@@ -59,9 +59,9 @@ use Illuminate\Support\Facades\Gate;
 
         <!-- Navbar -->
         <div style="background-color: #2c3e50;" class="container-fluid">
-            <div class="container">
-                <nav style="background-color: #2c3e50 !important;" class="navbar navbar-expand-md navbar-light bg-light">
-                    <a class="navbar-brand" href="{{route('admin-home')}}">KNEQAS PT</a>
+            <div class="container-fluid">
+                <nav style="background-color: #2c3e50 !important;" class="navbar navbar-expand-md navbar-dark">
+                    <a class="navbar-brand mr-5" href="{{route('admin-home')}}"><b>KNEQAS PT</b></a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -73,6 +73,33 @@ use Illuminate\Support\Facades\Gate;
                             </li>
 
                             <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Managers &amp; Personnel
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{route('list-admin-user')}}">PT System Managers</a>
+                                    <a class="dropdown-item" href="{{route('list-personel')}}">PT Lab Personel</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Laboratories &amp; Test Platforms
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                                    <a class="dropdown-item" href="{{route('list-lab')}}">PT Laboratories</a>
+                                    <a class="dropdown-item" href="{{route('list-platforms')}}">Test Platforms</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Checklists &amp; Shipments
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                                    <a class="dropdown-item" href="{{route('list-readiness')}}">Readiness Checklists</a>
+                                    <a class="dropdown-item" href="{{route('pt-shipment')}}">PT Shipment</a>
+                                </div>
+                            </li>
+                            {{--  <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Configure
                                 </a>
@@ -86,7 +113,7 @@ use Illuminate\Support\Facades\Gate;
                                     <a class="dropdown-item" href="{{route('list-readiness')}}">Readiness Checklists</a>
                                     <a class="dropdown-item" href="{{route('pt-shipment')}}">PT Shipment</a>
                                 </div>
-                            </li>
+                            </li>  --}}
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -105,7 +132,8 @@ use Illuminate\Support\Facades\Gate;
                                     Account
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{route('edit-admin-user',['userId'=>'bad6b8cf97131fceab'])}}">Profile</a>
+                                    <a class="dropdown-item" style="text-transform:capitalize;" href="{{route('edit-admin-user',['userId'=>'bad6b8cf97131fceab'])}}">{{Auth()->user()->name}}</a>
+                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{route('admin-logout')}}">Logout</a>
                                 </div>
                             </li>
@@ -118,7 +146,7 @@ use Illuminate\Support\Facades\Gate;
 
 
         <!-- Content Wrapper. Contains page content -->
-        <div style="background-color: white;" class="">
+        <div style="background-color: white; min-height: 93vh;" class="">
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container">
@@ -140,6 +168,7 @@ use Illuminate\Support\Facades\Gate;
                 left: 0;
                 bottom: 0;
                 width: 100%;
+                background: white;
                 text-align: center;
             }
         </style>
@@ -149,7 +178,7 @@ use Illuminate\Support\Facades\Gate;
                 </script> <a href="https://nphl.go.ke/">NPHL KNEQAS -Oncology PT</a>.</strong>
             All rights reserved. | <a href="http://helpdesk.nphl.go.ke/">KNEQAS Oncology PT HELP DESK</a>
             <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 1.0.0
+                <b>Version</b> 1.1.0
             </div>
         </footer>
 

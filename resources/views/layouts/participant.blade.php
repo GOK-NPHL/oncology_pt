@@ -188,6 +188,16 @@ use Illuminate\Support\Facades\Gate;
 
             <!-- /.content -->
         </div>
+        <style>
+            .m-footer {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                background: white;
+                text-align: center;
+            }
+        </style>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
             <strong>Copyright &copy; 2014- <script>
@@ -195,7 +205,7 @@ use Illuminate\Support\Facades\Gate;
                 </script> <a href="https://nphl.go.ke/">NPHL KNEQAS - Oncology PT</a>.</strong>
             All rights reserved. | <a href="http://helpdesk.nphl.go.ke/">Oncology PT HELP DESK</a>
             <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 1.0.0
+                <b>Version</b> 1.1.0
             </div>
         </footer>
 

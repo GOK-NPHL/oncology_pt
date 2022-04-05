@@ -89,3 +89,5 @@ Route::get('/get_sample_response_result/{id}', [PTShipmentController::class, 'ge
 Route::get('/get_shipment_response_report/{id}/{is_part}', [PTShipmentController::class, 'getShipmentSesponseReport']);
 
 Route::get('/get_user_id', [CommonsController::class, 'getUserId']);
+Route::get('/get_user_params', [CommonsController::class, 'getUserParticulars']);
+Route::get('/get_admin_params', [AdminAuthController::class, 'getAdminParticulars']);
