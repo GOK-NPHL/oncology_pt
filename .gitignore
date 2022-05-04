@@ -38,3 +38,4 @@ storage/*.csv
 .editorconfig
 .styleci.yml
 public/js/app.js
+public/js/app.js
