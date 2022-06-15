@@ -443,8 +443,12 @@ class SubmitResults extends React.Component {
                         {/* lab basic info */}
                         <div style={labInfo} className="row">
                             <div style={boxLineLeft} className="col-sm-3">
-                                <strong><p>Lab code</p></strong>
+                                <strong><p>MFL code</p></strong>
                                 {this.state.userDemographics.length > 0 ? this.state.userDemographics[0].mfl_code : ''}
+                            </div>
+                            <div style={boxLineLeft} className="col-sm-3">
+                                <strong><p>PT code</p></strong>
+                                {this.state.userDemographics.length > 0 ? this.state.userDemographics[0].pt_code : ''}
                             </div>
                             <div style={boxLine} className="col-sm-3">
                                 <strong><p>Lab Name</p></strong>

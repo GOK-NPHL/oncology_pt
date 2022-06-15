@@ -18,6 +18,7 @@ class Laboratory extends Model
         'institute_name',
         'is_active',
         'mfl_code',
+        'pt_code',
         'phone_number',
         'lab_name',
         'facility_level',

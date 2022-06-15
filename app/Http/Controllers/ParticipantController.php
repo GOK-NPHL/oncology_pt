@@ -40,6 +40,7 @@ class ParticipantController extends Controller
                 'phone_number' => $request->lab['phone_number'],
                 'is_active' => $request->lab['is_active'],
                 'mfl_code' => $request->lab['mfl_code'],
+                'pt_code' => $request->lab['pt_code'],
                 'facility_level' => $request->lab['facility_level'],
                 'county' => $request->lab['county'],
                 'lab_name' => $request->lab['lab_name'],
@@ -61,6 +62,7 @@ class ParticipantController extends Controller
             $lab->phone_number = $request->lab['phone_number'];
             $lab->is_active = $request->lab['is_active'];
             $lab->mfl_code = $request->lab['mfl_code'];
+            $lab->pt_code = $request->lab['pt_code'];
             $lab->facility_level = $request->lab['facility_level'];
             $lab->county = $request->lab['county'];
             $lab->lab_name = $request->lab['lab_name'];

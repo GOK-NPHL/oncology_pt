@@ -18,6 +18,7 @@ class ParticipantForm extends React.Component {
             isActive: true,
             institution_name: '',
             mflCode: '',
+            ptCode: '',
             phoneNumber: '',
             facilityLevel: '',
             county: '',
@@ -34,6 +35,7 @@ class ParticipantForm extends React.Component {
         this.handleCountyChange = this.handleCountyChange.bind(this);
         this.handleFacilityLevelChange = this.handleFacilityLevelChange.bind(this);
         this.handleMflCodeChange = this.handleMflCodeChange.bind(this);
+        this.handlePtCodeChange = this.handlePtCodeChange.bind(this);
         this.handleLabNameChange = this.handleLabNameChange.bind(this);
 
     }
@@ -62,6 +64,7 @@ class ParticipantForm extends React.Component {
                         id: editData.id,
                         instituteName: editData.institute_name,
                         mflCode: editData.mfl_code,
+                        ptCode: editData.pt_code,
                         phoneNumber: editData.phone_number,
                         facilityLevel: editData.facility_level,
                         county: editData.county,
@@ -114,6 +117,11 @@ class ParticipantForm extends React.Component {
             mflCode: mflCode
         });
     }
+    handlePtCodeChange(ptCode) {
+        this.setState({
+            ptCode: ptCode
+        });
+    }
     handleFacilityLevelChange(facilityLevel) {
         this.setState({
             facilityLevel: facilityLevel
@@ -138,6 +146,7 @@ class ParticipantForm extends React.Component {
             this.state.email == '' ||
             this.state.phoneNumber == '' ||
             this.state.mflCode == '' ||
+            this.state.ptCode == '' ||
             this.state.facilityLevel == '' ||
             this.state.county == '' ||
             this.state.labName == ''
@@ -157,6 +166,7 @@ class ParticipantForm extends React.Component {
                 lab['phone_number'] = this.state.phoneNumber;
                 lab['is_active'] = this.state.isActive;
                 lab['mfl_code'] = this.state.mflCode;
+                lab['pt_code'] = this.state.ptCode;
                 lab['facility_level'] = this.state.facilityLevel;
                 lab['county'] = this.state.county;
                 lab['lab_name'] = this.state.labName;
@@ -177,6 +187,7 @@ class ParticipantForm extends React.Component {
                             isActive: true,
                             email: '',
                             mflCode: '',
+                            ptCode: '',
                             facilityLevel: '',
                             county: '',
                             labName: ''
@@ -201,7 +212,15 @@ class ParticipantForm extends React.Component {
 
                 <div className="card" style={{ "backgroundColor": "#ecf0f1" }}>
                     <div className="card-body">
-                        <h5 className="card-title">Add New Participant</h5><br />
+                        <div className='row'>
+                            <div className='col-md-5'>
+                                <a href="/list-lab" className='pull-left'>&larr; Back to list</a>
+                            </div>
+                            <div className='col-md-6'>
+                                <h3 className="pull-left text-left font-bold">Add New Participant</h3>
+                            </div>
+                        </div>
+                        <br />
                         <hr />
                         <div>
                             <form action="#" >
@@ -217,12 +236,19 @@ class ParticipantForm extends React.Component {
                                     </div>
 
                                     {/* add */}
-                                    <div className="col-md-6 mb-3">
-                                        <label htmlFor="u_mail" >MFL Code *</label>
+                                    <div className="col-md-3 mb-3">
+                                        <label htmlFor="u_mfl" >MFL Code *</label>
                                         <input
                                             value={this.state.mflCode}
                                             onChange={(event) => this.handleMflCodeChange(event.target.value)}
                                             type="number" className="form-control" id="u_mfl" />
+                                    </div>
+                                    <div className="col-md-3 mb-3">
+                                        <label htmlFor="u_pt" >PT Code *</label>
+                                        <input
+                                            value={this.state.ptCode}
+                                            onChange={(event) => this.handlePtCodeChange(event.target.value)}
+                                            type="number" className="form-control" id="u_pt" />
                                     </div>
                                 </div>
 

@@ -191,6 +191,7 @@ class Submission extends Controller
                 'ptsubmissions.lab_id',
                 'laboratories.lab_name',
                 'laboratories.mfl_code',
+                'laboratories.pt_code',
                 'pt_shipements.test_instructions',
 
             )->join('laboratories', 'laboratories.id', '=', 'ptsubmissions.lab_id')

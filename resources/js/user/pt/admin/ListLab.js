@@ -72,6 +72,7 @@ class ListLab extends React.Component {
                 tableElem.push(<tr key={index}>
                     <th scope="row">{index + 1}</th>
                     <td>{element.mfl_code}</td>
+                    <td>{element.pt_code}</td>
                     <td>{element.lab_name}</td>
                     <td>{element.email}</td>
                     <td>{element.is_active ? <label className='badge badge-success'>Active</label> : <label className='badge badge-secondary'>Inactive</label>}</td>
@@ -125,22 +126,24 @@ class ListLab extends React.Component {
                 <div className="form-group mb-2">
                     <input type="text"
                         onChange={(event) => {
-                            console.log(this.state.allTableElements);
-                            let currElementsTableEl = this.state.allTableElements.filter(elemnt =>
-                                elemnt['props']['children'][1]['props']['children'].toString().toLowerCase().trim().includes(event.target.value.trim().toLowerCase()) ||
-                                elemnt['props']['children'][2]['props']['children'].toLowerCase().trim().includes(event.target.value.trim().toLowerCase()) ||
-                                elemnt['props']['children'][3]['props']['children'].toLowerCase().trim().includes(event.target.value.trim().toLowerCase())
-                            );
+                            let currElementsTableEl = this.state.allTableElements.filter(elemnt => {
+                                // console.log("[1]: ", elemnt['props']['children'][1]['props']['children']);
+                                return ((elemnt?.props?.children[1] ? elemnt?.props?.children[2] : '').toString().toLowerCase().trim() || '').includes(event.target.value.trim().toLowerCase()) ||
+                                (elemnt?.props?.children[2] ? elemnt?.props?.children[2] : '').toString().toLowerCase().trim().includes(event.target.value.trim().toLowerCase()) ||
+                                (elemnt['props']['children'][3]['props']['children'].toString().toLowerCase().trim() || '').includes(event.target.value.trim().toLowerCase())||
+                                (elemnt['props']['children'][4]['props']['children'].toString().toLowerCase().trim() || '').includes(event.target.value.trim().toLowerCase())
+                            });
                             this.updatedSearchItem(currElementsTableEl);
                         }}
-                        className="form-control" placeholder="search participant"></input>
+                        className="form-control" placeholder="Search Participant"></input>
                 </div>
 
                 <table className="table table-striped table-sm  table-hover">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Facility Code</th>
+                            <th scope="col">Facility MFL Code</th>
+                            <th scope="col">PT Code</th>
                             <th scope="col">Lab Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Status</th>
