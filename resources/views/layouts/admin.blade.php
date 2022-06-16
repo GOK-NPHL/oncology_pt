@@ -133,7 +133,7 @@ use Illuminate\Support\Facades\Gate;
                                     Account
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" style="text-transform:capitalize;" href="{{route('edit-admin-user',['userId'=>'bad6b8cf97131fceab'])}}">{{Auth()->user()->name}}</a>
+                                    <a class="dropdown-item" style="text-transform:capitalize;" href="{{route('edit-admin-user',['userId'=>'bad6b8cf97131fceab'])}}">{{Auth()->user()->name ?? "Account"}}</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{route('admin-logout')}}">Logout</a>
                                 </div>
