@@ -446,7 +446,7 @@ class PTShipmentController extends Controller
     }
 
 
-    public function getShipmentSesponseReport($id,  $is_part)
+    public function getShipmentResponseReport($id,  $is_part)
     {
         $user = Auth::user();
         try {
@@ -472,6 +472,7 @@ class PTShipmentController extends Controller
                 "pt_shipements.end_date",
                 "pt_shipements.round_name as name",
                 "laboratories.id as lab_id",
+                "laboratories.pt_code as pt_code",
                 "users.name as fname",
                 "users.second_name as sname",
                 "laboratories.phone_number",

@@ -12,6 +12,7 @@ class PTPerformanceReport extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            rptCode: '',
             labCode: '',
             shipmentDate: '',
             specimenReceiptDate: '',
@@ -61,7 +62,8 @@ class PTPerformanceReport extends React.Component {
                     this.setState({
                         data: response,
                         results: response['results'],
-                        labCode: response['metadata'][0].code,
+                        rptCode: response['metadata'][0].code,
+                        labCode: response['metadata'][0].pt_code,
                         shipmentDate: response['metadata'][0].shipment_date,
                         specimenReceiptDate: response['metadata'][0].kit_date_received,
                         kitLotNumber: response['metadata'][0].pt_lot_no,
@@ -171,23 +173,22 @@ class PTPerformanceReport extends React.Component {
                             <tr style={{ "marginTop": "5px" }}>
 
                                 <td style={tdtyle}>
-                                    <div><strong>Lab Code:</strong> &nbsp;{this.state.labCode}</div>
+                                    <div><strong>Code:</strong> &nbsp;{this.state.rptCode}</div>
                                     <div><strong>Shipment Date:</strong> &nbsp; {this.state.shipmentDate}</div>
                                     <div><strong>Specimen Receipt Date:</strong> &nbsp; {this.state.specimenReceiptDate}</div>
                                     <div><strong>Xpert HPV Lot No:</strong> &nbsp; {this.state.kitLotNumber}</div>
-
                                 </td>
                                 <td style={tdtyle}>
                                     <div><strong>Lab Name:</strong> &nbsp; {this.state.labName}</div>
+                                    <div><strong>Lab (PT) Code:</strong> &nbsp; {this.state.labCode}</div>
                                     <div><strong>Result Submission Date:</strong> &nbsp; {this.state.resultSubmissionDate}</div>
-                                    <div><strong>Testing Date:</strong> &nbsp; {this.state.testingDate}</div>
                                     <div><strong>Xpert HPV Expiry Date :</strong> &nbsp; {this.state.kitExpiration}</div>
-
                                 </td>
                                 <td style={tdtyle}>
                                     {/* {this.state.personnelName.length>0 && <div><strong>Laboratory personnel testing:</strong> &nbsp; {this.state.personnelName}</div>} */}
                                     {true && <div style={{textTransform:'capitalize'}}><strong>Laboratory personnel testing:</strong> &nbsp; {this.state.userName}</div>}
                                     <div><strong>Phone No:</strong> &nbsp; {this.state.phoneNo}</div>
+                                    <div><strong>Testing Date:</strong> &nbsp; {this.state.testingDate}</div>
                                     <div><strong>Platform:</strong> &nbsp; {this.state.platform}</div>
                                 </td>
 
@@ -210,12 +211,12 @@ class PTPerformanceReport extends React.Component {
                                                 </td>
                                                 <td className='text-left tbBorder'>
                                                     <p style={{ margin: 0, padding: '2px 7px' }}>
-                                                        Esther Sigilai<br />
-                                                        Laboratory Manager<br />
+                                                        Charity<br />
+                                                        KNEQAS QA Manager<br />
                                                         National Oncology Biochemistry Reference Laboratory<br />
                                                         P.O. Box 20750-00200<br />
                                                         Nairobi, Kenya<br />
-                                                        Contact: 0722786640
+                                                        Contact: 0721397766
                                                     </p>
                                                 </td>
                                             </tr>
