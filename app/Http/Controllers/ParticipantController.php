@@ -192,6 +192,7 @@ class ParticipantController extends Controller
                 'users.name',
                 'users.email as user_email',
                 'laboratories.id as lab_id',
+                'laboratories.pt_code as pt_code',
                 'users.second_name',
                 'users.phone_number as user_phone_number',
                 'laboratories.lab_name',

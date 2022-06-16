@@ -443,38 +443,32 @@ class SubmitResults extends React.Component {
                         {/* lab basic info */}
                         <div style={labInfo} className="row">
                             <div style={boxLineLeft} className="col-sm-3">
-                                <strong><p>MFL code</p></strong>
+                                <strong>MFL code</strong> &nbsp;
                                 {this.state.userDemographics.length > 0 ? this.state.userDemographics[0].mfl_code : ''}
                             </div>
                             <div style={boxLineLeft} className="col-sm-3">
-                                <strong><p>PT code</p></strong>
+                                <strong>PT code</strong> &nbsp;
                                 {this.state.userDemographics.length > 0 ? this.state.userDemographics[0].pt_code : ''}
                             </div>
                             <div style={boxLine} className="col-sm-3">
-                                <strong><p>Lab Name</p></strong>
+                                <strong>Lab Name</strong> &nbsp;
                                 {this.state.userDemographics.length > 0 ? this.state.userDemographics[0].lab_name : ''}
                             </div>
                             <div style={boxLine} className="col-sm-3">
-                                <strong><p>Phone No.</p></strong>
+                                <strong>Phone No.</strong> &nbsp;
                                 {this.state.userDemographics.length > 0 ? this.state.userDemographics[0].phone_number : ''}
                             </div>
                             <div style={boxLine} className="col-sm-3">
-                                <strong><p>Email</p></strong>
+                                <strong>Email</strong> &nbsp;
                                 {this.state.userDemographics.length > 0 ? this.state.userDemographics[0].email : ''}
                             </div>
-                        </div>
-                        {/* row two */}
-                        <div style={labInfo} className="row mt-1">
                             <div style={boxLineLeft} className="col-sm-3">
-                                <strong><p>Submitter Name</p></strong>
-                                {this.state.userDemographics.length > 0 ? this.state.userDemographics[0].name : ''}
-                                <span> </span>
-                                {this.state.userDemographics.length > 0 ? this.state.userDemographics[0].second_name : ''}
+                                <strong>Submitter Name</strong> &nbsp;
+                                <span style={{textTransform: 'capitalize'}}>{this.state.userDemographics.length > 0 ? this.state.userDemographics[0].name : ''} {" "}
+                                {this.state.userDemographics.length > 0 ? this.state.userDemographics[0].second_name : ''}</span>
 
                             </div>
-
                         </div>
-                        {/* row two */}
                         {/* End lab basic info */}
                         <hr />
                     </div>
@@ -500,9 +494,9 @@ class SubmitResults extends React.Component {
                         {/* end submission form  header */}
                     </div>
 
-                    <div className="col-sm-12  pl-4 pr-4 mt-2">
+                    <div className="col-sm-12  pl-4 pr-4" style={{marginTop: '2.1em'}}>
                         {/* Test Kit Information */}
-                        Test Kit Information
+                        <h5><b>Test Kit Information</b></h5>
                         {/* end Test Kit Information */}
                     </div>
 
@@ -550,9 +544,9 @@ class SubmitResults extends React.Component {
 
                     </div>
 
-                    <div className="col-sm-12  pl-4 pr-4 mt-2">
+                    <div className="col-sm-12  pl-4 pr-4" style={{marginTop: '2.1em'}}>
                         {/* Test Kit Information */}
-                        PT sample Information
+                        <h5><b>PT Sample Information</b></h5>
                         {/* end Test Kit Information */}
                     </div>
 
@@ -633,12 +627,16 @@ class SubmitResults extends React.Component {
                         <hr />
                     </div>
 
+                    <div className="col-sm-12  pl-4 pr-4" style={{marginTop: '2.1em'}}>
+                        <h5><b>Testing Instructions</b></h5>
+                    </div>
                     <div className="col-sm-12  pl-4 pr-4 mb-3">
-
-                        <label htmlFor="test_instructions" >Testing Instructions</label>
-                        <textarea readOnly
+                        <div style={{width: '100%', border: '1px solid #cdc5c5', backgroundColor: '#fffbea', padding: '15px 12px', borderRadius: '5px'}}>
+                            <pre style={{fontFamily: 'inherit', fontSize: '1em', whiteSpace: 'pre-wrap'}}>{this.state.test_instructions}</pre>
+                        </div>
+                        {/* <textarea readOnly
                             value={this.state.test_instructions}
-                            className="form-control" id="test_instructions" rows="3"></textarea>
+                            className="form-control" id="test_instructions" rows="3"></textarea> */}
                     </div>
 
                     <div className="col-sm-12 mb-4  pl-4 pr-4">
