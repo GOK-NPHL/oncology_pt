@@ -433,7 +433,7 @@ class SubmitResults extends React.Component {
 
                         {this.props.isAdmin ? '' :
                             new Date() > Date.parse(this.state.endDate) ?
-                                <h3 style={{ "color": "red" }} className="col-sm-12">Past Due date. Submission diabled</h3>
+                                <h3 style={{ "color": "red" }} className="col-sm-12">Past Due date. Submission disabled</h3>
                                 :
                                 ''
                         }
