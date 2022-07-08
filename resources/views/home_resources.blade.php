@@ -96,7 +96,6 @@
                                     @foreach($files as $file)
                                     <tr>
                                         <td>
-                                            <!-- <a href="{{'/api/resources/files/download/'.$file->id}}" target="_blank" download="{{$file->name}}">{{ $file->name }}</a> -->
                                             <a href="{{ url('/resources/download_file/'.$file->id) }}" download="{!! $file->name !!}">{!! $file->name !!}</a>
                                         </td>
                                         <td>{{ number_format((float)$file->size/1000000, 2, '.', '') }}MB</td>
