@@ -89,6 +89,15 @@ use Illuminate\Support\Facades\Gate;
                             </li>
                         <?php } ?>
 
+                        <li class="nav-item has-treeview">
+                            <a href="{{ route('resourcesIndex') }}" class="nav-link">
+                                <i class="nav-icon fas fa-folder"></i>
+                                <p>
+                                    Files &amp; Resources
+                                </p>
+                            </a>
+                        </li>
+
                         <!-- system actions -->
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link">

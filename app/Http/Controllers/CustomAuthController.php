@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ResourceFiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 // use Auth;
@@ -18,9 +19,32 @@ class CustomAuthController extends Controller
 
 {
 
+
+
+
+    public function downloadFile($id)
+    {
+        $file = ResourceFiles::find($id);
+        if(!$file){
+            return redirect('/');
+        }
+        if($file->is_public == 0){
+            if(Auth::check()){
+                return response()->download($file->path);
+            }
+            return redirect('/');
+        }
+        return response()->download($file->path);
+    }
+
     public function index()
     {   
         return view('home_page');
+    }
+    public function publicResources()
+    {   
+        $files = ResourceFiles::where('is_public', 1)->get();
+        return view('home_resources', compact('files'));
     }
 
     public function getParticipantLoginPage()

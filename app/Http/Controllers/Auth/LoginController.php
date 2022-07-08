@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\ResourceFiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,4 +29,21 @@ class LoginController extends Controller
             return redirect()->intended('dashboard');
         }
     }
+
+
+    public function downloadFile($id)
+    {
+        $file = ResourceFiles::find($id);
+        if(!$file){
+            return redirect('/');
+        }
+        if($file->is_public == 0){
+            if(Auth::check()){
+                return response()->download($file->path);
+            }
+            return redirect('/');
+        }
+        return response()->download($file->path);
+    }
+
 }

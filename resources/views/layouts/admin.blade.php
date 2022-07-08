@@ -118,10 +118,11 @@ use Illuminate\Support\Facades\Gate;
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Reports
+                                    Reports &amp; Resources
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{route('pt-shipment-report-list')}}">PT Response Reports</a>
+                                    <a class="dropdown-item" href="{{route('resourcesIndex')}}">Files / Resources</a>
                                 </div>
                             </li>
 

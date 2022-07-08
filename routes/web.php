@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\CustomAuthController;
+use App\Http\Controllers\ResourceFilesController;
 use App\Http\Controllers\PT\PTAdminController;
 use App\Http\Controllers\QC\QCAdminController;
 use App\Http\Controllers\QC\QCParticipantController;
@@ -29,6 +30,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/',  [CustomAuthController::class, 'index'])->name('home');
+Route::get('resources/download_file/{id}', 'Auth\LoginController@downloadFile')->name('download-file');
 Route::get('index', [CustomAuthController::class, 'index'])->name('index');
 Route::get('participant-login', [CustomAuthController::class, 'getParticipantLoginPage'])->name('participant-login');
 Route::get('login', [CustomAuthController::class, 'index'])->name('login');
@@ -85,3 +87,11 @@ Route::get('get-shipment-report-responses/{shipmentId}', [PTAdminController::cla
 Route::get('get-shipment-response-performance/{resultSubmissionId}', [PTAdminController::class, 'getShipmentResponsePerformance']);
 
 Route::get('get-participant-shipment-response-performance/{resultSubmissionId}', [QCParticipantController::class, 'getParticipantShipmentResponsePerformance']);
+
+//Files
+Route::get('/home/resources',  [CustomAuthController::class, 'publicResources'])->name('publicResources');
+Route::get('resources', function () {
+    return redirect('/resources/files');
+})->name('resourcesIndex');
+
+Route::get('resources/files',['as'=>'resources.files', 'uses'=>'ResourceFilesController@index']);

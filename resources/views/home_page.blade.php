@@ -61,16 +61,19 @@
                         <div class="collapse navbar-collapse" id="navbarResponsive">
                             <ul class="navbar-nav ml-auto">
                                 <li style="background-color: purple;" class="nav-item active">
-                                    <a style="color: white;" class="nav-link" href="#">About Us
+                                    <a style="color: white;" class="nav-link" href="/">About Us
                                         <span class="sr-only">(current)</span>
                                     </a>
                                 </li>
                                 <li style="background-color: purple; color: white;" class="nav-item">
-                                    <a style="color: white;" class="nav-link" href="#">Library</a>
+                                    <a style="color: white;" class="nav-link" href="{{route('publicResources')}}">Library</a>
                                 </li>
-
+                                
                                 <li style="background-color: purple;" class="nav-item">
-                                    <a style="color: white;" class="nav-link" href="#">Contact Us</a>
+                                    <a style="color: white;" class="nav-link" href="/">Contact Us</a>
+                                </li>
+                                <li style="background-color: purple; color: white;" class="nav-item">
+                                    <a style="color: white;" class="nav-link" href="{{ route('participant-login') }}">Log in</a>
                                 </li>
                             </ul>
                         </div>
@@ -155,13 +158,13 @@
             <div class="col-sm-12">
 
                 <ul class="d-flex justify-content-center">
-                    <li><a href="#home">Home |</a></li>
-                    <li><a href="#news">About Us |</a></li>
-                    <li><a href="#contact">Resources |</a></li>
-                    <li><a href="#about">FAQ |</a></li>
+                    <li><a href="/">Home |</a></li>
+                    <li><a href="/">About Us |</a></li>
+                    <li><a href="/">Resources |</a></li>
+                    <li><a href="/">FAQ |</a></li>
                     <li><a href="{{ route('admin-login') }}">Admin Login |</a></li>
-                    <li><a href="#about">NPHL Help Desk |</a></li>
-                    <li><a href="#about">2020 © National Public Health Laboratory</a></li>
+                    <li><a href="{{route('publicResources')}}">NPHL Help Desk |</a></li>
+                    <li><a href="/">2020 © National Public Health Laboratory</a></li>
                 </ul>
             </div>
             <!--Grid column-->

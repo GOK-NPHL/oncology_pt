@@ -26,6 +26,8 @@ require('./user/pt/admin/ListPersonel');
 require('./user/pt/admin/ListPlatform');
 require('./user/pt/admin/ListUser');
 
+require('./user/pt/admin/ListFiles');
+
 require('./user/pt/shipment/PtShipment');
 require('./user/pt/shipment/ListShipmentResponse');
 require('./user/pt/shipment/ShipmentResponseForm');
