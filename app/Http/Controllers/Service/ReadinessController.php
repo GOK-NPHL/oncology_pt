@@ -139,15 +139,28 @@ class ReadinessController extends Controller
     {
         $user = Auth::user();
         try {
-
-            $readinesses = DB::table("readinesses")->distinct()
-                ->join('laboratory_readiness', 'laboratory_readiness.readiness_id', '=', 'readinesses.id')
-                ->join('readiness_questions', 'readiness_questions.readiness_id', '=', 'readinesses.id')
-                ->join('laboratories', 'laboratory_readiness.laboratory_id', '=', 'laboratories.id')
-                ->leftJoin('readiness_answers', 'readiness_answers.laboratory_id', '=', 'laboratories.id')
-                ->leftJoin('users', 'readiness_answers.user_id', '=', 'users.id')
-                ->leftJoin('readiness_approvals', 'readiness_answers.laboratory_id', '=', 'readiness_approvals.lab_id')
-                ->where('readinesses.id', $request->id)
+            /*
+                select * from laboratory_readiness lab_rd
+                    join laboratories laboratories on laboratories.id = lab_rd.laboratory_id
+                    join readinesses readinesses on lab_rd.readiness_id = readinesses.id
+                    left join readiness_answers readiness_answers on laboratories.id = readiness_answers.laboratory_id and lab_rd.readiness_id = readiness_answers.readiness_id
+                    left join users users on users.id = readiness_answers.user_id
+                    left join readiness_approvals readiness_approvals on lab_rd.readiness_id = readiness_approvals.readiness_id and readiness_approvals.lab_id = lab_rd.laboratory_id
+                where lab_rd.readiness_id = ?;
+            */
+            $readinesses = DB::table("laboratory_readiness") //->distinct()
+                ->join('laboratories', 'laboratories.id', '=', 'laboratory_readiness.laboratory_id')
+                ->join('readinesses', 'readinesses.id', '=', 'laboratory_readiness.readiness_id')
+                ->leftJoin('readiness_answers', function ($join) {
+                    $join->on('readiness_answers.readiness_id', '=', 'laboratory_readiness.readiness_id');
+                    $join->on('readiness_answers.laboratory_id', '=', 'laboratory_readiness.laboratory_id');
+                })
+                ->leftJoin('users', 'users.laboratory_id', '=', 'readiness_answers.user_id')
+                ->leftJoin('readiness_approvals', function($join) {
+                    $join->on('readiness_approvals.readiness_id', '=', 'laboratory_readiness.readiness_id');
+                    $join->on('readiness_approvals.lab_id', '=', 'laboratory_readiness.laboratory_id');
+                })
+                ->where('laboratory_readiness.readiness_id', $request->id)
                 ->get([
                     "readinesses.id",
                     "readinesses.start_date",
