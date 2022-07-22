@@ -21,7 +21,8 @@ class ReadinessForm extends React.Component {
             dualListptions: [],
             readinessQuestions: [],
             readinessItems: [],
-            pageState: 'add'
+            pageState: 'add',
+            submitting: false,
         }
 
         this.handleNameChange = this.handleNameChange.bind(this);
@@ -258,7 +259,9 @@ class ReadinessForm extends React.Component {
     }
 
     saveReadiness() {
-
+        this.setState({
+            submitting: true
+        });
         if (
             this.state.name == '' ||
             this.state.start_date == '' ||
@@ -268,7 +271,8 @@ class ReadinessForm extends React.Component {
 
         ) {
             this.setState({
-                message: "Kindly fill all fileds marked * in the form"
+                message: "Kindly fill all fileds marked * in the form",
+                submitting: false
             })
             $('#addAdminUserModal').modal('toggle');
         } else {
@@ -287,6 +291,7 @@ class ReadinessForm extends React.Component {
                     response = await UpdateReadiness(readiness);
                     this.setState({
                         message: response.data.Message,
+                        submitting: false
                     });
                 } else {
                     response = await SaveReadiness(readiness);
@@ -298,11 +303,13 @@ class ReadinessForm extends React.Component {
                             name: '',
                             selected: [],
                             readinessQuestions: [],
-                            readinessItems: []
+                            readinessItems: [],
+                            submitting: false
                         });
                     } else {
                         this.setState({
                             message: response.data.Message,
+                            submitting: false
                         });
                     }
 
@@ -312,7 +319,9 @@ class ReadinessForm extends React.Component {
 
             })();
         }
-
+        this.setState({
+            submitting: false
+        });
     }
 
     render() {
@@ -407,9 +416,16 @@ class ReadinessForm extends React.Component {
 
                             <div className="form-group row">
                                 <div className="col-sm-10 mt-3">
-                                    <a onClick={() => this.saveReadiness()} type="" className="d-inline m-2 btn btn-info m">
-                                        {this.state.pageState == 'edit' ? 'Update Readiness' : 'Send Readiness'}
-                                    </a>
+                                    <button onClick={(ev) => {
+                                        ev.preventDefault();
+
+                                        this.setState({
+                                            submitting: true
+                                        });
+                                        this.saveReadiness();
+                                    }} type="" className="d-inline m-2 btn btn-info m" disabled={this.state.submitting}>
+                                        {this.state.pageState == 'edit' ? (this.state.submitting ? 'Updating...' : 'Update Readiness') : (this.state.submitting ? 'Sending...' : 'Send Readiness')}
+                                    </button>
                                     <a
                                         onClick={
                                             () => {

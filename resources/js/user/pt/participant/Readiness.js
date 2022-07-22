@@ -20,7 +20,8 @@ class Readiness extends React.Component {
             readinessItems: { 'questions': [], 'answers': [] },
             questionsAnswerMap: {},
             showSaveButton: false,
-            isUser: null
+            isUser: null,
+            submitting: false,
         }
 
         this.questionAnswerHandler = this.questionAnswerHandler.bind(this);
@@ -113,12 +114,15 @@ class Readiness extends React.Component {
     }
 
     saveAnswers() {
-
+        this.setState({
+            submitting: true,
+        });
         for (const [key, element] of Object.entries(this.state.questionsAnswerMap)) {
 
             if (element == '' || element == null) {
                 this.setState({
-                    message: "Please answer all questions"
+                    message: "Please answer all questions",
+                    submitting: false,
                 })
                 return;
             }
@@ -139,11 +143,14 @@ class Readiness extends React.Component {
             }
             this.setState({
                 message: response.data.Message,
-                showSaveButton: showSaveButton
+                // showSaveButton: showSaveButton,
+                submitting: false,
             });
             $('#readinessFormModal').modal('toggle');
         })();
-
+        this.setState({
+            submitting: false,
+        });
     }
 
     approveReadinessResponse() {
@@ -232,12 +239,24 @@ class Readiness extends React.Component {
                                     {this.state.showSaveButton ?
 
                                         this.state.readinessItems.answers.length > 0 ?
-                                            <a onClick={() => this.saveAnswers()} type="" className="d-inline m-2 btn btn-info m">
-                                                Update
-                                            </a> :
-                                            <a onClick={() => this.saveAnswers()} type="" className="d-inline m-2 btn btn-info m">
-                                                Save
-                                            </a>
+                                            <button onClick={(ev) => {
+                                                ev.preventDefault();
+                                                this.setState({
+                                                    submitting: true,
+                                                });
+                                                this.saveAnswers();
+                                            }} type="" className="d-inline m-2 btn btn-info m" disabled={this.state.submitting}>
+                                                {this.state.submitting ? "Updating..." : "Update"}
+                                            </button> :
+                                            <button onClick={(ev) => {
+                                                ev.preventDefault();
+                                                this.setState({
+                                                    submitting: true,
+                                                });
+                                                this.saveAnswers();
+                                            }} type="" className="d-inline m-2 btn btn-info m" disabled={this.state.submitting}>
+                                                {this.state.submitting ? "Saving..." : "Save"}
+                                            </button>
                                         :
                                         ''
                                     }
