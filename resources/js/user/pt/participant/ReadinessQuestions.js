@@ -32,9 +32,9 @@ class ReadinessQuestions extends React.Component {
                 let qstOptins = readiness['answer_options'].split(',');
                 let qstElement =
                     <div key={id} className="form-group">
-
-                        <label className="float-left" htmlFor={readiness['question_id']}>{readiness['question']}</label>
+                        <label className="float-left" htmlFor={readiness['question_id']}>{readiness['question']} <span style={{color:'red'}}>{(readiness['is_required'] && parseInt(readiness['is_required']) == 1) ? "*":""}</span></label>
                         <select
+                            required={readiness['is_required'] && parseInt(readiness['is_required']) == 1}
                             disabled={!this.props.isUser}
                             value={this.props.questionsAnswerMap[readiness['question_id']]}
                             onChange={(event) => this.props.questionAnswerHandler(event)}
@@ -52,8 +52,9 @@ class ReadinessQuestions extends React.Component {
                 let qstElement =
                     <div key={id} className="form-group">
 
-                        <label className="float-left" htmlFor={readiness['question_id']}>{readiness['question']}</label>
+                        <label className="float-left" htmlFor={readiness['question_id']}>{readiness['question']} <span style={{color:'red'}} title="Required">{(readiness['is_required'] && parseInt(readiness['is_required']) == 1) ? "*":""}</span></label>
                         <input
+                            required={readiness['is_required'] && parseInt(readiness['is_required']) == 1}
                             readOnly={!this.props.isUser}
                             value={this.props.questionsAnswerMap[readiness['question_id']]}
                             onChange={
@@ -75,8 +76,9 @@ class ReadinessQuestions extends React.Component {
             let qstElement =
                 <div key={uuidv4()} className="form-group">
 
-                    <label className="float-left" htmlFor={readiness['question_id']}>{readiness['question']}</label>
+                    <label className="float-left" htmlFor={readiness['question_id']}>{readiness['question']} <span style={{color:'red'}}>{(readiness['is_required'] && parseInt(readiness['is_required']) == 1) ? "*":""}</span></label>
                     <textarea
+                        required={readiness['is_required'] && parseInt(readiness['is_required']) == 1}
                         readOnly={!this.props.isUser}
                         className="form-control"
                         onBlur={(event) => {

@@ -22,6 +22,7 @@ class CreateReadinessQuestionsTable extends Migration
             $table->string('answer_type')->nullable();
             $table->integer('qustion_position');
             $table->string('qustion_type');
+            $table->boolean('is_required')->default(false);
         });
 
         // Schema::table('readiness_questions', function ($table) {

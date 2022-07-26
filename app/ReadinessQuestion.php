@@ -14,6 +14,7 @@ class ReadinessQuestion extends Model
         "answer_type",
         "qustion_position",
         "qustion_type",
+        'is_required'
     ];
 
     public function readiness()

@@ -83,6 +83,7 @@ class ReadinessController extends Controller
                     "readiness_questions.answer_type",
                     "readiness_questions.qustion_position",
                     "readiness_questions.qustion_type",
+                    "readiness_questions.is_required"
                 ]);
 
             $readinessesAswers = DB::table("readiness_answers")

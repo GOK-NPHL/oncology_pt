@@ -148,7 +148,9 @@ class ReadinessForm extends React.Component {
                 let id = uuidv4();
                 let qstOptins = readiness['answer_options'].split(',');
                 let qstElement =
-                    <div key={id} className="form-group">
+                    <div key={id} className="card">
+                    <div className="card-body">
+                    <div className="form-group text-left">
                         <a href="#" onClick={
                             (event) => {
                                 event.preventDefault();
@@ -166,20 +168,23 @@ class ReadinessForm extends React.Component {
                                 questions[itemIndex] = null;
 
                                 this.setState({
-
                                     readinessQuestions: questions,
                                     readinessItems: readinessItems
                                 })
                             }
                         }
-                            className="float-right" style={{ "color": "red" }}>Delete</a>
-                        <label className="float-left" htmlFor={id + "qst_answer"}>{readiness['question']}</label>
+                            className="float-right" style={{ padding: '2px', fontSize: '22px', lineHeight: 0, color: 'red', fontWeight: 'bold' }}>
+                            &times;
+                        </a>
+                        <label className="float-left text-left" style={{ fontSize: '18px' }} htmlFor={id + "qst_answer"}>{readiness['question']}  <span style={{ color: 'red' }}>{(readiness['is_required'] && parseInt(readiness['is_required']) == 1) ? "*" : ""}</span></label>
                         <select
                             className="custom-select" id={id + "qst_answer"}>
                             {qstOptins.map((option) => {
                                 return <option key={uuidv4()} value={option}>{option}</option>
                             })}
                         </select>
+                    </div>
+                    </div>
                     </div>
                 let questions = this.state.readinessQuestions;
                 questions.push(qstElement);
@@ -190,24 +195,29 @@ class ReadinessForm extends React.Component {
             } else if (readiness['answer_type'] == 'number') {
                 let id = uuidv4();
                 let qstElement =
-                    <div key={id} className="form-group">
-                        <a href="#" onClick={
-                            (event) => {
-                                event.preventDefault();
-                                let readinessItems = this.state.readinessItems;
-                                let questions = this.state.readinessQuestions;
-                                questions[itemIndex] = null;
+                    <div key={id} className="card">
+                        <div className="card-body">
+                            <div className="form-group">
+                                <a href="#" onClick={
+                                    (event) => {
+                                        event.preventDefault();
+                                        let readinessItems = this.state.readinessItems;
+                                        let questions = this.state.readinessQuestions;
+                                        questions[itemIndex] = null;
 
-                                this.setState({
+                                        this.setState({
 
-                                    readinessQuestions: questions,
-                                    readinessItems: readinessItems
-                                })
-                            }
-                        }
-                            className="float-right" style={{ "color": "red" }}>Delete</a>
-                        <label className="float-left" htmlFor={id + "qst_answer"}>{readiness['question']}</label>
-                        <input type="number" className="form-control" id={id + "qst_answer"} aria-describedby="qst_answer" placeholder="Enter your answer" />
+                                            readinessQuestions: questions,
+                                            readinessItems: readinessItems
+                                        })
+                                    }
+                                }
+                                    className="float-right" style={{ padding: '2px', fontSize: '22px', lineHeight: 0, color: 'red', fontWeight: 'bold' }}>
+                                    &times;</a>
+                                <label className="float-left" htmlFor={id + "qst_answer"}>{readiness['question']} <span style={{ color: 'red' }}>{(readiness['is_required'] && parseInt(readiness['is_required']) == 1) ? "*" : ""}</span></label>
+                                <input type="number" className="form-control" id={id + "qst_answer"} aria-describedby="qst_answer" placeholder="Enter your answer" />
+                            </div>
+                        </div>
                     </div>
                 let questions = this.state.readinessQuestions;
                 questions.push(qstElement);
@@ -396,19 +406,16 @@ class ReadinessForm extends React.Component {
                                 </div>
                                 <div className="col-sm-10 mb-3">
 
-                                    <div className="card">
-                                        <div className="card-body">
-                                            {this.state.readinessQuestions.map((rdnsQuestion) => {
-                                                return <span key={uuidv4()}>{rdnsQuestion}</span>
-                                            })}
+                                    {this.state.readinessQuestions.map((rdnsQuestion) => {
+                                        return (<React.Fragment key={uuidv4()}>
+                                                {rdnsQuestion}
+                                        </React.Fragment>)
+                                    })}
 
-                                            <button onClick={() => {
-                                                $('#addQuestionModal').modal('toggle');
-                                            }} type="button"
-                                                className="btn btn-info float-left">Add question</button>
-
-                                        </div>
-                                    </div>
+                                    <button onClick={() => {
+                                        $('#addQuestionModal').modal('toggle');
+                                    }} type="button"
+                                        className="btn btn-info float-left">Add question</button>
 
                                 </div>
 
