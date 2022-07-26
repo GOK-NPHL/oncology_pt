@@ -138,7 +138,7 @@ class AddReadinessQuestion extends React.Component {
                                 className="form-control" id="qst_question" aria-describedby="emailHelp" placeholder="Readiness question" />
                         </div>
 
-                        <div className="form-group">
+                        {/* <div className="form-group">
                             <label htmlFor="qst_position">Position *</label>
                             <input onChange={(event) => this.qustionPositionHandler(event.target.value)} type="number"
                                 min={+this.state.qustionPosition + +1} //convert to unary ie number
@@ -146,7 +146,7 @@ class AddReadinessQuestion extends React.Component {
                                 className="form-control"
                                 id="qst_position"
                                 placeholder="Password" />
-                        </div>
+                        </div> */}
 
                         <div className="form-group">
                             <label htmlFor="qst_type">Question type *</label>
