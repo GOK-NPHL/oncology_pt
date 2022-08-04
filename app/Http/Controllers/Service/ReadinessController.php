@@ -142,21 +142,21 @@ class ReadinessController extends Controller
         try {
             /*
                 select * from laboratory_readiness lab_rd
-                    join laboratories laboratories on laboratories.id = lab_rd.laboratory_id
-                    join readinesses readinesses on lab_rd.readiness_id = readinesses.id
-                    left join readiness_answers readiness_answers on laboratories.id = readiness_answers.laboratory_id and lab_rd.readiness_id = readiness_answers.readiness_id
-                    left join users users on users.id = readiness_answers.user_id
-                    left join readiness_approvals readiness_approvals on lab_rd.readiness_id = readiness_approvals.readiness_id and readiness_approvals.lab_id = lab_rd.laboratory_id
-                where lab_rd.readiness_id = ?;
+                                    join laboratories laboratories on laboratories.id = lab_rd.laboratory_id
+                                    join readinesses readinesses on lab_rd.readiness_id = readinesses.id
+                #                     left outer join readiness_answers readiness_answers on laboratories.id = readiness_answers.laboratory_id and lab_rd.readiness_id = readiness_answers.readiness_id
+                                    left join users users on users.id = (select distinct readiness_answers.user_id from readiness_answers where readiness_answers.readiness_id = lab_rd.readiness_id)
+                                    left join readiness_approvals readiness_approvals on lab_rd.readiness_id = readiness_approvals.readiness_id and readiness_approvals.lab_id = lab_rd.laboratory_id
+                                where lab_rd.readiness_id = 3;
             */
             $readinesses = DB::table("laboratory_readiness") //->distinct()
                 ->join('laboratories', 'laboratories.id', '=', 'laboratory_readiness.laboratory_id')
                 ->join('readinesses', 'readinesses.id', '=', 'laboratory_readiness.readiness_id')
-                ->leftJoin('readiness_answers', function ($join) {
-                    $join->on('readiness_answers.readiness_id', '=', 'laboratory_readiness.readiness_id');
-                    $join->on('readiness_answers.laboratory_id', '=', 'laboratory_readiness.laboratory_id');
+                ->leftJoin('readiness_answers', function ($join) use ($request) {
+                    $join->on('readiness_answers.readiness_id', '=', 'readinesses.id')
+                        ->on('readiness_answers.laboratory_id', '=', 'laboratories.id');
                 })
-                ->leftJoin('users', 'users.laboratory_id', '=', 'readiness_answers.user_id')
+                ->leftJoin('users', 'users.id', '=', 'readiness_answers.user_id')->distinct('users.id')
                 ->leftJoin('readiness_approvals', function($join) {
                     $join->on('readiness_approvals.readiness_id', '=', 'laboratory_readiness.readiness_id');
                     $join->on('readiness_approvals.lab_id', '=', 'laboratory_readiness.laboratory_id');
@@ -170,6 +170,7 @@ class ReadinessController extends Controller
                     "laboratories.id as lab_id",
                     "users.name as fname",
                     "users.second_name as sname",
+                    "users.email as email",
                     "laboratories.phone_number",
                     "laboratories.lab_name",
                     "laboratories.email",
@@ -178,6 +179,8 @@ class ReadinessController extends Controller
                     "readiness_answers.updated_at",
                     "readiness_approvals.id as approved_id"
                 ]);
+                // filter out the duplicate records by user_id and lab_id
+                $readinesses = $readinesses->unique('email', 'readinesses.id');
 
             return $readinesses;
         } catch (Exception $ex) {
