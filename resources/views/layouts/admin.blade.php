@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Gate;
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="MoH Rapid Test Continous Quality Improvement ODK data Analytics Platform.">
-    <meta name="author" content="NPHL ICT" <!-- CSRF Token -->
+    <meta name="author" content="NPHL ICT" >
+    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
