@@ -306,7 +306,7 @@ class PersonelForm extends React.Component {
 
                                     {/* add */}
                                     <div className="col-md-6 mb-3">
-                                        <label htmlFor="u_facility" >Laboratory  * {this.state.facility}</label>
+                                        <label htmlFor="u_facility" >Laboratory  *</label>
 
                                         {labSelect}
                                     </div>
