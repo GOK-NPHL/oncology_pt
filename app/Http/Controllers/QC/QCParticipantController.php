@@ -77,7 +77,7 @@ class QCParticipantController extends Controller
 
     public function getParticipantShipmentResponsePerformance()
     {
-        return view('user.pt.reports.pt_participant_perfornance_report');
+        return view('user.pt.reports.pt_participant_performance_report');
     }
     
 }
