@@ -701,7 +701,7 @@ class SubmitResults extends React.Component {
                                         </tr>
                                         <tr>
                                             <td><strong>HR HPV 16</strong></td>
-                                            <td><strong>HR HPV 18-45</strong></td>
+                                            <td><strong>HR HPV 18{(this.state.platforms && this.state.platformId && this.state.platforms.find(p=>p.id==this.state.platformId) && this.state.platforms.find(p=>p.id==this.state.platformId)?.name && this.state.platforms.find(p=>p.id==this.state.platformId)?.name.toLowerCase().includes('gene'))?"-45":""}</strong></td>
                                             <td><strong>Others HR HPV</strong></td>
                                         </tr>
 
