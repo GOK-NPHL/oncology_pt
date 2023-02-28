@@ -285,6 +285,21 @@ class Dashboard extends React.Component {
                 <label className="form-check-label" htmlFor="inlineRadio1">View pending submissions</label>
             </div>
 
+            {/* Readiness */}
+            <div className="form-check form-check-inline pl-2 mt-2">
+                <input
+                    onClick={() => {
+                        this.setState({
+                            listingName: 'Readiness Survey List',
+                            listing: 'readiness',
+                        })
+                    }}
+                    defaultChecked={this.state.listing == 'readiness'} className="form-check-input"
+                    type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" />
+                <label className="form-check-label" htmlFor="inlineRadio3">View readiness</label>
+            </div>
+
+            {/* Submitted */}
             <div className="form-check form-check-inline pl-2 mt-2">
                 <input
                     onClick={() => {
@@ -299,19 +314,6 @@ class Dashboard extends React.Component {
                 <label className="form-check-label" htmlFor="inlineRadio2">View submitted results</label>
             </div>
 
-            {/* Readiness */}
-            <div className="form-check form-check-inline pl-2 mt-2">
-                <input
-                    onClick={() => {
-                        this.setState({
-                            listingName: 'Readiness Survey List',
-                            listing: 'readiness',
-                        })
-                    }}
-                    defaultChecked={this.state.listing == 'readiness'} className="form-check-input"
-                    type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" />
-                <label className="form-check-label" htmlFor="inlineRadio3">View readiness</label>
-            </div>
 
         </div>
 
