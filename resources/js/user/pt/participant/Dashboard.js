@@ -30,8 +30,8 @@ class Dashboard extends React.Component {
             activeSubmittedPage: 1,
             //
             page: 'list',
-            listingName: ' Samples Submitted tests',
-            listing: 'submitted',
+            listingName: ' Samples Pending tests',
+            listing: 'pending',
             readiness: []
         }
         this.handlePageChange = this.handlePageChange.bind(this);
@@ -144,13 +144,13 @@ class Dashboard extends React.Component {
                     <td>{element.end_date}</td>
                     {
                         element.submission_id == null ? <td >
-                            <span style={{ "backgroundColor": "green", "padding": "3px", "borderRadius": "2px", "color": "white" }}>
+                            <span className="badge" style={{ "backgroundColor": (Date.parse(element.end_date) > new Date() ? ((element.is_readiness_answered == null || element.readiness_approval_id == null) ? "#c8850b" : "green") : "#f54"), "padding": "5px 6px", "borderRadius": "2px", "color": "white" }}>
                                 {Date.parse(element.end_date) > new Date() ?
                                     element.is_readiness_answered == null ? 'Readiness needs filling' :
                                         element.readiness_approval_id == null ?
                                             'Pending readiness approval'
                                             :
-                                            'Submit result'
+                                            'Ready for submission'
                                     :
                                     ' Past due date'}
                             </span>
@@ -205,7 +205,7 @@ class Dashboard extends React.Component {
                                         }}
 
                                         type="button"
-                                        className="btn btn-success">
+                                        className="btn btn-success" style={{ display: (Date.parse(element.end_date) > new Date() ? "inline-block" : "none") }}>
 
                                         {
                                             Date.parse(element.end_date) > new Date() ? <i className="fas fa-paper-plane"></i>
@@ -272,7 +272,20 @@ class Dashboard extends React.Component {
                 <hr />
             </div>
 
-            <div className="form-check form-check-inline  mt-2">
+            <div className="form-check form-check-inline mt-2">
+                <input
+                    onClick={() => {
+                        this.setState({
+                            listingName: 'Samples Pending tests',
+                            listing: 'pending',
+                        })
+                    }}
+                    defaultChecked={this.state.listing == 'pending'} className="form-check-input"
+                    type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" />
+                <label className="form-check-label" htmlFor="inlineRadio1">View pending submissions</label>
+            </div>
+
+            <div className="form-check form-check-inline pl-2 mt-2">
                 <input
                     onClick={() => {
                         this.setState({
@@ -284,19 +297,6 @@ class Dashboard extends React.Component {
                     className="form-check-input" type="radio"
                     name="inlineRadioOptions" id="inlineRadio2" value="option2" />
                 <label className="form-check-label" htmlFor="inlineRadio2">View submitted results</label>
-            </div>
-
-            <div className="form-check form-check-inline pl-2 mt-2">
-                <input
-                    onClick={() => {
-                        this.setState({
-                            listingName: 'Samples Pending tests',
-                            listing: 'pending',
-                        })
-                    }}
-                    defaultChecked={this.state.listing == 'pending'} className="form-check-input"
-                    type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" />
-                <label className="form-check-label" htmlFor="inlineRadio1">View pending submissions</label>
             </div>
 
             {/* Readiness */}

@@ -42,6 +42,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\OdkOrgunit','odkorgunit_user');
     }
 
+    public function lab(){
+        $lab = Laboratory::where('id',$this->laboratory_id)->first();
+        return $lab;
+    }
+
     public function rolesCreated()
     {
         return $this->hasMany('App\Role', 'editor_id');
