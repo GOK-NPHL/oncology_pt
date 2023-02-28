@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('home');
 // });
 
-// Auth::routes(['register' => false]);
+Auth::routes(['register' => false]);
 //Auth::routes();
 
 
