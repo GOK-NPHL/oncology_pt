@@ -109,9 +109,9 @@ class PTPerformanceReport extends React.Component {
         }
         let totalTableLength = 8;
 
-        this.state.results.map((data) => {
-            console.log(data.result_hpv_16)
-        })
+        // this.state.results.map((data) => {
+            // console.log(data.result_hpv_16)
+        // })
 
         let results = [];
         let isPassOverallScore = true;
