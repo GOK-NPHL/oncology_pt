@@ -72,7 +72,8 @@ class PTPerformanceReport extends React.Component {
                         testingDate: response['metadata'][0].testing_date,
                         kitExpiration: response['metadata'][0].kit_expiry_date,
                         phoneNo: response['metadata'][0].phone_number,
-                        platform: response['metadata'][0].platform_name
+                        platform: response['metadata'][0].platform_name,
+                        userName: response['metadata'][0].fname + ' ' + response['metadata'][0].sname,
                     });
 
                 }
@@ -83,7 +84,7 @@ class PTPerformanceReport extends React.Component {
             let response = await FetchAdminParams();
             this.setState({
                 adminParams: response,
-                userName: response['user']['name'],
+                // userName: response['user']['name'],
             })
         })();
     }
