@@ -212,8 +212,8 @@ class PTPerformanceReport extends React.Component {
                                                 </td>
                                                 <td className='text-left tbBorder'>
                                                     <p style={{ margin: 0, padding: '2px 7px' }}>
-                                                        Charity<br />
-                                                        KNEQAS QA Manager<br />
+                                                        Charity Maina<br />
+                                                        KNEQAS QA Manager / PT Coordinator<br />
                                                         National Oncology Biochemistry Reference Laboratory<br />
                                                         P.O. Box 20750-00200<br />
                                                         Nairobi, Kenya<br />
@@ -268,14 +268,13 @@ class PTPerformanceReport extends React.Component {
 
                                     <ol className="report">
                                         <li>ONCOLOGY HPV PT is a qualitative scheme.</li>
-                                        <li>The panel samples come as dried samples.</li>
-                                        <li>The PT samples have been fully characterised for the assigned qualitative HPV status.</li>
-                                        <li>The reference values are used to grade the participants.</li>
+                                        <li>The panel samples come as a cervical samples preserved in transport media in 2 ml vial.</li>
+                                        <li>The PT panel samples have been fully characterized for the assigned HPV category.</li>
                                         <li>The panel samples have been tested for stability and are stable.</li>
-                                        <li>Homogeneity was done using systematic random sampling and the results were the same as the expected results.</li>
-                                        <li>Participants performance report is confidential and will only be shared with the responsible quality assurance officers for the participating laboratories and for any purpose of corrective interventions.</li>
-                                        <li>Subcontracted services: PT panel distribution and return of results.</li>
-                                        <li>The schemes final report with summaries of overall performance analysis are indicated below</li>
+                                        <li>Homogeneity was done using systematic random sampling and the results were the same as those of expected results.</li>
+                                        <li>Participant’s performance report is confidential and will ONLY be shared with responsible County Quality officers for purposes of corrective interventions.</li>
+                                        <li>Subcontracted services: PT panel distribution, return of results.</li>
+                                        <li>The scheme’s final report with summaries with overall performance analysis will be available within one month of closure of the round.</li>
                                     </ol>
                                 </td>
                             </tr>
@@ -339,7 +338,7 @@ class PTPerformanceReport extends React.Component {
                                     <div style={{ borderTop: '1px solid #ccc', padding: '3px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                         <span>MOH/DLS/NPHL/KNEQAS/HPV/F/03</span>
                                         {/* &nbsp; &nbsp; */}
-                                        <span>Version <strong>1.1.0</strong></span>
+                                        <span>Version <strong>2.0</strong></span>
                                         {/* &nbsp; &nbsp; */}
                                         <span>Effective date: <strong>{new Date().toLocaleDateString('en-GB')}</strong></span>
                                     </div>
