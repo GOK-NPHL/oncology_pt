@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { v4 as uuidv4 } from 'uuid';
 import Pagination from "react-js-pagination";
-import { FetchShipmentResponses } from '../../../components/utils/Helpers';
+import { exportToExcel, FetchShipmentResponses } from '../../../components/utils/Helpers';
 import { matchPath } from "react-router";
 
 class ShipmentResponses extends React.Component {
@@ -91,7 +91,6 @@ class ShipmentResponses extends React.Component {
         let tableElem = [];
 
         if (this.state.data.length > 0) {
-
             this.state.data.map((element, index) => {
                 tableElem.push(<tr key={index}>
                     <th scope="row">{index + 1}</th>
@@ -99,8 +98,10 @@ class ShipmentResponses extends React.Component {
                     <td>{element.code}</td>
                     <td>{element.lab_name}</td>
                     <td>{element.created_at}</td>
-                    <td>{element.updated_at}</td>
                     <td> {<span>{element.fname} {element.sname}</span>} </td>
+                    <td>
+                        {element?.performance}% {element?.performance >= element?.pass_mark ? <span className="badge badge-success">Passed</span> : <span className="badge badge-danger">Failed</span>}
+                    </td>
 
                     {
                         //lab_id   id
@@ -150,17 +151,45 @@ class ShipmentResponses extends React.Component {
 
 
         let pageContent = <div id='user_table' className='row'>
-            <div className="col-sm-12 mb-3 mt-3">
-                <h3 className="float-left">Shipment response list</h3>
-                <button style={{ "color": "white" }} type="button"
-                    className="btn btn-success float-right"
-                    onClick={() => {
-                        this.props.page == 'report' ?
-                            window.location.assign('/pt-shipment-report-list') :
-                            window.location.assign('/pt-shipment')
+            <div className="col-sm-12 row mb-3 mt-3">
+                <div className="col-md-4">
+                    <h3 className="float-left">Shipment response list</h3>
+                </div>
+                <div className="col-md-4">
+                    <button type="button" className="btn btn-success btn-sm mx-1" onClick={() => {
+                        if (this.state.data && this.state.data.length > 0) {
+                            let final_data = this.state.data.map(element => {
+                                return {
+                                    'Round name': element.name,
+                                    'Shipment code': element.code,
+                                    'Participant name': element.lab_name,
+                                    'Date responded': element.created_at,
+                                    'Responded by': element.fname + ' ' + element.sname,
+                                    'Score': element?.performance,
+                                    'Performance': (element?.performance >= element?.pass_mark ? 'Passed' : 'Failed')
+                                }
+                            })
+                            exportToExcel(final_data, 'Shipment response performance');
+                        } else {
+                            console.error('No data to export');
+                            alert('No data to export')
+                        }
                     }}>
-                    ← back
-                </button>
+                        <i className='fa fa-download'></i>&nbsp;
+                        Excel/CSV
+                    </button>
+                </div>
+                <div className="col-md-4">
+                    <button style={{ "color": "white" }} type="button"
+                        className="btn btn-default btn-sm text-dark float-right"
+                        onClick={() => {
+                            this.props.page == 'report' ?
+                                window.location.assign('/pt-shipment-report-list') :
+                                window.location.assign('/pt-shipment')
+                        }}>
+                        ← back
+                    </button>
+                </div>
             </div>
             <div className='col-sm-12 col-md-12'>
                 <div className="form-group mb-2">
@@ -184,8 +213,8 @@ class ShipmentResponses extends React.Component {
                             <th scope="col">Shipment code</th>
                             <th scope="col">Participant name</th>
                             <th scope="col">Date responded</th>
-                            <th scope="col">Date updated</th>
                             <th scope="col">Responded by</th>
+                            <th scope="col">Performance</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>

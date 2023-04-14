@@ -347,8 +347,6 @@ class PTShipmentController extends Controller
 
             $shipments2 =  $shipments2->union($shipments);
 
-            Log::info($shipments2->toSql());
-
             $shipments2 = $shipments2->get();
 
 
@@ -423,7 +421,8 @@ class PTShipmentController extends Controller
                 ->join('users', 'ptsubmissions.user_id', '=', 'users.id')
                 ->where('pt_shipements.id', $request->id)
                 ->get([
-                    "pt_shipements.id",
+                    "pt_shipements.id as pt_shipment_id",
+                    "pt_shipements.pass_mark",
                     "pt_shipements.start_date",
                     "pt_shipements.code",
                     "pt_shipements.end_date",
@@ -436,8 +435,46 @@ class PTShipmentController extends Controller
                     "laboratories.email",
                     "ptsubmissions.id as ptsubmission_id",
                     "ptsubmissions.created_at",
-                    "ptsubmissions.updated_at",
+                    "ptsubmissions.updated_at"
                 ]);
+
+            // for each shipment response, get the sample results
+            foreach ($shipmentsResponses as $key => $shipmentResponse) {
+                $sample_results = DB::table("pt_submission_results")
+                    ->where('ptsubmission_id', $shipmentResponse->ptsubmission_id)
+                    ->join('pt_samples', 'pt_samples.id', '=', 'pt_submission_results.sample_id')
+                    ->get([
+                        'pt_submission_results.ptsubmission_id as pt_submission_id',
+                        'pt_samples.id as sample_id',
+                        'pt_samples.name as sample_name',
+                        'pt_samples.hpv_16 as expected_hpv_16',
+                        'pt_samples.hpv_18 as expected_hpv_18',
+                        'pt_samples.hpv_other as expected_hpv_other',
+                        'pt_submission_results.hpv_16 as submitted_hpv_16',
+                        'pt_submission_results.hpv_18 as submitted_hpv_18',
+                        'pt_submission_results.hpv_other as submitted_hpv_other',
+                    ]);
+                // calculate the performance
+                $response_performance = 0;
+                $sample_count = DB::table("pt_samples")->where('ptshipment_id', $shipmentResponse->pt_shipment_id)->count() ?? 5;
+                $score_per_sample = (100 / $sample_count) ?? 20;
+
+                foreach ($sample_results as $key => $sample_result) {
+                    $expected_hpv_16 = $sample_result->expected_hpv_16;
+                    $expected_hpv_18 = $sample_result->expected_hpv_18;
+                    $expected_hpv_other = $sample_result->expected_hpv_other;
+                    $submitted_hpv_16 = $sample_result->submitted_hpv_16;
+                    $submitted_hpv_18 = $sample_result->submitted_hpv_18;
+                    $submitted_hpv_other = $sample_result->submitted_hpv_other;
+                    $sample_result->performance = 0;
+                    if ($expected_hpv_16 == $submitted_hpv_16 && $expected_hpv_18 == $submitted_hpv_18 && $expected_hpv_other == $submitted_hpv_other) {
+                        $sample_result->performance += $score_per_sample;
+                    }
+                    $response_performance += $sample_result->performance;
+                }
+                // $shipmentResponse->sample_results = $sample_results;
+                $shipmentResponse->performance = $response_performance;
+            }
 
             return $shipmentsResponses;
         } catch (Exception $ex) {
