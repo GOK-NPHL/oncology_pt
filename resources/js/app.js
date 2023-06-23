@@ -44,6 +44,10 @@ require('./user/pt/reports/ListShipmentReport');
 require('./user/pt/reports/ListShipmentResponseReport');
 require('./user/pt/reports/PTPerformanceReport');
 
+// lots
+require('./user/pt/lots/Lots');
+require('./user/pt/lots/LotDetail');
+
 
 require('./user/general/Dashboard');
 //Intrface code

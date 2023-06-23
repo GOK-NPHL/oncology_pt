@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\LotController;
 use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\ResourceFilesController;
@@ -51,10 +52,15 @@ Route::get('/get_lab_personel/{id}', [ParticipantController::class, 'getLabPerso
 Route::post('/create_lab_personel', [ParticipantController::class, 'createLabPersonel'])->name('create_lab_personel')->middleware('auth:admin');
 Route::post('/edit_lab_personel', [ParticipantController::class, 'editPersonel'])->name('edit_lab_personel')->middleware('auth:admin');
 
-Route::get('/get_platforms', [PlatformController::class, 'getPlatforms'])->name('get_platforms');
+Route::get('/get_lots', [PlatformController::class, 'getPlatforms'])->name('get_lots');
 Route::get('/get_platform/{id}', [PlatformController::class, 'getLabPlatformById'])->middleware('auth:admin');
 Route::post('/create_platform', [PlatformController::class, 'createPlatform'])->name('create_platform')->middleware('auth:admin');
 Route::post('/edit_platform', [PlatformController::class, 'editPlatform'])->name('edit_platform')->middleware('auth:admin');
+
+Route::get('/get_lots', [LotController::class, 'getLots'])->name('get_lots');
+Route::get('/get_lot/{id}', [LotController::class, 'getLotById'])->middleware('auth:admin');
+Route::post('/create_lot', [LotController::class, 'createLot'])->name('create_lot')->middleware('auth:admin');
+Route::post('/edit_lot', [LotController::class, 'editLot'])->name('edit_lot')->middleware('auth:admin');
 
 Route::get('/get_readiness', [PTReadinessController::class, 'getReadiness'])->name('get_readiness')->middleware('auth:admin');
 Route::get('/get_shipment_readiness', [PTReadinessController::class, 'getShipmentReadiness'])->name('get_shipment_readiness')->middleware('auth:admin');

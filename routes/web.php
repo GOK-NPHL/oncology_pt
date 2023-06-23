@@ -66,6 +66,9 @@ Route::get('add-lab', 'QC\QCAdminController@addLab')->name('add-lab');
 Route::get('edit-lab/{labId}', [QCAdminController::class, 'editLab'])->name('edit-lab');
 Route::get('list-lab', 'QC\QCAdminController@listLab')->name('list-lab');
 
+Route::get('manage-lots', 'PT\PTAdminController@lots')->name('manage-lots');
+Route::get('manage-lots/{lot}', 'PT\PTAdminController@lotDetail')->name('view-lot-details');
+
 Route::get('pt-shipment', 'PT\PTAdminController@ptShipment')->name('pt-shipment');
 Route::get('edit-shipment/{shipmentId}', [PTAdminController::class, 'editShipment'])->name('edit-shipment');
 

@@ -539,6 +539,82 @@ export async function FetchShipments(userId, filterEmpty) {
     }
 }
 
+export async function FetchLots() {
+
+    try {
+        const response = await axios.get(`${settings.serverBaseApi}/get_lots`);
+        const responseData = response.data;
+        return responseData;
+    } catch (err) {
+        // Handle Error Here
+        return err.response
+    }
+}
+
+export async function SaveLot(lot) {
+    try {
+        const response = await axios({
+            method: 'post',
+            url: `${settings.serverBaseApi}/create_lot`,
+            data: {
+                lot: lot,
+            }
+        });
+        return response;
+    } catch (err) {
+        // Handle Error Here
+        console.log(err);
+        return err.response
+    }
+}
+
+
+export async function UpdateLot(lot) {
+    try {
+        const response = await axios({
+            method: 'post',
+            url: `${settings.serverBaseApi}/edit_lot`,
+            data: {
+                lot: lot,
+            }
+        });
+        return response;
+    } catch (err) {
+        // Handle Error Here
+        console.log(err);
+        return err.response
+    }
+}
+
+export async function DeleteLot(lotId) {
+    try {
+        const response = await axios({
+            method: 'post',
+            url: `${settings.serverBaseApi}/delete_lot`,
+            data: {
+                id: lotId,
+            }
+        });
+        return response;
+    } catch (err) {
+        // Handle Error Here
+        console.log(err);
+        return err.response
+    }
+}
+
+export async function FetchLot(lotId) {
+    try {
+        const response = await axios.get(`${settings.serverBaseApi}/get_lot/` + lotId);
+        const responseData = response.data;
+        return responseData;
+    } catch (err) {
+        // Handle Error Here
+        return err.response
+    }
+}
+
+
 export async function SaveSuveyAnswers(survey) {
     try {
         const response = await axios({

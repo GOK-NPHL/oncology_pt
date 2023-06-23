@@ -39,4 +39,9 @@ class Laboratory extends Model
     {
         return $this->belongsToMany('App\Readiness');
     }
+
+    public function county()
+    {
+        return $this->belongsTo('App\County');
+    }
 }
