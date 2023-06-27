@@ -707,7 +707,7 @@ class SubmitResults extends React.Component {
 
                                         {/*  PT - Long Term*/}
 
-                                        {this.props.shipment.samples.map((sample) => {
+                                        {this.props.shipment.samples.sort((a,b)=>a?.sample_name>b?.sample_name).map((sample) => {
 
                                             return <tr key={uuidv4()}>
                                                 <td>{sample.sample_name}</td>

@@ -16,6 +16,12 @@ class LotController extends Controller
     {
         try {
             $lots = Lot::all();
+
+            // shipment filter
+            if ($request->has('shipment_id')) {
+                $shipment_id = $request->input('shipment_id');
+                $lots = Lot::where('shipment_id', $shipment_id)->get();
+            }
             //for each lot, count the participants
             if ($lots->isEmpty()) {
                 return response()->json([], 404);
@@ -85,6 +91,7 @@ class LotController extends Controller
             if (isset($request->lot['readiness_id']) && !empty($request->lot['readiness_id'])) {
                 $lot->readiness_id = $request->lot['readiness_id'];
             }
+            $lot->save();
             if (isset($request->lot['participants']) && !empty($request->lot['participants'])) {
                 foreach ($request->lot['participants'] as $participant) {
                     LotParticipant::create([
@@ -93,7 +100,6 @@ class LotController extends Controller
                     ]);
                 }
             }
-            $lot->save();
 
             return response()->json(['Message' => 'Updated successfully'], 200);
         } catch (Exception $ex) {

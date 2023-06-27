@@ -104,7 +104,7 @@ class ListShipment extends React.Component {
                                     <a
                                         onClick={() => {
                                             this.props.page != 'report' ?
-                                                window.location.assign('get-shipment-responses/' + element.id) :
+                                                window.location.assign('get-shipment-report-responses/' + element.id) :
                                                 window.location.assign('get-shipment-report-responses/' + element.id)
                                         }}
                                         style={{ 'marginRight': '5px' }}
@@ -118,7 +118,7 @@ class ListShipment extends React.Component {
                                     <a href="#"
                                         onClick={
                                             () => {
-                                                console.log(element);
+                                                // console.log(element);
                                                 this.props.toggleView('edit', element.id);
                                             }
                                         }
@@ -150,7 +150,7 @@ class ListShipment extends React.Component {
                 <div className="form-group mb-2">
                     <input type="text"
                         onChange={(event) => {
-                            console.log(this.state.allTableElements);
+                            // console.log(this.state.allTableElements);
                             let currElementsTableEl = this.state.allTableElements.filter(elemnt =>
                                 elemnt['props']['children'][1]['props']['children'].toLowerCase().trim().includes(event.target.value.trim().toLowerCase()) ||
                                 elemnt['props']['children'][2]['props']['children'].toLowerCase().trim().includes(event.target.value.trim().toLowerCase())

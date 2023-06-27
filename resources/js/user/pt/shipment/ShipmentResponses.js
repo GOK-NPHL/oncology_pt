@@ -100,7 +100,7 @@ class ShipmentResponses extends React.Component {
                     <td>{element.created_at}</td>
                     <td> {<span>{element.fname} {element.sname}</span>} </td>
                     <td>
-                        {element?.performance}% {element?.performance >= element?.pass_mark ? <span className="badge badge-success">Passed</span> : <span className="badge badge-danger">Failed</span>}
+                        {parseFloat(element?.performance).toFixed(2)}% {element?.performance >= element?.pass_mark ? <span className="badge badge-success">Passed</span> : <span className="badge badge-danger">Failed</span>}
                     </td>
 
                     {

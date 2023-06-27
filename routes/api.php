@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\LotController;
+use App\Http\Controllers\PanelController;
 use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\ResourceFilesController;
@@ -52,7 +53,7 @@ Route::get('/get_lab_personel/{id}', [ParticipantController::class, 'getLabPerso
 Route::post('/create_lab_personel', [ParticipantController::class, 'createLabPersonel'])->name('create_lab_personel')->middleware('auth:admin');
 Route::post('/edit_lab_personel', [ParticipantController::class, 'editPersonel'])->name('edit_lab_personel')->middleware('auth:admin');
 
-Route::get('/get_lots', [PlatformController::class, 'getPlatforms'])->name('get_lots');
+Route::get('/get_platforms', [PlatformController::class, 'getPlatforms'])->name('get_platforms');
 Route::get('/get_platform/{id}', [PlatformController::class, 'getLabPlatformById'])->middleware('auth:admin');
 Route::post('/create_platform', [PlatformController::class, 'createPlatform'])->name('create_platform')->middleware('auth:admin');
 Route::post('/edit_platform', [PlatformController::class, 'editPlatform'])->name('edit_platform')->middleware('auth:admin');
@@ -61,6 +62,13 @@ Route::get('/get_lots', [LotController::class, 'getLots'])->name('get_lots');
 Route::get('/get_lot/{id}', [LotController::class, 'getLotById'])->middleware('auth:admin');
 Route::post('/create_lot', [LotController::class, 'createLot'])->name('create_lot')->middleware('auth:admin');
 Route::post('/edit_lot', [LotController::class, 'editLot'])->name('edit_lot')->middleware('auth:admin');
+Route::delete('/delete_lot/{id}', [LotController::class, 'deleteLot'])->name('edit_lot')->middleware('auth:admin');
+
+Route::get('/get_panels', [PanelController::class, 'getPanels'])->name('get_panels');
+Route::get('/get_panel/{id}', [PanelController::class, 'getPanelById'])->middleware('auth:admin');
+Route::post('/create_panel', [PanelController::class, 'createPanel'])->name('create_panel')->middleware('auth:admin');
+Route::post('/edit_panel', [PanelController::class, 'editPanel'])->name('edit_panel')->middleware('auth:admin');
+Route::delete('/delete_panel/{id}', [PanelController::class, 'deletePanel'])->name('edit_panel')->middleware('auth:admin');
 
 Route::get('/get_readiness', [PTReadinessController::class, 'getReadiness'])->name('get_readiness')->middleware('auth:admin');
 Route::get('/get_shipment_readiness', [PTReadinessController::class, 'getShipmentReadiness'])->name('get_shipment_readiness')->middleware('auth:admin');
@@ -70,7 +78,9 @@ Route::post('/create_readiness', [PTReadinessController::class, 'saveReadiness']
 Route::get('/get_readiness_by_id/{id}', [PTReadinessController::class, 'getReadinessById'])->middleware('auth:admin');
 Route::post('/edit_readiness', [PTReadinessController::class, 'editReadiness'])->name('edit_readiness')->middleware('auth:admin');
 
-Route::get('/get_shipments/{userId}/{filterEmpty}', [PTShipmentController::class, 'getShipments'])->name('get_shipment');
+Route::get('/get_shipments', [PTShipmentController::class, 'getShipments'])->name('get_shipments');
+// Route::get('/get_shipments/{userId}/{filterEmpty}', [PTShipmentController::class, 'getShipments'])->name('get_shipment');
+// Route::get('/get_shipments_2', [PTShipmentController::class, 'getShipments2'])->name('get_shipments_2');
 Route::post('/create_shipment', [PTShipmentController::class, 'saveShipment'])->name('create_shipment')->middleware('auth:admin');
 Route::post('/update_shipment', [PTShipmentController::class, 'updateShipment'])->name('update_shipment')->middleware('auth:admin');
 Route::get('/get_shipment_by_id/{id}', [PTShipmentController::class, 'getShipmentById'])->middleware('auth:admin');

@@ -48,6 +48,9 @@ require('./user/pt/reports/PTPerformanceReport');
 require('./user/pt/lots/Lots');
 require('./user/pt/lots/LotDetail');
 
+// panels
+require('./user/pt/panels/Panels');
+require('./user/pt/panels/PanelDetail');
 
 require('./user/general/Dashboard');
 //Intrface code

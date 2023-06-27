@@ -34,6 +34,31 @@ function Lots() {
             })
             .catch(err => console.log(err))
     }
+
+    const fetchAllParticipants = () => {
+        FetchParticipantList().then(data => {
+            let dt = data
+            if (dt && typeof dt === 'object' && !Array.isArray(dt)) {
+                dt = Object.values(dt)
+            }
+            let participants = []
+            if (dt && dt.length > 0) {
+                dt.forEach((item) => {
+                    if (item.id && item.lab_name) {
+                        participants.push({
+                            id: item.id,
+                            name: item.lab_name
+                        })
+                    } else {
+                        console.log('no id or name')
+                    }
+                })
+            } else {
+                console.log('no labs')
+            }
+            setAllParticipants(participants)
+        }).catch(err => console.log(err))
+    }
     const fetchReadinessesParticipants = (r) => {
         if (use_checklist && r) {
             FetchReadinessResponses(r)
@@ -64,28 +89,7 @@ function Lots() {
                 .catch(err => console.log(err))
         } else {
             // fetch all labs
-            FetchParticipantList().then(data => {
-                let dt = data
-                if (dt && typeof dt === 'object' && !Array.isArray(dt)) {
-                    dt = Object.values(dt)
-                }
-                let participants = []
-                if (dt && dt.length > 0) {
-                    dt.forEach((item) => {
-                        if (item.id && item.lab_name) {
-                            participants.push({
-                                id: item.id,
-                                name: item.lab_name
-                            })
-                        } else {
-                            console.log('no id or name')
-                        }
-                    })
-                } else {
-                    console.log('no labs')
-                }
-                setAllParticipants(participants)
-            }).catch(err => console.log(err))
+            fetchAllParticipants()
 
         }
     }
@@ -105,6 +109,7 @@ function Lots() {
             fetchAllShipments()
             fetchAllLots()
             fetchAllReadinesses()
+            fetchAllParticipants()
         }
         return () => {
             mtd = false
@@ -175,13 +180,18 @@ function Lots() {
                                                     }}>Edit Lot</button>
                                                     <button className='btn btn-sm btn-danger' onClick={e => {
                                                         if (typeof window !== 'undefined' && window.confirm('Are you sure you want to delete this lot?')) {
-                                                            DeleteLot(lot.id).then(res => {
-                                                                if (res.status === 200) {
-                                                                    fetchAllLots()
-                                                                }
-                                                            }).catch(err => {
-                                                                console.log(err)
-                                                            })
+                                                            if(lot.id){
+                                                                DeleteLot(lot.id).then(res => {
+                                                                    if (res.status === 200) {
+                                                                        fetchAllLots()
+                                                                    }
+                                                                }).catch(err => {
+                                                                    console.log(err)
+                                                                })
+                                                            } else {
+                                                                let newLots = allLots.splice(index, 1)
+                                                                setAllLots(newLots)
+                                                            }
                                                         }
                                                     }}>Delete Lot</button>
                                                 </div>

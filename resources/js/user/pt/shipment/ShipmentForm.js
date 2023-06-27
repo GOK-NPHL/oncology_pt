@@ -1,5 +1,5 @@
 import React from 'react';
-import { FetchParticipantList, SaveShipment, FetchShipmentReadiness as FetchReadiness, FetchShipmentById, UpdateShipment } from '../../../components/utils/Helpers';
+import { FetchParticipantList, SaveShipment, FetchShipmentReadiness as FetchReadiness, FetchShipmentById, UpdateShipment, FetchLots, FetchPanels } from '../../../components/utils/Helpers';
 import { v4 as uuidv4 } from 'uuid';
 import DualListBox from 'react-dual-listbox';
 import './PtShipment.css';
@@ -21,6 +21,7 @@ class ShipmentForm extends React.Component {
             message: '',
             round: '',
             shipmentCode: '',
+            startDate: '',
             resultDueDate: '',
             passMark: 100,
             testInstructions: '',
@@ -32,11 +33,24 @@ class ShipmentForm extends React.Component {
             dualListptions: [],
             readinessChecklists: [],
             selected: [],
-            pageState: ''
+            pageState: '',
+
+
+            lots: [],
+            panels: [],
+            panelLots: [],
+            newMapping: {
+                panel_id: '',
+                lot_id: '',
+                panel_name: '',
+                lot_name: '',
+            },
+            add_mapping: false,
         }
 
         this.handleRoundChange = this.handleRoundChange.bind(this);
         this.handleShipmentCodeChange = this.handleShipmentCodeChange.bind(this);
+        this.handleStartDate = this.handleStartDate.bind(this);
         this.handleResultDueDateChange = this.handleResultDueDateChange.bind(this);
         this.handlePassMarkChange = this.handlePassMarkChange.bind(this);
         this.handleTestInstructionsChange = this.handleTestInstructionsChange.bind(this);
@@ -47,6 +61,11 @@ class ShipmentForm extends React.Component {
         this.handleParticipantSourceChange = this.handleParticipantSourceChange.bind(this);
         this.dualListOnChange = this.dualListOnChange.bind(this);
         this.getShipementDataById = this.getShipementDataById.bind(this);
+
+        this.getLotsByShipment = this.getLotsByShipment.bind(this)
+        this.getAllLots = this.getAllLots.bind(this)
+        this.getPanelsByShipment = this.getPanelsByShipment.bind(this)
+        this.getAllPanels = this.getAllPanels.bind(this)
 
     }
 
@@ -61,24 +80,82 @@ class ShipmentForm extends React.Component {
                 });
                 $('#addPersonelModal').modal('toggle');
             } else {
-
-                for (let i = 0; i < editData.samples.length; i++) {
-                    this.addSampleRow(i, editData.samples[i]);
-                }
+                // for (let i = 0; i < editData.samples.length; i++) {
+                //     this.addSampleRow(i, editData.samples[i]);
+                // }
                 this.setState({
+                    pageState: 'edit',
                     id: id,
                     round: editData.shipment.round_name,
                     shipmentCode: editData.shipment.code,
+                    startDate: editData.shipment.start_date,
                     resultDueDate: editData.shipment.end_date,
                     passMark: editData.shipment.pass_mark,
                     testInstructions: editData.shipment.test_instructions,
-                    samples: editData.samples,
+                    
+                    ///
+                    // samples: editData.samples,
+                    // samplesNumber: editData.samples.length,
+                    // selected: editData.labs,
                     readinessId: editData.shipment.readiness_id,
-                    samplesNumber: editData.samples.length,
                     participantSource: editData.shipment.readiness_id == null ? 'participants' : 'checklist',
-                    selected: editData.labs,
-                    pageState: 'edit',
+                    ///
+
+                    panelLots: editData.panel_lots,
                 });
+            }
+        })();
+    }
+
+    getLotsByShipment(ship_id) {
+        (async () => {
+
+            let lotsData = await FetchLots(ship_id);
+            if (lotsData.status == 500) {
+
+            } else {
+                this.setState({
+                    lots: lotsData,
+                })
+            }
+        })();
+    }
+    getAllLots() {
+        (async () => {
+
+            let lotsData = await FetchLots();
+            if (lotsData.status == 500) {
+
+            } else {
+                this.setState({
+                    lots: lotsData,
+                })
+            }
+        })();
+    }
+    getPanelsByShipment(ship_id) {
+        (async () => {
+
+            let panels_data = await FetchPanels(ship_id);
+            if (panels_data.status == 500) {
+
+            } else {
+                this.setState({
+                    panels: panels_data,
+                })
+            }
+        })();
+    }
+    getAllPanels() {
+        (async () => {
+
+            let panels_data = await FetchPanels();
+            if (panels_data.status == 500) {
+
+            } else {
+                this.setState({
+                    panels: panels_data,
+                })
             }
         })();
     }
@@ -91,6 +168,9 @@ class ShipmentForm extends React.Component {
         (async () => {
             let readinessChecklists = await FetchReadiness();
             let partsList = await FetchParticipantList();
+
+
+
             if (this.props.pageState == 'edit') {
 
                 this.getShipementDataById(this.props.id);
@@ -99,7 +179,16 @@ class ShipmentForm extends React.Component {
                     readinessChecklists: readinessChecklists,
                 });
 
+                ///
+                this.getPanelsByShipment(this.props.id);
+                this.getLotsByShipment(this.props.id);
+                ///
             } else {
+                ///
+                this.getAllPanels();
+                this.getAllLots();
+                ///
+
                 this.setState({
                     dualListptions: partsList,
                     readinessChecklists: readinessChecklists,
@@ -108,6 +197,7 @@ class ShipmentForm extends React.Component {
                     message: '',
                     round: '',
                     shipmentCode: '',
+                    startDate: '',
                     resultDueDate: '',
                     passMark: 100,
                     testInstructions: '',
@@ -176,6 +266,22 @@ class ShipmentForm extends React.Component {
         });
     }
 
+    handleStartDate(startDate) {
+        let today = new Date();
+        let sd = Date.parse(startDate);
+        if (sd < today) {
+            this.setState({
+                message: "Result due date cannot be less than todays date"
+            });
+            $('#addShipmentModal').modal('toggle');
+            return;
+        }
+
+        this.setState({
+            startDate: startDate
+        });
+    }
+
     handlePassMarkChange(passMark) {
 
         this.setState({
@@ -192,41 +298,27 @@ class ShipmentForm extends React.Component {
 
 
     saveShipment() {
-        let isSamplesDataFilled = true;
-        this.state.samples.map((samples) => {
-            if (
-                samples == null ||
-                samples['name'] == null ||
-                samples['16'] == null || samples['18'] == null || samples['other'] == null ||
-                samples['name'] == ''
-            ) {
-                isSamplesDataFilled = false
-            }
-        });
         if (
             this.state.passMark == '' ||
+            this.state.startDate == '' ||
             this.state.resultDueDate == '' ||
             this.state.shipmentCode == '' ||
             this.state.round == '' ||
-            this.state.samplesNumber == 0 ||
-            !isSamplesDataFilled ||
-            (this.state.selected.length == 0 && this.state.readinessId == '')
-
+            (!this.state.panelLots || this.state.panelLots.length < 1)
         ) {
-            let msg = [<p>Errors in:</p>,
-            <p>{this.state.passMark == '' ? <strong>Pass mark field</strong> : ''}</p>,
-            <p>{this.state.resultDueDate == '' ? <strong>Result Due Date field</strong> : ''}</p>,
-            <p>{this.state.shipmentCode == '' ? <strong>Shipement code field</strong> : ''}</p>,
-            <p>{this.state.round == '' ? <strong>Round Name field</strong> : ''}</p>,
-            <p>{this.state.samplesNumber == '' ? <strong>No samples attached</strong> : ''}</p>,
-            <p>{!this.state.isSamplesDataFilled ? <strong>Not all samples have a name and reference result</strong> : '11'}</p>,
-            <p>{(this.state.selected.length == 0 && this.state.readinessId == '') ? <strong>No readiness of participants selected</strong> : ''}</p>]
-
+            let msg = [
+                this.state.passMark == '' ? "Pass mark field is required" : '',
+                this.state.startDate == '' ? "Start Date field is required" : '',
+                this.state.resultDueDate == '' ? "Result Due Date field is required" : '',
+                this.state.shipmentCode == '' ? "Shipement code field is required" : '',
+                this.state.round == '' ? "Round Name field is required" : '',
+                this.state.panelLots.length < 1 ? "No panels mapped to participant lots" : '',
+            ]
             this.setState({
                 message:
                     [
                         <p>Kindly fill the required fileds marked in *</p>,
-                        <p>{msg}</p>
+                        <ul>{msg.filter(m => m && m.length > 0).map((msg, x) => <li className='text-danger' key={x}>{msg}</li>)}</ul>
                     ]
             });
             $('#addShipmentModal').modal('toggle');
@@ -236,13 +328,12 @@ class ShipmentForm extends React.Component {
                 let shipement = {};
                 { this.state.pageState == 'edit' ? shipement['id'] = this.state.id : '' }
                 shipement['pass_mark'] = this.state.passMark;
+                shipement['start_date'] = this.state.startDate;
                 shipement['result_due_date'] = this.state.resultDueDate;
                 shipement['shipment_code'] = this.state.shipmentCode;
                 shipement['round'] = this.state.round;
-                shipement['samples'] = this.state.samples;
+                shipement['panel_lots'] = this.state.panelLots;
                 shipement['test_instructions'] = this.state.testInstructions;
-                shipement['selected'] = this.state.selected;
-                shipement['readiness_id'] = this.state.readinessId;
 
                 if (this.state.pageState == 'edit') {
                     let response = await UpdateShipment(shipement);
@@ -255,6 +346,7 @@ class ShipmentForm extends React.Component {
                         this.setState({
                             message: response.data.Message,
                             passMark: 80,
+                            startDate: '',
                             resultDueDate: '',
                             shipmentCode: '',
                             round: '',
@@ -263,7 +355,16 @@ class ShipmentForm extends React.Component {
                             samplesNumber: 0,
                             selected: [],
                             readinessId: '',
-                            testInstructions: ''
+                            testInstructions: '',
+
+                            panelLots: [],
+                            newMapping: {
+                                panel_id: '',
+                                lot_id: '',
+                                panel_name: '',
+                                lot_name: '',
+                            },
+                            add_mapping: false,
                         });
                     } else {
                         this.setState({
@@ -435,6 +536,14 @@ class ShipmentForm extends React.Component {
                         <div className="form-row">
                             {/* add */}
                             <div className="col-md-6 mb-3">
+                                <label htmlFor="u_start_date" >Start Date  *</label>
+                                <input
+                                    value={this.state.startDate}
+                                    onChange={(event) => this.handleStartDate(event.target.value)}
+                                    type="date" className="form-control" id="u_start_date" />
+                            </div>
+
+                            <div className="col-md-6 mb-3">
                                 <label htmlFor="u_result_due_date" >Result Due Date  *</label>
                                 <input
                                     value={this.state.resultDueDate}
@@ -444,20 +553,16 @@ class ShipmentForm extends React.Component {
 
                             <div className="col-md-6 mb-3">
                                 <label htmlFor="u_pass_mark" >Pass mark (%)*</label>
-
                                 <input
-                                    value={this.state.passMark}
                                     min={0}
                                     max={100}
                                     value={this.state.passMark}
                                     onChange={(event) => this.handlePassMarkChange(event.target.value)}
                                     type="number" className="form-control" id="u_pass_mark" />
                             </div>
-
                         </div>
 
                         <div className="form-row">
-
                             <div className="col-sm-12 mb-3">
                                 <label htmlFor="test_instructions" >Testing Instructions</label>
                                 <textarea
@@ -466,9 +571,130 @@ class ShipmentForm extends React.Component {
                                     className="form-control" id="test_instructions" rows="3"></textarea>
                             </div>
                         </div>
+                        <div className="form-row">
+                            <div className="col-sm-12 mb-3">
+                                <div className="row">
+                                    <div className="col-md-12" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <label>Panel - Participant Mapping Matrix</label>
+                                        <button className='btn btn-primary btn-sm' onClick={e => {
+                                            e.preventDefault();
+                                            this.setState({ add_mapping: true })
+                                        }}><b>+ Add mapping</b></button>
+                                    </div>
+                                </div>
+                                <div className="table-responsive">
+                                    <table className="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Panel</th>
+                                                <th scope="col">Lot</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.state.panelLots.map((panelLot, index) => {
+                                                return (
+                                                    <tr key={index}>
+                                                        <td>{panelLot?.panel_name}</td>
+                                                        <td>{panelLot?.lot_name}</td>
+                                                        <td>
+                                                            <button
+                                                                onClick={() => {
+                                                                    let panelLots = this.state.panelLots;
+                                                                    panelLots.splice(index, 1);
+                                                                    this.setState({ panelLots: panelLots })
+                                                                }}
+                                                                className="btn btn-danger btn-sm">
+                                                                &times;
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })}
+                                            {this.state.add_mapping && (
+                                                <tr>
+                                                    <td>
+                                                        <select className='form-control' onChange={e => {
+                                                            let selected_panel = this.state.panels.find(panel => panel.id == e.target.value)
+                                                            if (selected_panel) {
+                                                                this.setState({
+                                                                    newMapping: {
+                                                                        ...this.state.newMapping,
+                                                                        panel_name: selected_panel?.name,
+                                                                        panel_id: selected_panel?.id
+                                                                    }
+                                                                })
+                                                            }
+                                                        }}>
+                                                            <option> - Select Panel - </option>
+                                                            {this.state.panels.map(panel => (
+                                                                <option key={panel?.id} value={panel?.id}>{panel?.name}</option>
+                                                            ))}
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <select className='form-control' onChange={e => {
+                                                            let selected_lot = this.state.lots.find(lot => lot.id == e.target.value)
+                                                            if (selected_lot) {
+                                                                this.setState({
+                                                                    newMapping: {
+                                                                        ...this.state.newMapping,
+                                                                        lot_name: selected_lot?.name,
+                                                                        lot_id: selected_lot?.id
+                                                                    }
+                                                                })
+                                                            }
+                                                        }}>
+                                                            <option> - Select Lot </option>
+                                                            {this.state.lots.map(lot => (
+                                                                <option key={lot?.id} value={lot?.id}>{lot?.name}</option>
+                                                            ))}
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <button
+                                                            onClick={e => {
+                                                                e.preventDefault();
+                                                                // create unique id
+                                                                if (this.state.newMapping?.panel_name && this.state.newMapping?.lot_name && this.state.newMapping?.panel_id && this.state.newMapping?.lot_id) {
+                                                                    let mapping_id = 'p_' + this.state.newMapping?.panel_id + '_l_' + this.state.newMapping?.lot_id
+                                                                    if (Array.from(this.state.panelLots, pl => 'p_' + pl?.panel_id + '_l_' + pl?.lot_id).includes(mapping_id)) {
+                                                                        alert('This mapping already exists')
+                                                                        return
+                                                                    }
+                                                                    if (Array.from(this.state.panelLots, pl => pl?.lot_id).includes(this.state.newMapping?.lot_id)) {
+                                                                        alert('This lot is already mapped to another panel')
+                                                                        return
+                                                                    }
+                                                                    this.setState({
+                                                                        add_mapping: false,
+                                                                        panelLots: [...this.state.panelLots, this.state.newMapping],
+                                                                        newMapping: {
+                                                                            panel_name: '',
+                                                                            lot_name: '',
+                                                                            panel_id: '',
+                                                                            lot_id: ''
+                                                                        }
+                                                                    })
+                                                                } else {
+                                                                    alert('Please select a panel and a lot')
+                                                                }
 
-                        <div className="form-row bg-white mb-3 pt-2 rounded">
-                            {/* choose participant source */}
+                                                            }}
+                                                            className="btn btn-success btn-sm">
+                                                            +
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* choose participant source */}
+                        {/* <div className="form-row bg-white mb-3 pt-2 rounded">
                             <div className="col-sm-12 mb-3  ml-2">
 
 
@@ -499,13 +725,13 @@ class ShipmentForm extends React.Component {
                                 {participants}
 
                             </div>
-                            {/* End choose participant source */}
+                        </div> */}
+                        {/* End choose participant source */}
 
 
-                        </div>
 
 
-                        <div className="form-row mt-2 bg-white rounded">
+                        {/* <div className="form-row mt-2 bg-white rounded">
                             <div className="col-sm-12  ml-2">
 
                                 <h5>Sample log</h5>
@@ -557,7 +783,7 @@ class ShipmentForm extends React.Component {
                                 </table>
                             </div>
 
-                        </div>
+                        </div> */}
 
                         <div className="form-group row mt-4">
                             <div className="col-sm-12 text-center">
@@ -579,7 +805,7 @@ class ShipmentForm extends React.Component {
                     </div>
                 </div>
 
-                < div className="modal fade" id="addShipmentModal" tabIndex="-1" role="dialog" aria-labelledby="addShipmentModalTitle" aria-hidden="true" >
+                <div className="modal fade" id="addShipmentModal" tabIndex="-1" role="dialog" aria-labelledby="addShipmentModalTitle" aria-hidden="true" >
                     <div className="modal-dialog modal-dialog-centered" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
@@ -590,7 +816,15 @@ class ShipmentForm extends React.Component {
                             </div>
                             <div className="modal-body">
                                 {
-                                    this.state.message ? this.state.message : ''
+                                    this.state.message ? (
+                                        // if message is an array
+                                        Array.isArray(this.state.message) ? (
+                                            this.state.message.map((m, x) => <React.Fragment key={x}>{m}</React.Fragment>)
+                                        ) : (
+                                            // else just display it
+                                            this.state.message
+                                        )
+                                    ) : ''
                                 }
                             </div>
                             <div className="modal-footer">

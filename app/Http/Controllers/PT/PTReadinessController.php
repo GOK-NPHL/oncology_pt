@@ -131,10 +131,12 @@ class PTReadinessController extends Controller
                 "readinesses.name",
                 "readinesses.updated_at as last_update",
                 "admins.name as created_by",
-                DB::raw('count(*) as participant_count')
+                DB::raw('count(*) as participant_count'),
+                "pt_shipements.id as shipment_id"
             )->join('admins', 'admins.id', '=', 'readinesses.admin_id')
                 ->join('laboratory_readiness', 'laboratory_readiness.readiness_id', '=', 'readinesses.id')
-                ->groupBy('laboratory_readiness.readiness_id')
+                ->leftJoin('pt_shipements', 'pt_shipements.readiness_id', '=', 'readinesses.id')
+                ->groupBy('laboratory_readiness.readiness_id', 'pt_shipements.id')
                 ->orderBy('last_update', 'DESC')
                 ->get();
 

@@ -530,6 +530,24 @@ export async function UpdateShipment(shipement) {
 export async function FetchShipments(userId, filterEmpty) {
 
     try {
+        let url = `${settings.serverBaseApi}/get_shipments?a=1`;
+        if(filterEmpty && filterEmpty == 1) {
+            url += `&with_submissions=1`;
+        }
+        if(userId) {
+            url += `&user_id=${userId}`;
+        }
+        const response = await axios.get(url);
+        const responseData = response.data;
+        return responseData;
+    } catch (err) {
+        // Handle Error Here
+        return err.response
+    }
+}
+export async function FetchShipments_Old(userId, filterEmpty) {
+
+    try {
         const response = await axios.get(`${settings.serverBaseApi}/get_shipments/` + userId + '/' + filterEmpty);
         const responseData = response.data;
         return responseData;
@@ -539,10 +557,23 @@ export async function FetchShipments(userId, filterEmpty) {
     }
 }
 
+//// <lots //
 export async function FetchLots() {
 
     try {
-        const response = await axios.get(`${settings.serverBaseApi}/get_lots`);
+        let url = `${settings.serverBaseApi}/get_lots`;
+        const response = await axios.get(url);
+        const responseData = response.data;
+        return responseData;
+    } catch (err) {
+        // Handle Error Here
+        return err.response
+    }
+}
+
+export async function FetchLot(lotId) {
+    try {
+        const response = await axios.get(`${settings.serverBaseApi}/get_lot/` + lotId);
         const responseData = response.data;
         return responseData;
     } catch (err) {
@@ -568,7 +599,6 @@ export async function SaveLot(lot) {
     }
 }
 
-
 export async function UpdateLot(lot) {
     try {
         const response = await axios({
@@ -589,10 +619,53 @@ export async function UpdateLot(lot) {
 export async function DeleteLot(lotId) {
     try {
         const response = await axios({
+            method: 'delete',
+            url: `${settings.serverBaseApi}/delete_lot/${lotId}}`,
+            // data: {
+            //     id: lotId,
+            // }
+        });
+        return response;
+    } catch (err) {
+        // Handle Error Here
+        console.log(err);
+        return err.response
+    }
+}
+///// lots> //
+
+///// <panels //
+export async function FetchPanels() {
+
+    try {
+        let url = `${settings.serverBaseApi}/get_panels`;
+        const response = await axios.get(url);
+        const responseData = response.data;
+        return responseData;
+    } catch (err) {
+        // Handle Error Here
+        return err.response
+    }
+}
+
+export async function FetchPanel(panelId) {
+    try {
+        const response = await axios.get(`${settings.serverBaseApi}/get_panel/` + panelId);
+        const responseData = response.data;
+        return responseData;
+    } catch (err) {
+        // Handle Error Here
+        return err.response
+    }
+}
+
+export async function SavePanel(panel) {
+    try {
+        const response = await axios({
             method: 'post',
-            url: `${settings.serverBaseApi}/delete_lot`,
+            url: `${settings.serverBaseApi}/create_panel`,
             data: {
-                id: lotId,
+                panel: panel,
             }
         });
         return response;
@@ -603,16 +676,41 @@ export async function DeleteLot(lotId) {
     }
 }
 
-export async function FetchLot(lotId) {
+export async function UpdatePanel(panel) {
     try {
-        const response = await axios.get(`${settings.serverBaseApi}/get_lot/` + lotId);
-        const responseData = response.data;
-        return responseData;
+        const response = await axios({
+            method: 'post',
+            url: `${settings.serverBaseApi}/edit_panel`,
+            data: {
+                panel: panel,
+            }
+        });
+        return response;
     } catch (err) {
         // Handle Error Here
+        console.log(err);
         return err.response
     }
 }
+
+export async function DeletePanel(panelId) {
+    try {
+        const response = await axios({
+            method: 'delete',
+            url: `${settings.serverBaseApi}/delete_panel/${panelId}`,
+            // data: {
+            //     id: panelId,
+            // }
+        });
+        return response;
+    } catch (err) {
+        // Handle Error Here
+        console.log(err);
+        return err.response
+    }
+}
+///// panels> //
+
 
 
 export async function SaveSuveyAnswers(survey) {

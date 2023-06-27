@@ -16,11 +16,17 @@ class PtSample extends Model
         'hpv_16',
         'hpv_18',
         'hpv_other',
-        'ptshipment_id'
+        'ptshipment_id',
+        'panel_id',
     ];
 
     public function ptshipment()
     {
         return $this->belongsTo('App\PtShipement');
+    }
+
+    public function panel()
+    {
+        return $this->belongsTo('App\Panel');
     }
 }

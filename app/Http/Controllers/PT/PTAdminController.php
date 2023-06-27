@@ -22,6 +22,22 @@ class PTAdminController extends Controller
     {
         return view('user.pt.shipment.pt_shipment');
     }
+    public function lots()
+    {
+        return view('user.pt.lots.index');
+    }
+    public function lotDetail()
+    {
+        return view('user.pt.lots.lot_detail');
+    }
+    public function panels()
+    {
+        return view('user.pt.panels.index');
+    }
+    public function panelDetail()
+    {
+        return view('user.pt.panels.panel_detail');
+    }
 
     public function editShipment()
     {
