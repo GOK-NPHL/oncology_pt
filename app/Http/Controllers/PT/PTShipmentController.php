@@ -633,8 +633,8 @@ class PTShipmentController extends Controller
             $hipmentsRefResult = DB::table("pt_shipements")->distinct()
                 ->join('lot_panels', 'lot_panels.shipment_id', '=', 'pt_shipements.id')
                 ->join('panels', 'panels.id', '=', 'lot_panels.panel_id')
-                ->join('pt_samples', 'pt_samples.panel_id', '=', 'panels.id')
-                ->groupBy('pt_shipements.id');
+                ->join('pt_samples', 'pt_samples.panel_id', '=', 'panels.id');
+                // ->groupBy('pt_shipements.id');
 
             $hipmentsRefResult = $hipmentsRefResult->get([
                 "pt_shipements.id as shipment_id",
