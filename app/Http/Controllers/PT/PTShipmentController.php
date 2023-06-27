@@ -548,51 +548,99 @@ class PTShipmentController extends Controller
             foreach ($shipmentsResponses as $key => $shipmentResponse) {
                 $panel = Panel::where('id', $shipmentResponse->panel_id)->first();
                 $samples = $panel->ptSamples()->get();
-                $sample_results = DB::table("pt_submission_results")
-                    ->where('ptsubmission_id', $shipmentResponse->ptsubmission_id)
-                    ->join('ptsubmissions', 'ptsubmissions.id', '=', 'pt_submission_results.ptsubmission_id')
-                    ->join('pt_shipements', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id')
-                    ->join('lot_panels', 'lot_panels.shipment_id', '=', 'pt_shipements.id')
-                    ->join('panels', 'lot_panels.panel_id', '=', 'panels.id')
-                    ->join('pt_samples', 'pt_samples.panel_id', '=', 'panels.id')
-                    // ->groupBy('pt_submission_results.ptsubmission_id')
-                    ->get([
-                        'pt_submission_results.ptsubmission_id as pt_submission_id',
-                        'pt_samples.id as sample_id',
-                        'pt_samples.name as sample_name',
-                        'pt_samples.hpv_16 as expected_hpv_16',
-                        'pt_samples.hpv_18 as expected_hpv_18',
-                        'pt_samples.hpv_other as expected_hpv_other',
-                        'pt_submission_results.hpv_16 as submitted_hpv_16',
-                        'pt_submission_results.hpv_18 as submitted_hpv_18',
-                        'pt_submission_results.hpv_other as submitted_hpv_other',
-                    ]);
+                $s_amples = $samples->toArray();
+                // $response_results_ = DB::table("pt_submission_results")
+                //     ->where('ptsubmission_id', $shipmentResponse->ptsubmission_id)
+                //     ->join('ptsubmissions', 'ptsubmissions.id', '=', 'pt_submission_results.ptsubmission_id')
+                //     ->join('pt_shipements', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id')
+                //     ->join('lot_panels', 'lot_panels.shipment_id', '=', 'pt_shipements.id')
+                //     ->join('panels', 'lot_panels.panel_id', '=', 'panels.id')
+                //     ->join('pt_samples', 'pt_samples.panel_id', '=', 'panels.id')
+                //     ->get([
+                //         'pt_submission_results.ptsubmission_id as pt_submission_id',
+                //         'pt_samples.id as sample_id',
+                //         'pt_samples.name as sample_name',
+                //         'pt_samples.hpv_16 as expected_hpv_16',
+                //         'pt_samples.hpv_18 as expected_hpv_18',
+                //         'pt_samples.hpv_other as expected_hpv_other',
+                //         'pt_submission_results.hpv_16 as submitted_hpv_16',
+                //         'pt_submission_results.hpv_18 as submitted_hpv_18',
+                //         'pt_submission_results.hpv_other as submitted_hpv_other',
+                //     ]);
+                // $rr_array = $response_results_->toArray();
                 // calculate the performance
                 $response_performance = 0;
-                $sample_count = count($samples) ?? 0;//DB::table("pt_samples")->where('ptshipment_id', $shipmentResponse->pt_shipment_id)->count() ?? 5;
-                if($sample_count && $sample_count>0) $score_per_sample = (100 / $sample_count) ?? 20;
+                $sample_count = count($samples) ?? 0; //DB::table("pt_samples")->where('ptshipment_id', $shipmentResponse->pt_shipment_id)->count() ?? 5;
+                if ($sample_count && $sample_count > 0) $score_per_sample = (100 / $sample_count) ?? 20;
 
-                foreach ($sample_results as $key => $sample_result) {
-                    $expected_hpv_16 = $sample_result->expected_hpv_16;
-                    $expected_hpv_18 = $sample_result->expected_hpv_18;
-                    $expected_hpv_other = $sample_result->expected_hpv_other;
-
-                    $submitted_hpv_16 = $sample_result->submitted_hpv_16;
-                    $submitted_hpv_18 = $sample_result->submitted_hpv_18;
-                    $submitted_hpv_other = $sample_result->submitted_hpv_other;
-
-                    $sample_result->performance = 0;
-                    if ($expected_hpv_16 == $submitted_hpv_16 && $expected_hpv_18 == $submitted_hpv_18 && $expected_hpv_other == $submitted_hpv_other) {
-                        $sample_result->performance += $score_per_sample;
+                // foreach ($response_results_ as $key => $resp_rslt) {
+                //     $expected_hpv_16 = $resp_rslt->expected_hpv_16;
+                //     $expected_hpv_18 = $resp_rslt->expected_hpv_18;
+                //     $expected_hpv_other = $resp_rslt->expected_hpv_other;
+                //     $submitted_hpv_16 = $resp_rslt->submitted_hpv_16;
+                //     $submitted_hpv_18 = $resp_rslt->submitted_hpv_18;
+                //     $submitted_hpv_other = $resp_rslt->submitted_hpv_other;
+                //     $resp_rslt->performance = 0;
+                //     if ($expected_hpv_16 == $submitted_hpv_16 && $expected_hpv_18 == $submitted_hpv_18 && $expected_hpv_other == $submitted_hpv_other) {
+                //         $resp_rslt->performance += $score_per_sample;
+                //     }
+                //     $response_performance += $resp_rslt->performance;
+                // }
+                foreach ($samples as $key => $spl) {
+                    $sample_perf = 0;
+                    $resp_rslts = DB::table("pt_submission_results")
+                        ->where('ptsubmission_id', $shipmentResponse->ptsubmission_id)
+                        ->where('pt_submission_results.sample_id', $spl->id)
+                        ->join('pt_samples', 'pt_samples.id', '=', 'pt_submission_results.sample_id')
+                        ->get([
+                            'pt_submission_results.ptsubmission_id as pt_submission_id',
+                            'pt_samples.id as sample_id',
+                            'pt_samples.name as sample_name',
+                            'pt_samples.hpv_16 as expected_hpv_16',
+                            'pt_samples.hpv_18 as expected_hpv_18',
+                            'pt_samples.hpv_other as expected_hpv_other',
+                            'pt_submission_results.hpv_16 as submitted_hpv_16',
+                            'pt_submission_results.hpv_18 as submitted_hpv_18',
+                            'pt_submission_results.hpv_other as submitted_hpv_other',
+                        ]);
+                    Log::debug(json_encode($resp_rslts));
+                    if (count($resp_rslts) > 0) {
+                        if (isset($resp_rslts[0]) && !empty($resp_rslts[0])) {
+                            $resp_rslt = $resp_rslts[0];
+                            $expected_hpv_16 = $resp_rslt->expected_hpv_16 ?? null;
+                            $expected_hpv_18 = $resp_rslt->expected_hpv_18 ?? null;
+                            $expected_hpv_other = $resp_rslt->expected_hpv_other ?? null;
+                            $submitted_hpv_16 = $resp_rslt->submitted_hpv_16 ?? null;
+                            $submitted_hpv_18 = $resp_rslt->submitted_hpv_18 ?? null;
+                            $submitted_hpv_other = $resp_rslt->submitted_hpv_other ?? null;
+                            if (
+                                !empty($expected_hpv_16) && !empty($submitted_hpv_16) &&
+                                $expected_hpv_16 == $submitted_hpv_16 &&
+                                !empty($expected_hpv_18) && !empty($submitted_hpv_18) &&
+                                $expected_hpv_18 == $submitted_hpv_18 &&
+                                !empty($expected_hpv_other) && !empty($submitted_hpv_other) &&
+                                $expected_hpv_other == $submitted_hpv_other
+                            ) {
+                                $sample_perf += $score_per_sample;
+                                $response_performance += $score_per_sample;
+                            }
+                        } else {
+                            // Log::info('No results found for sample: ' . $spl->id);
+                        }
+                    } else {
+                        // Log::info('No results found for shipment: ');
                     }
-                    $response_performance += $sample_result->performance;
+
+                    if($key == count($samples) - 1){
+                        $sample_perfo[$spl->id] = $sample_perf;
+                    }
                 }
-                // $shipmentResponse->sample_results = $sample_results;
                 $shipmentResponse->performance = $response_performance;
             }
 
             return $shipmentsResponses;
         } catch (Exception $ex) {
+            Log::error($ex);
             return response()->json(['Message' => 'Could fetch submissions: ' . $ex->getMessage()], 500);
         }
     }
