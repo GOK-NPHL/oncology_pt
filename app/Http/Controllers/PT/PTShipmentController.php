@@ -519,10 +519,14 @@ class PTShipmentController extends Controller
 
             $shipmentsResponses = DB::table("pt_shipements")->distinct()
                 ->join('ptsubmissions', 'ptsubmissions.pt_shipements_id', '=', 'pt_shipements.id')
+                ->join('lot_panels', 'lot_panels.shipment_id', '=', 'pt_shipements.id')
+                ->join('pt_samples', 'pt_samples.panel_id', '=', 'lot_panels.panel_id')
                 ->join('laboratories', 'ptsubmissions.lab_id', '=', 'laboratories.id')
                 ->join('users', 'ptsubmissions.user_id', '=', 'users.id')
                 ->where('pt_shipements.id', $request->id)
+                // ->groupBy('ptsubmissions.id')
                 ->get([
+                    "lot_panels.panel_id as panel_id",
                     "pt_shipements.id as pt_shipment_id",
                     "pt_shipements.pass_mark",
                     "pt_shipements.start_date",
@@ -542,9 +546,16 @@ class PTShipmentController extends Controller
 
             // for each shipment response, get the sample results
             foreach ($shipmentsResponses as $key => $shipmentResponse) {
+                $panel = Panel::where('id', $shipmentResponse->panel_id)->first();
+                $samples = $panel->ptSamples()->get();
                 $sample_results = DB::table("pt_submission_results")
                     ->where('ptsubmission_id', $shipmentResponse->ptsubmission_id)
-                    ->join('pt_samples', 'pt_samples.id', '=', 'pt_submission_results.sample_id')
+                    ->join('ptsubmissions', 'ptsubmissions.id', '=', 'pt_submission_results.ptsubmission_id')
+                    ->join('pt_shipements', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id')
+                    ->join('lot_panels', 'lot_panels.shipment_id', '=', 'pt_shipements.id')
+                    ->join('panels', 'lot_panels.panel_id', '=', 'panels.id')
+                    ->join('pt_samples', 'pt_samples.panel_id', '=', 'panels.id')
+                    // ->groupBy('pt_submission_results.ptsubmission_id')
                     ->get([
                         'pt_submission_results.ptsubmission_id as pt_submission_id',
                         'pt_samples.id as sample_id',
@@ -558,16 +569,18 @@ class PTShipmentController extends Controller
                     ]);
                 // calculate the performance
                 $response_performance = 0;
-                $sample_count = DB::table("pt_samples")->where('ptshipment_id', $shipmentResponse->pt_shipment_id)->count() ?? 5;
-                $score_per_sample = (100 / $sample_count) ?? 20;
+                $sample_count = count($samples) ?? 0;//DB::table("pt_samples")->where('ptshipment_id', $shipmentResponse->pt_shipment_id)->count() ?? 5;
+                if($sample_count && $sample_count>0) $score_per_sample = (100 / $sample_count) ?? 20;
 
                 foreach ($sample_results as $key => $sample_result) {
                     $expected_hpv_16 = $sample_result->expected_hpv_16;
                     $expected_hpv_18 = $sample_result->expected_hpv_18;
                     $expected_hpv_other = $sample_result->expected_hpv_other;
+
                     $submitted_hpv_16 = $sample_result->submitted_hpv_16;
                     $submitted_hpv_18 = $sample_result->submitted_hpv_18;
                     $submitted_hpv_other = $sample_result->submitted_hpv_other;
+
                     $sample_result->performance = 0;
                     if ($expected_hpv_16 == $submitted_hpv_16 && $expected_hpv_18 == $submitted_hpv_18 && $expected_hpv_other == $submitted_hpv_other) {
                         $sample_result->performance += $score_per_sample;
@@ -580,7 +593,7 @@ class PTShipmentController extends Controller
 
             return $shipmentsResponses;
         } catch (Exception $ex) {
-            return response()->json(['Message' => 'Could fetch ptsubmissions list: ' . $ex->getMessage()], 500);
+            return response()->json(['Message' => 'Could fetch submissions: ' . $ex->getMessage()], 500);
         }
     }
 
@@ -634,7 +647,7 @@ class PTShipmentController extends Controller
                 ->join('lot_panels', 'lot_panels.shipment_id', '=', 'pt_shipements.id')
                 ->join('panels', 'panels.id', '=', 'lot_panels.panel_id')
                 ->join('pt_samples', 'pt_samples.panel_id', '=', 'panels.id');
-                // ->groupBy('pt_shipements.id');
+            // ->groupBy('pt_shipements.id');
 
             $hipmentsRefResult = $hipmentsRefResult->get([
                 "pt_shipements.id as shipment_id",
