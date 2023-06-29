@@ -115,9 +115,7 @@ class Submission extends Controller
 
 
             foreach ($totalShipments as $data) {
-
                 if (array_key_exists($data->round_name, $payload)) {
-
                     $payload[$data->round_name]['total_shipment'] = $payload[$data->round_name]['total_shipment'] + $data->total_participant;
                     $payload[$data->round_name]['end_date'] = $data->end_date;
                 } else {
@@ -129,45 +127,29 @@ class Submission extends Controller
 
             //submissions count
             $submissionsByLabRound = PtShipement::select( //when using labs
-
                 "pt_shipements.round_name",
+                "pt_shipements.created_at",
                 "pt_shipements.end_date",
                 DB::raw('count(*) as total_participant')
-
             )
-
                 ->join('lot_panels', 'lot_panels.shipment_id', '=', 'pt_shipements.id')
                 ->join('lots', 'lots.id', '=', 'lot_panels.lot_id')
                 ->join('lot_participants', 'lot_participants.lot_id', '=', 'lots.id')
                 ->join('laboratories', 'lot_participants.participant_id', '=', 'laboratories.id')
-                // ->join('laboratory_pt_shipement', 'laboratory_pt_shipement.pt_shipement_id', '=', 'pt_shipements.id')
                 ->join('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id')
-                ->groupBy('round_name', 'end_date')->orderBy('pt_shipements.created_at', 'asc');
-
-            $submissionsByReadinessRound = PtShipement::select( //when using labs
-
-                "pt_shipements.round_name",
-                "pt_shipements.end_date",
-                DB::raw('count(*) as total_participant')
-
-            )->join('laboratory_readiness', 'laboratory_readiness.readiness_id', '=', 'pt_shipements.readiness_id')
-                ->join('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id')
-                ->groupBy('round_name', 'end_date')
+                ->groupBy('lot_panels.id', 'lots.id', 'lot_participants.id', 'round_name', 'pt_shipements.created_at')
                 ->orderBy('pt_shipements.created_at', 'asc');
 
-            $totalSubmissions = $submissionsByLabRound
-                ->union($submissionsByReadinessRound)
-                ->get();
+            $totalSubmissions = $submissionsByLabRound->get();
 
             foreach ($totalSubmissions as $data) {
-
                 if (array_key_exists($data->round_name, $payload)) {
                     $payload[$data->round_name]['end_date'] = $data->end_date;
-                    $payload[$data->round_name]['total_responses'] = $payload[$data->round_name]['total_responses'] + $data->total_participant;
+                    $payload[$data->round_name]['total_responses'] =  $data->total_participant;
                 } else {
                     $payload[$data->round_name] = ['total_shipment' => 0, 'total_responses' => 0, 'end_date' => null];
                     $payload[$data->round_name]['end_date'] = $data->end_date;
-                    $payload[$data->round_name]['total_responses'] = $data->total_participant;
+                    // $payload[$data->round_name]['total_responses'] = $data->total_participant;
                 }
             }
             return  $payload;
