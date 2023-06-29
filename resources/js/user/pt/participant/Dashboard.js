@@ -150,7 +150,9 @@ class Dashboard extends React.Component {
                                         element.readiness_approval_id == null ?
                                             'Pending readiness approval'
                                             :
-                                            'Ready for submission'
+                                            (
+                                                Date.parse(element.start_date) > new Date() ? 'Submission not yet open' : 'Ready to submit'
+                                            )
                                     :
                                     ' Past due date'}
                             </span>
@@ -160,13 +162,9 @@ class Dashboard extends React.Component {
                             ''
                     }
                     {
-
                         <td>
-
                             {
-
                                 element.submission_id ?
-
                                     <button
                                         onClick={() => {
                                             this.setState({
@@ -175,63 +173,31 @@ class Dashboard extends React.Component {
                                                 page: 'edit'
                                             });
                                         }}
-                                        type="button"
-                                        className="btn btn-success">
-                                        {
-                                            Date.parse(element.end_date) > new Date() ? <i className="far fa-edit"></i>
-                                                : <i className="fas fa-eye"></i>
-                                        }
-                                        {
-                                            Date.parse(element.end_date) > new Date() ?
-                                                ' Edit'
-                                                :
-                                                ' View only'
-                                        }
+                                        type="button" className="btn btn-success">
+                                        {Date.parse(element.end_date) > new Date() ? <i className="far fa-edit"></i> : <i className="fas fa-eye"></i>}
+                                        {Date.parse(element.end_date) > new Date() ? 'Edit' : 'View only'}
                                     </button>
                                     :
-                                    <button
-                                        onClick={() => {
-                                            if (element.is_readiness_answered == null) {
-                                                window.location.assign('get-readiness-form/' + element.readiness_id)
-                                            } else {
-                                                this.setState({
-                                                    selectedElement: element,
-                                                    selectedElementHasSubmmisions: false,
-                                                    page: 'edit'
-                                                });
-                                            }
-
-
-                                        }}
-
-                                        type="button"
-                                        className="btn btn-success" style={{ display: (Date.parse(element.end_date) > new Date() ? "inline-block" : "none") }}>
-
-                                        {
-                                            Date.parse(element.end_date) > new Date() ? <i className="fas fa-paper-plane"></i>
-                                                : <i className="fas fa-eye"></i>
-                                        }
-                                        {Date.parse(element.end_date) > new Date() ?
-                                            element.is_readiness_answered == null ?
-                                                ' Fill readiness'
-                                                :
-                                                element.readiness_approval_id == null ? ' View only' : ' Submit'
-
-                                            :
-                                            ' View only'}
-                                    </button>
-
+                                    (
+                                        Date.parse(element.start_date) > new Date() ? null : <button
+                                            onClick={() => {
+                                                if (element.is_readiness_answered == null) {
+                                                    window.location.assign('get-readiness-form/' + element.readiness_id)
+                                                } else {
+                                                    this.setState({
+                                                        selectedElement: element,
+                                                        selectedElementHasSubmmisions: false,
+                                                        page: 'edit'
+                                                    });
+                                                }
+                                            }}
+                                            type="button" className="btn btn-success" style={{ display: (Date.parse(element.end_date) > new Date() ? "inline-block" : "none") }}>
+                                            {Date.parse(element.end_date) > new Date() ? <i className="fas fa-paper-plane"></i> : <i className="fas fa-eye"></i>}
+                                            {Date.parse(element.end_date) > new Date() ?
+                                                element.is_readiness_answered == null ? 'Fill readiness' : element.readiness_approval_id == null ? ' View only' : 'Submit' : ' View only'}
+                                        </button>
+                                    )
                             }
-                            {/* <a
-                                onClick={() => {
-                                    this.setState({
-                                        selectedElement: element
-                                    });
-                                    $('#deleteConfirmModal').modal('toggle');
-                                }} className="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm">
-                                <i className="fas fa-user-times"></i>
-                            </a> */}
-
                         </td>
                     }
 

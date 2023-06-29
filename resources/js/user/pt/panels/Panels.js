@@ -252,7 +252,7 @@ function Panels() {
                                 setBlankPanel(panel_temp)
                             }}>Cancel</button>
                             <button type='button' className='btn btn-primary' onClick={ev => {
-                                if (blankPanel?.isEdit) {
+                                if (blankPanel?.mode === 'edit') {
                                     UpdatePanel(blankPanel).then(res => {
                                         console.log(res)
                                         if (res.status) {
