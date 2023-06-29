@@ -111,9 +111,13 @@ class PTShipmentController extends Controller
                     ->join('ptsubmissions', 'ptsubmissions.pt_shipements_id', '=', 'pt_shipements.id');
             }
             if ($request->has('user_id') && $request->user_id != null && $request->user_id != '156f41ed97') {
-                $shipments = $shipments
-                    ->join('users', 'laboratories.id', '=', 'users.laboratory_id')
-                    ->where('users.id', $request->user_id);
+                if ($request->has('with_submissions') && ($request->with_submissions == 'true' || $request->with_submissions == '1')) {
+                    $shipments = $shipments
+                        ->where('ptsubmissions.user_id', '=', $request->user_id);
+                } else {
+                    $shipments = $shipments
+                        ->where('laboratories.user_id', '=', $request->user_id);
+                }
             }
             $shipments = $shipments
                 ->groupBy('pt_shipements.id')
@@ -668,7 +672,8 @@ class PTShipmentController extends Controller
                 ->leftJoin('pt_submission_results', 'pt_submission_results.ptsubmission_id', '=', 'ptsubmissions.id')
                 ->join('pt_samples', 'pt_samples.id', '=', 'pt_submission_results.sample_id');
             if ($is_participant == 1) {
-                $shipmentsResponsesRlt = $shipmentsResponsesRlt->where('ptsubmissions.lab_id', $user->laboratory_id)
+                $shipmentsResponsesRlt = $shipmentsResponsesRlt
+                    ->where('ptsubmissions.lab_id', $user->laboratory_id)
                     ->where('ptsubmissions.pt_shipements_id', $id);
             } else {
                 $shipmentsResponsesRlt = $shipmentsResponsesRlt->where('ptsubmissions.id', $id);

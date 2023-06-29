@@ -527,11 +527,11 @@ export async function UpdateShipment(shipement) {
     }
 }
 
-export async function FetchShipments(userId, filterEmpty) {
+export async function FetchShipments(userId, with_subs) {
 
     try {
         let url = `${settings.serverBaseApi}/get_shipments?a=1`;
-        if(filterEmpty && filterEmpty == 1) {
+        if(with_subs && with_subs == 1) {
             url += `&with_submissions=1`;
         }
         if(userId) {
