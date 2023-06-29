@@ -383,11 +383,6 @@ class PTShipmentController extends Controller
                 $shipments = $shipments->join('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id');
             }
 
-            // $shipments = $shipments->join('laboratory_pt_shipement', 'laboratory_pt_shipement.pt_shipement_id', '=', 'pt_shipements.id')
-            //     ->join('pt_samples', 'pt_samples.ptshipment_id', '=', 'pt_shipements.id')
-            //     ->join('laboratories', 'laboratory_pt_shipement.laboratory_id', '=', 'laboratories.id')
-            //     ->join('users', 'users.laboratory_id', '=', 'laboratories.id');
-
             $shipments = $shipments->join('lot_panels', 'lot_panels.shipment_id', '=', 'pt_shipements.id')
                 ->join('lots', 'lots.id', '=', 'lot_panels.lot_id')
                 ->join('panels', 'panels.id', '=', 'lot_panels.panel_id')

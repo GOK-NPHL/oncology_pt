@@ -89,9 +89,14 @@ class Submission extends Controller
 
                 "pt_shipements.round_name",
                 "pt_shipements.end_date",
-                DB::raw('count(*) as total_participant')
+                DB::raw('count(laboratories.id) as total_participant')
 
-            )->join('laboratory_pt_shipement', 'laboratory_pt_shipement.pt_shipement_id', '=', 'pt_shipements.id')
+            )
+                ->join('lot_panels', 'lot_panels.shipment_id', '=', 'pt_shipements.id')
+                ->join('lots', 'lots.id', '=', 'lot_panels.lot_id')
+                ->join('lot_participants', 'lot_participants.lot_id', '=', 'lots.id')
+                ->join('laboratories', 'lot_participants.participant_id', '=', 'laboratories.id')
+                // ->join('laboratory_pt_shipement', 'laboratory_pt_shipement.pt_shipement_id', '=', 'pt_shipements.id')
                 ->groupBy('round_name', 'end_date')->orderBy('pt_shipements.created_at', 'asc');
 
             $shipmentsByReadinessRound = PtShipement::select( //when using labs
@@ -127,9 +132,15 @@ class Submission extends Controller
 
                 "pt_shipements.round_name",
                 "pt_shipements.end_date",
-                DB::raw('count(*) as total_participant')
+                DB::raw('count(ptsubmissions.*) as total_participant')
 
-            )->join('laboratory_pt_shipement', 'laboratory_pt_shipement.pt_shipement_id', '=', 'pt_shipements.id')
+            )
+
+                ->join('lot_panels', 'lot_panels.shipment_id', '=', 'pt_shipements.id')
+                ->join('lots', 'lots.id', '=', 'lot_panels.lot_id')
+                ->join('lot_participants', 'lot_participants.lot_id', '=', 'lots.id')
+                ->join('laboratories', 'lot_participants.participant_id', '=', 'laboratories.id')
+                // ->join('laboratory_pt_shipement', 'laboratory_pt_shipement.pt_shipement_id', '=', 'pt_shipements.id')
                 ->join('ptsubmissions', 'pt_shipements.id', '=', 'ptsubmissions.pt_shipements_id')
                 ->groupBy('round_name', 'end_date')->orderBy('pt_shipements.created_at', 'asc');
 
