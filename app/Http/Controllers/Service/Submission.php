@@ -89,7 +89,7 @@ class Submission extends Controller
 
                 "pt_shipements.round_name",
                 "pt_shipements.end_date",
-                DB::raw('count(laboratories.id) as total_participant')
+                DB::raw('count(*) as total_participant')
 
             )
                 ->join('lot_panels', 'lot_panels.shipment_id', '=', 'pt_shipements.id')
@@ -132,7 +132,7 @@ class Submission extends Controller
 
                 "pt_shipements.round_name",
                 "pt_shipements.end_date",
-                DB::raw('count(ptsubmissions.*) as total_participant')
+                DB::raw('count(*) as total_participant')
 
             )
 
