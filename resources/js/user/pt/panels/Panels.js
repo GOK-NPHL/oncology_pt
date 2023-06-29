@@ -85,7 +85,7 @@ function Panels() {
                                                         let panel2e = {
                                                             id: panel.id,
                                                             name: panel.name,
-                                                            shipment_id: panel.shipment.id,
+                                                            // shipment_id: panel.shipment.id,
                                                             samples: Array.isArray(panel?.samples) ? panel.samples : [],
                                                             mode: 'edit'
                                                         }
