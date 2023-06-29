@@ -657,6 +657,7 @@ class PTShipmentController extends Controller
                 "pt_samples.hpv_16 as ref_hpv_16",
                 "pt_samples.hpv_18 as ref_hpv_18",
                 "pt_samples.hpv_other as ref_hpv_other",
+                "pt_samples.id as sample_id",
                 "pt_samples.name as sample_name"
             ]);
 
@@ -679,13 +680,16 @@ class PTShipmentController extends Controller
                 "pt_submission_results.hpv_16 as result_hpv_16",
                 "pt_submission_results.hpv_18 as result_hpv_18",
                 "pt_submission_results.hpv_other as result_hpv_other",
+                "pt_samples.id as sample_id",
                 "pt_samples.name as sample_name"
             ]);
 
 
             $dataPayload = [];
             foreach ($shipmentsResponsesRlt as $rslt) {
-                $refRslt = $hipmentsRefResult->where('sample_name', $rslt->sample_name)->where('shipment_id', $rslt->shipment_id)->first();
+                $refRslt = $hipmentsRefResult
+                ->where('sample_id', $rslt->sample_id)
+                ->where('shipment_id', $rslt->shipment_id)->first();
                 if (!empty($refRslt) && $refRslt->sample_name == $rslt->sample_name) {
                     $data = [];
                     $data['result_hpv_16'] = $rslt->result_hpv_16;
