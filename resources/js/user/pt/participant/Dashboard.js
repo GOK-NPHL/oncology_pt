@@ -141,7 +141,8 @@ class Dashboard extends React.Component {
                     <th scope="row">{element.submission_id == null ? unsubmittedIndex++ : submittedIndex++}</th>
                     <td>{element.round_name}</td>
                     <td>{element.code}</td>
-                    <td>{element.end_date}</td>
+                    <td>{element?.start_date || ''}</td>
+                    <td>{element?.end_date || ''}</td>
                     {
                         element.submission_id == null ? <td >
                             <span className="badge" style={{ "backgroundColor": (Date.parse(element.end_date) > new Date() ? ((element.is_readiness_answered == null || element.readiness_approval_id == null) ? "#c8850b" : "green") : "#f54"), "padding": "5px 6px", "borderRadius": "2px", "color": "white" }}>
@@ -305,6 +306,7 @@ class Dashboard extends React.Component {
                             <th scope="col">#</th>
                             <th scope="col">Round</th>
                             <th scope="col">Code</th>
+                            <th scope="col">Start Date</th>
                             <th scope="col">End Date</th>
                             <th scope="col">Action</th>
 
