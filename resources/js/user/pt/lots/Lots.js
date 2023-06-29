@@ -284,21 +284,29 @@ function Lots() {
                                         console.log(res)
                                         if (res.status) {
                                             setBlankLot(lot_temp)
-                                            fetchLots()
+                                            fetchAllLots()
                                         }
                                     }).catch(err => {
                                         console.log(err)
                                     })
+                                    // dismiss modal
+                                    if( typeof window !== 'undefined' ) {
+                                        window.$('#addLotModal').modal('hide')
+                                    }
                                 } else {
                                     SaveLot(blankLot).then(res => {
                                         console.log(res)
                                         if (res.status) {
                                             setBlankLot(lot_temp)
-                                            fetchLots()
+                                            fetchAllLots()
                                         }
                                     }).catch(err => {
                                         console.log(err)
                                     })
+                                    // dismiss modal
+                                    if( typeof window !== 'undefined' ) {
+                                        window.$('#addLotModal').modal('hide')
+                                    }
                                 }
                             }}>Save Lot</button>
                         </div>
